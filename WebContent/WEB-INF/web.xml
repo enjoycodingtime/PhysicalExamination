@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>PhysicalExamination</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <servlet>
+  	<servlet-name>ServletA</servlet-name>
+  	<servlet-class>com.pe.servlet.UserServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>actionServlet</servlet-name>
+    <servlet-class>servlet.actionServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>SaleServlet</servlet-name>
+    <servlet-class>servlet.SaleServlet</servlet-class>
+  </servlet>
+ <servlet>
+    <servlet-name>codeA</servlet-name>
+    <servlet-class>servlet.CodeServlet</servlet-class>
+  </servlet>
+<servlet>
+    <servlet-name>orderA</servlet-name>
+    <servlet-class>web.actionServlet</servlet-class>
+  </servlet>
+
+
+  
+
+  <servlet-mapping>
+  	<servlet-name>orderA</servlet-name>
+  	<url-pattern>*.order</url-pattern>
+  </servlet-mapping>
+
+  
+
+  <servlet-mapping>
+  	<servlet-name>codeA</servlet-name>
+  	<url-pattern>/code</url-pattern>
+  </servlet-mapping>
+
+  
+
+  <servlet-mapping>
+  	<servlet-name>ServletA</servlet-name>
+  	<url-pattern>*.com</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>actionServlet</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
