@@ -5,8 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>标准体检系统</title>
-<link href="../js/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../styles/index.css">
+<link href="js/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="styles/index.css">
 </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -22,13 +22,7 @@
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">主页</a></li>
-              <li><a href="">总台</a></li>
-              <li><a href="">分检</a></li>
-              <li><a href="">总检</a></li>
-              <li><a href="">领导</a></li>
-              <li><a href="">管理员</a></li>
-              
+              <li class="active"><a href="#">领导</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -54,7 +48,7 @@
   </div>
 	
 	
-	<script src="../js/lib/jquery.js"></script>
-    <script src="../js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="js/lib/jquery.js"></script>
+    <script src="js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
-$(document).ready(function(){
-  $("#sign_in").click(function(){
-  $(this).hide();
-  });
-});
+//$(document).ready(function(){
+//  $("#sign_in").click(function(){
+//  $(this).hide();
+//  });
+//});

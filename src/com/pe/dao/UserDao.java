@@ -28,7 +28,8 @@ public class UserDao {
 			int id = rs.getInt("id");
 			String name = rs.getString("name");
 			String pwd = rs.getString("password");
-			Users user = new Users(id, name, pwd);	  //Statement stmt=conn.createStatement();
+			String position = rs.getString("position");
+			Users user = new Users(id, name, pwd, position);	
 			list.add(user);
 			
 		}
@@ -38,15 +39,30 @@ public class UserDao {
 		
 		Users users =null;
 		conn = DBUtil.getConnection();
-		String sql = "select * from Users where name='zk'";
+		String sql = "select * from Users where name='"+username+"'";
 		Statement stmt=conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		while(rs.next()){
 			int id = rs.getInt("id");
 			String password = rs.getString("password");
-			users = new Users(id,username,password);
+			String position = rs.getString("position");
+			users = new Users(id,username,password, position);
 		}
 		return users;
+	}
+	
+public static void sign_in(String username,String password,String position){
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "insert into Users(name,password,position) values('"+username+"','"+password+"','"+position+"')";
+			Statement stmt=conn.createStatement();
+			stmt.executeUpdate(sql);		
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+		
+//		return null;
 	}
 	
 }
