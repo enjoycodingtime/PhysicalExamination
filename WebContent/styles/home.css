@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+.well {
+float:left;
+margin-right:20px;
+height:800px;
+}
+footer {
+	text-align:right;
+}

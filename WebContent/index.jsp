@@ -16,7 +16,11 @@
           	<h1>标准体检信息管理系统</h1>
             <h2>用户登录</h2>
             <p><input type="text" name="username" placeholder="Name"/></p>
-            <p><input type="text" name="password" placeholder="Password"/></p>
+            <p><input type="text" name="password" placeholder="Password"/><%
+					String login_msg = 
+						(String)request.getAttribute("user_error");
+				 %>
+				 <span class="tips"><%=(login_msg == null ? "" : login_msg)%></span></p>
             <p>
             	<input type="radio" name="position" value="receptionist"/>前台
             	<input type="radio" name="position" value="doctor"/>医生

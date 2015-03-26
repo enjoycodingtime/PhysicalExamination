@@ -4,8 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>标准体检系统</title>
+<title>体检预约</title>
 <link href="js/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="js/lib/bootstrap/dist/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="styles/home.css" rel="stylesheet">
 </head>
 <body>
@@ -47,7 +48,7 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header">个人客户</li>
-              <li><a href="reservation.jsp">体检预约</a></li>
+              <li><a href="#">体检预约</a></li>
               <li><a href="#">体检登记</a></li>
               <li><a href="#">资料维护</a></li>
               <li><a href="#">项目更改</a></li>
@@ -63,28 +64,71 @@
         </div><!--/span-->
         <div class="span9">
           <div class="leaderboard">
-            <h1>Learn. Practice. Develop.</h1>
-            <p>w3cschool offers web development tutorials. We believe in Open Source. Love standards. And prioritize simplicity 				             and readability while serving content.</p>
-            <p><a class="btn btn-success btn-large">Join w3cschool now</a></p>
+            <h1>体检预约</h1>
+            <form>
+            <table class="table-bordered text-center">
+            <tr>
+            <td>
+            姓名
+            </td>
+           	<td>
+   <input type="text" class="form-control" id="" name="name" placeholder="输入姓名">         
+            </td>
+                      <td>
+     性别       
+            </td>
+           	<td>
+            男：<input type="radio" id="" name="sex" value="man">女：<input type="radio" id="" name="sex" value="woman">
+            </td>
+            </tr>
+             <tr>
+            <td>
+            年龄
+            </td>
+           	<td>
+            <input type="text" class="form-control" name="age" id="" placeholder="输入年龄">
+            </td>
+            <td>
+            联系方式
+            </td>
+           	<td>
+         <input type="text" class="form-control" name="phone_number" id="" placeholder="输入电话">
+            </td>
+            </tr>
+             
+             <tr>
+            <td>
+            预约检查日期
+            </td>
+           	<td>
+        <input type="text" class="form-control" name="date" value="2015-03-25" id="datetimepicker" readonly class="form_datetime">  
+            </td>
+            </tr>
+             <tr>
+            <td>
+            套餐
+            </td>
+           	<td>
+          <input type="text" class="form-control" id="" placeholder="">  
+            </td>
+            </tr>
+             <tr>
+            <td>
+         体检项目   
+            </td>
+           	<td>
+          <input type="text" class="form-control" id="" placeholder="">  
+            </td>
+            </tr>
+             
+            
+            
+            
+            </table>
+            </form>
+            <p><a class="btn btn-success btn-large">确认</a></p>
           </div>
-          <div class="row-fluid">
-            <div class="span4">
-              <h2>Learn</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn btn-success btn-large" href="#">Start Learning now</a></p>
-            </div><!--/span-->
-            <div class="span4">
-              <h2>Practice</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn btn-success btn-large" href="#">Start percticing now</a></p>
-            </div><!--/span-->
-            <div class="span4">
-              <h2>Develop</h2>
-              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn btn-success btn-large" href="#">Start developing now</a></p>
-            </div><!--/span-->
-          </div><!--/row-->
-          </div></div></div>
+          
      <footer>
         <p>&copy; 向莹辉 胡艳灵 张柯</p>
       </footer>
@@ -92,5 +136,7 @@
 	
 	<script src="js/lib/jquery.js"></script>
     <script src="js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/lib/bootstrap/dist/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/reservation.js"></script>
 </body>
 </html>
