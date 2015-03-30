@@ -2,19 +2,24 @@
 
 
 var peApp = angular.module('peApp', [
-  'ngRoute',
-  'PEControllers',
-  'PEServices'
+  'ngRoute'
 ]);
 
 peApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/', {
-        templateUrl: 'log_in.html',
+        templateUrl: 'views/log_in.html',
         controller: 'logInCtrl'
-      })
-      .
+      }).
+      when('/receptionist', {
+          templateUrl: 'views/receptionists/receptionist.html',
+          controller: 'receptionistCtrl'
+        }).
+        when('/reservation', {
+            templateUrl: 'views/receptionists/reservation.html',
+            controller: 'reservationCtrl'
+          }).
       otherwise({
         redirectTo: 'index.html'
       });
