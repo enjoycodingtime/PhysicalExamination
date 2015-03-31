@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('peApp').controller('reservationCtrl',
-		function($scope, $http, $location,ReservationService) {
+		function($scope, $http, $location,ReservationService,$route) {
 			$(function() {
 				$('#dateTimePicker').datetimepicker({
 					startDate : '-0d',
@@ -28,11 +28,12 @@ angular.module('peApp').controller('reservationCtrl',
 			    					        	name:'入职套餐'				        	
 			    					        }
 			    					        ];
-			$scope.submit = function(){
-				console.log($scope.reservationInformation);$http({
+			$scope.submit = function(reservationInformation){
+				reservationInformation.date = '2015/04/01';
+				console.log(reservationInformation);$http({
 					method : 'POST',
 					url : 'reservation.com',
-					data : $scope.reservationInformation
+					data :reservationInformation
 				}).success(function(data) {
 					if (data == "error") {
 						swal({
@@ -48,7 +49,7 @@ angular.module('peApp').controller('reservationCtrl',
 							type : "success",
 							timer : 2000
 						});
-//						$location.path('receptionist');
+						$route.reload();
 					}
 
 					// 加载成功之后做一些事

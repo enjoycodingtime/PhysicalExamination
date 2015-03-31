@@ -1,0 +1,39 @@
+<div >
+<div ng-include="'views/receptionists/receptionistsHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/receptionists/receptionistSidebar.html'"></div>
+			<!--/.well -->
+		</div>
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="span9">
+			<div class="leaderboard">
+				<h1>体检预约</h1>
+				<table class="table table-word-wrap clear-float-left">
+				<thead>
+				 <tr>
+				 	<th>序号</th>
+				 	<th>姓名</th>
+				 	<th>性别</th>
+				 	<th>年龄</th>
+				 	<th>日期</th>
+				 	<th>套餐</th>				 	
+				 </tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat = 'reservationItem in reservationItems'>
+					<td>{{$index+1}}</td>
+					<td>{{reservationItem.name}}</td>
+					<td>{{reservationItem.sex}}</td>
+					<td>{{reservationItem.age}}</td>
+					<td>{{reservationItem.phone_number}}</td>
+					<td>{{reservationItem.date}}</td>
+					<td>{{reservationItem.physical_examination}}</td>
+				</tr>
+				</tbody>
+				</table>
+			</div>
+			</div>
+        </div>
+		

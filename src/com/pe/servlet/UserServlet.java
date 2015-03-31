@@ -9,7 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+
+import com.pe.dao.ReservationDao;
 import com.pe.dao.UserDao;
+import com.pe.entity.Reservation;
 import com.pe.entity.Users;
 
 
@@ -45,7 +49,7 @@ public class UserServlet extends HttpServlet {
 			}			
 		}
 		
-		//ע��
+		//
 		if(action.equals("sign_in")){
 			try {
 				String password =request.getParameter("password");
@@ -63,9 +67,28 @@ public class UserServlet extends HttpServlet {
 		
 		if(action.equals("reservation")){
 			try {
-				System.out.println(request.getParameter("name"));
+				String name =request.getParameter("name");
+				String age =request.getParameter("age");
+				String sex =request.getParameter("sex");
+				String date =request.getParameter("date");
+				String phone_number =request.getParameter("phoneNumber");
+				String physical_examination =request.getParameter("physicalExamination");
+				
+				ReservationDao.insertReservation(name,sex,age,phone_number,date,physical_examination);
+				
 				out.print("ok");
 				
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//获取预约信息
+		if(action.equals("getReservation")){
+			try {
+				ReservationDao reservationDao = new ReservationDao();
+				List<Reservation> list = reservationDao.getReservation();
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());				
 			} catch (Exception e) {
 				out.print("error");
 			}
