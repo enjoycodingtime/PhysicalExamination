@@ -1,0 +1,59 @@
+<div >
+<div ng-include="'views/receptionists/receptionistsHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/receptionists/receptionistSidebar.html'"></div>
+			<!--/.well -->
+		</div>
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="span9">
+			<div class="leaderboard">
+				<h1>体检登记</h1>
+				<div class='row'>
+					<div class='col-xs-12'>
+						<h3>输入预约号</h3>
+					</div>
+				</div>
+				<div class='row'>
+					<div class='col-xs-3'>
+						<p class='input-group'>
+							<input type="text" class="form-control" id=""
+								 placeholder="预约号"
+								ng-model='id'><span class="input-group-btn">
+								<button type="button" class="btn btn-default"
+									ng-click="search(id)">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</p>
+					</div>
+				</div>
+				<table class="table table-word-wrap clear-float-left" ng-if='reservationInfo'>
+				<thead>
+				 <tr>
+				 	<th>序号</th>
+				 	<th>姓名</th>
+				 	<th>性别</th>
+				 	<th>年龄</th>
+				 	<th>电话</th>
+				 	<th>预约日期</th>
+				 	<th>套餐</th>				 	
+				 </tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>{{reservationInfo.id}}</td>
+					<td>{{reservationInfo.name}}</td>
+					<td>{{reservationInfo.sex}}</td>
+					<td>{{reservationInfo.age}}</td>
+					<td>{{reservationInfo.phone_number}}</td>
+					<td>{{reservationInfo.date}}</td>
+					<td>{{reservationInfo.physical_examination}}</td>
+				</tr>
+				</tbody>
+				</table>
+			</div>
+			</div>
+        </div>
+		

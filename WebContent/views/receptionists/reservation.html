@@ -1,84 +1,96 @@
 <div>
 	<div ng-include="'views/receptionists/receptionistsHeader.html'"></div>
-	<div class="container-fluid">
+	<div class="container-fluid" >
 		<div class="row-fluid">
 			<div class="span3">
 				<div ng-include="'views/receptionists/receptionistSidebar.html'"></div>
 				<!--/.well -->
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<div class="span9">
-					<div class="leaderboard">
+				<div class='row'>
+					<div class='col-xs-12'>
 						<h1>体检预约</h1>
-						<table class="table-bordered text-center">
-							<tr>
-								<td>姓名</td>
-								<td><input type="text" class="form-control" id=""
-									name="name" placeholder="输入姓名"
-									ng-model='reservationInformation.name'></td>
-								<td>性别</td>
-								<td>男：<input type="radio" id="" name="sex" value="男"
-									ng-model='reservationInformation.sex'>女：<input
-									type="radio" id="" name="sex" value="女"
-									ng-model='reservationInformation.sex'>
-								</td>
-							</tr>
-							<tr>
-								<td>年龄</td>
-								<td><input type="text" class="form-control" name="age"
-									id="" placeholder="输入年龄" ng-model='reservationInformation.age'></td>
-								<td>联系方式</td>
-								<td><input type="text" class="form-control"
-									name="phone_number" id="" placeholder="输入电话"
-									ng-model='reservationInformation.phoneNumber'></td>
-							</tr>
-
-							<tr>
-								<td>预约检查日期</td>
-								<td><div class="">
-										<div class="">
-											<div class='input-group date' id='dateTimePicker'>
-												<input type='text' ng-model='reservationInformation.date'
-													class="form-control" data-date-format="yyyy-mm-dd" /> <span
-													class="input-group-addon cursor-to-hand"> <span
-													class="glyphicon glyphicon-calendar"></span>
-												</span>
-											</div>
-										</div>
-									</div></td>
-							</tr>
-							<tr>
-								<td>套餐</td>
-								<td><input type="text" class="form-control" id=""
-									placeholder=""></td>
-							</tr>
-							<tr>
-								<td>体检项目</td>
-								<td><input type="text" class="form-control" id=""
-									placeholder=""></td>
-							</tr>
-
-
-
-
-						</table>
-						<div>
-							<div ng-repeat='physicalExamination in physicalExaminations'>
-								<input type='radio' value='{{physicalExamination.name}}'
-									ng-model='reservationInformation.physicalExamination'
-									name='physicalExaminations' /> <label>{{physicalExamination.name}}</label>
-							</div>
-
-
-						</div>
-
-						<p>
-							<a class="btn btn-success btn-large"
-								ng-click='submit(reservationInformation)'>确认</a>
+					</div>
+				</div>
+				<div class='row'>
+					<div class='col-xs-3'>
+						<p class='input-group'>
+							<span>姓名:</span><input type="text" class="form-control" id=""
+								name="name" placeholder="输入姓名"
+								ng-model='reservationInformation.name'>
 						</p>
+
+					</div>
+					<div class='col-xs-3'>
+						<p class='input-group'>
+							<span>年龄:</span><input type="text" class="form-control"
+								name="age" id="" placeholder="输入年龄"
+								ng-model='reservationInformation.age'>
+						</p>
+
+					</div>
+					<div class='col-xs-3'>
+						<p class='input-group'>
+							<span>电话:</span><input type="text" class="form-control"
+								name="age" id="" placeholder="输入电话"
+								ng-model='reservationInformation.phone_number'>
+						</p>
+
+					</div>
+				</div>
+				<div class='row'>
+					<div class='col-xs-3'>
+
+						<p class='input-group'>
+							<span>性别:</span> <input type="radio" id="" name="sex" value="男"
+								ng-model='reservationInformation.sex'>男  <input
+								type="radio" id="" name="sex" value="女"
+								ng-model='reservationInformation.sex'>女
+						</p>
+
+					</div>
+					<div class='col-xs-3'>
+						<p class="input-group">
+
+							<input type="text" class="form-control"
+								datepicker-popup="{{format}}" ng-model="reservationInformation.date" is-open="opened"
+								min-date="minDate" max-date="'2015-06-22'"
+								datepicker-options="dateOptions"
+								date-disabled="disabled(date, mode)" ng-required="true"
+								close-text="Close" /> <span class="input-group-btn">
+								<button type="button" class="btn btn-default"
+									ng-click="open($event)">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</p>
+
+					</div>
+				</div>
+
+
+				<div  >
+					<div class='row'>
+					<div class='col-xs-12'>
+					<h3>套餐：</h3>
+					</div>
+					</div>
+					<div ng-repeat='physicalExamination in physicalExaminations'>
+						<input type='radio' value='{{physicalExamination.name}}'
+							ng-model='reservationInformation.physicalExamination'
+							name='physicalExaminations' /> <label>{{physicalExamination.name}}</label>
 					</div>
 
+
 				</div>
+
+				<p>
+					<a class="btn btn-success btn-large"
+						ng-click='submit()'>确认</a>
+				</p>
 			</div>
+
+
 		</div>
 	</div>
+</div>

@@ -15,7 +15,6 @@ angular.module('peApp').controller('reservationBoxCtrl',
 					})
 				} else {
 					$scope.reservationItems = data;
-					console.log($scope.reservationItems)
 				}
 
 				// 加载成功之后做一些事

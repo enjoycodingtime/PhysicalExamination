@@ -1,6 +1,8 @@
 package com.pe.entity;
 
 public class Reservation {
+	private int id;
+	
 	private String name;
 	private String sex;
 	private String age;
@@ -8,6 +10,12 @@ public class Reservation {
 	private String date;
 	private String physical_examination;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -44,9 +52,11 @@ public class Reservation {
 	public void setPhysical_examination(String physical_examination) {
 		this.physical_examination = physical_examination;
 	}
-	public Reservation(String name, String sex, String age,
+	
+	public Reservation(int id, String name, String sex, String age,
 			String phone_number, String date, String physical_examination) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.sex = sex;
 		this.age = age;

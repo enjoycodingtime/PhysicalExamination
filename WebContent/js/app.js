@@ -9,14 +9,35 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/receptionist', {
 		templateUrl : 'views/receptionists/receptionist.html',
 		controller : 'receptionistCtrl'
+	}).when('/admin', {
+		templateUrl : 'views/admin/adminHome.html',
+		controller : 'adminHomeCtrl'
+	}).when('/doctor', {
+		templateUrl : 'views/receptionists/receptionist.html',
+		controller : 'receptionistCtrl'
+	}).when('/manage', {
+		templateUrl : 'views/receptionists/receptionist.html',
+		controller : 'receptionistCtrl'
 	}).when('/reservation', {
 		templateUrl : 'views/receptionists/reservation.html',
 		controller : 'reservationCtrl'
+	}).when('/addCombo', {
+		templateUrl : 'views/admin/addCombo.html',
+		controller : 'addComboCtrl'
+	}).when('/editCombo', {
+		templateUrl : 'views/admin/editCombo.html',
+		controller : 'comboCtrl'
+	}).when('/deleteCombo', {
+		templateUrl : 'views/admin/deleteCombo.html',
+		controller : 'comboCtrl'
 	}).when('/reservationBox', {
 		templateUrl : 'views/receptionists/reservationBox.html',
 		controller : 'reservationBoxCtrl'
+	}).when('/physicalExaminationRegistration', {
+		templateUrl : 'views/receptionists/physicalExaminationRegistration.html',
+		controller : 'physicalExaminationRegistrationCtrl'
 	}).otherwise({
-		redirectTo : 'index.html'
+		redirectTo : '/'
 	});
 } ]);
 

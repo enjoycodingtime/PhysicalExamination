@@ -31,6 +31,7 @@ public class ReservationDao {
 		ps =conn.prepareStatement(sql);
 		rs= ps.executeQuery();
 		while(rs.next()){
+			int id = rs.getInt("id");
 			String name = rs.getString("name");
 			String age = rs.getString("age");
 			String sex = rs.getString("sex");
@@ -38,7 +39,28 @@ public class ReservationDao {
 			String date = rs.getString("date");
 			String physical_examination = rs.getString("physical_examination");
 			
-			Reservation reservation =new Reservation(name,sex,age,phone_number,date,physical_examination);
+			Reservation reservation =new Reservation(id,name,sex,age,phone_number,date,physical_examination);
+			list.add(reservation);
+		}
+		return list;
+	}
+	public List<Reservation> getReservationById(int id) throws Exception{
+		List<Reservation> list = new ArrayList<Reservation>();
+		conn=DBUtil.getConnection();
+		String sql ="select * from reservation where id=?";		
+		ps =conn.prepareStatement(sql);
+		ps.setInt(1, id);
+		rs= ps.executeQuery();
+		while(rs.next()){
+			int id1 = rs.getInt("id");
+			String name = rs.getString("name");
+			String age = rs.getString("age");
+			String sex = rs.getString("sex");
+			String phone_number = rs.getString("phone_number");
+			String date = rs.getString("date");
+			String physical_examination = rs.getString("physical_examination");
+			
+			Reservation reservation =new Reservation(id1,name,sex,age,phone_number,date,physical_examination);
 			list.add(reservation);
 		}
 		return list;

@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
+import com.pe.dao.ComboDao;
+import com.pe.dao.ExaminationProjectDao;
 import com.pe.dao.ReservationDao;
 import com.pe.dao.UserDao;
+import com.pe.entity.ExaminationProject;
 import com.pe.entity.Reservation;
 import com.pe.entity.Users;
 
@@ -50,13 +53,12 @@ public class UserServlet extends HttpServlet {
 		}
 		
 		//
-		if(action.equals("sign_in")){
+		if(action.equals("signIn")){
 			try {
 				String password =request.getParameter("password");
 				String username = request.getParameter("username");
 				String position = request.getParameter("position");
 				UserDao.sign_in(username, password, position);
-				request.getRequestDispatcher("index.jsp").forward(request, response);
 				
 			} catch (Exception e) {
 				out.print("error");
@@ -94,5 +96,39 @@ public class UserServlet extends HttpServlet {
 			}
 		}
 		
+		//查询预约信息
+		if(action.equals("isReservation")){
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				ReservationDao reservationDao = new ReservationDao();
+				List<Reservation> list = reservationDao.getReservationById(id);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());				
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//获取所有体检项目
+		if(action.equals("getExaminationProject")){
+			try {
+				ExaminationProjectDao examinationProjectDao = new ExaminationProjectDao();
+				List<ExaminationProject> list = examinationProjectDao.getExaminationProjects();
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());				
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		//添加体检套餐
+				if(action.equals("addCombo")){
+					try {
+						String combo_name =request.getParameter("combo_name");
+						String combo_items =request.getParameter("combo_items");
+						ComboDao.addCombo(combo_name, combo_items);
+					} catch (Exception e) {
+						out.print("error");
+					}
+				}
 	}
 }

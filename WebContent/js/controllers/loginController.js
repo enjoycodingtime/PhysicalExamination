@@ -26,7 +26,41 @@ angular.module('peApp').controller('logInCtrl',
 							type : "success",
 							timer : 2000
 						});
-						$location.path('receptionist');
+						$location.path($scope.position);
+					}
+
+					// 加载成功之后做一些事
+				}).error(function(data, status, headers, config) {
+					// 处理错误
+
+					console.log('sorry');
+				});
+			}
+			
+			$scope.sign_in = function(){
+				$http({
+					method : 'POST',
+					url : 'signIn.com',
+					data : {
+						username : $scope.username,
+						password : $scope.password,
+						position : $scope.position
+					}
+				}).success(function(data) {
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "注册失败",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						swal({
+							title : "sucess!",
+							text : "注册成功",
+							type : "success",
+							timer : 2000
+						});
 					}
 
 					// 加载成功之后做一些事
