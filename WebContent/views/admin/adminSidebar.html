@@ -9,7 +9,12 @@
 		</ul>
 		<li><a ng-href="#examinationProjectCtrl">体检项目管理</a></li>
 		<li><a ng-href="#officeCtrl">科室管理</a></li>
-		<li><a ng-href="#peopleCtrl">员工管理</a></li>
+		<li><a ng-click='showPeopleMenu()'>员工管理</a></li>
+		<ul ng-if="isClickPeople">
+		<li><a ng-href="#peoples">员工信息</a></li>
+		<li><a ng-href="#editCombo">修改信息</a></li>
+		<li><a ng-href="#deleteCombo">删除信息</a></li>
+		</ul>
 		<li class="nav-header">信息查询</li>
 		<li><a ng-href="#queryDayReport">体检日报</a></li>
 		<li><a ng-href="#queryReservatioin">预约查询</a></li>

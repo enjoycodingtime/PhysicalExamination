@@ -10,6 +10,10 @@ angular.module('peApp').controller('comboSideBarCtrl',
 			$scope.showSecondMenu = function() {
 				$scope.isClickCombo = !$scope.isClickCombo;
 			}
+			$scope.isClickPeople = false;
+			$scope.showPeopleMenu = function() {
+				$scope.isClickPeople = !$scope.isClickPeople;
+			}
 		});
 angular.module('peApp').controller('addComboCtrl',
 		function($scope, $http, $location) {

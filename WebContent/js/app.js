@@ -13,11 +13,11 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/admin/adminHome.html',
 		controller : 'adminHomeCtrl'
 	}).when('/doctor', {
-		templateUrl : 'views/receptionists/receptionist.html',
-		controller : 'receptionistCtrl'
+		templateUrl : 'views/doctor/doctorHome.html',
+		controller : 'doctorHomeCtrl'
 	}).when('/manage', {
-		templateUrl : 'views/receptionists/receptionist.html',
-		controller : 'receptionistCtrl'
+		templateUrl : 'views/manage/manageHome.html',
+		controller : 'manageHomeCtrl'
 	}).when('/reservation', {
 		templateUrl : 'views/receptionists/reservation.html',
 		controller : 'reservationCtrl'
