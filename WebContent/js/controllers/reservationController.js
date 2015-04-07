@@ -26,45 +26,10 @@ angular.module('peApp').controller('reservationCtrl',
 			}, {
 				name : '入职套餐'
 			} ];
-			$scope.today = function() {
-			    $scope.reservationInformation = new Date();
-			    console.log('hell')
-			  };
-			  $scope.today();
-
-			  $scope.clear = function () {
-			    $scope.reservationInformation.date = null;
-			  };
-
-			  // Disable weekend selection
-			  $scope.disabled = function(date, mode) {
-			    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-			  };
-
-			  $scope.toggleMin = function() {
-			    $scope.minDate = $scope.minDate ? null : new Date();
-			  };
-			  $scope.toggleMin();
-
-			  $scope.open = function($event) {
-				  console.log('11')
-			    $event.preventDefault();
-			    $event.stopPropagation();
-
-			    $scope.opened = true;
-			    console.log('1111')
-			  };
-
-			  $scope.dateOptions = {
-			    formatYear: 'yy',
-			    startingDay: 1
-			  };
-
-			  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-			  $scope.format = $scope.formats[0];
+			
 			$scope.submit = function() {
-				$scope.reservationInformation.date = '2015/04/01';
-//				console.log(reservationInformation);
+				$scope.reservationInformation.date = $('#reservation_date').val();
+				console.log($scope.reservationInformation);
 				$http({
 					method : 'POST',
 					url : 'reservation.com',

@@ -8,9 +8,8 @@ angular.module('peApp').controller('logInCtrl',
 					url : 'home.com',
 					data : {
 						username : $scope.username,
-						password : $scope.password,
-						position : $scope.position
-					}
+						password : $scope.password
+						 }
 				}).success(function(data) {
 					if (data == "error") {
 						swal({
@@ -26,7 +25,7 @@ angular.module('peApp').controller('logInCtrl',
 							type : "success",
 							timer : 2000
 						});
-						$location.path($scope.position);
+						$location.path(data);
 					}
 
 					// 加载成功之后做一些事

@@ -1,6 +1,6 @@
 <div>
 	<div ng-include="'views/receptionists/receptionistsHeader.html'"></div>
-	<div class="container-fluid" >
+	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span3">
 				<div ng-include="'views/receptionists/receptionistSidebar.html'"></div>
@@ -23,7 +23,7 @@
 					</div>
 					<div class='col-xs-3'>
 						<p class='input-group'>
-							<span>年龄:</span><input type="text" class="form-control"
+							<span>年龄:</span><input type="number" class="form-control"
 								name="age" id="" placeholder="输入年龄"
 								ng-model='reservationInformation.age'>
 						</p>
@@ -31,7 +31,7 @@
 					</div>
 					<div class='col-xs-3'>
 						<p class='input-group'>
-							<span>电话:</span><input type="text" class="form-control"
+							<span>电话:</span><input type="number" class="form-control"
 								name="age" id="" placeholder="输入电话"
 								ng-model='reservationInformation.phone_number'>
 						</p>
@@ -43,37 +43,34 @@
 
 						<p class='input-group'>
 							<span>性别:</span> <input type="radio" id="" name="sex" value="男"
-								ng-model='reservationInformation.sex'>男  <input
+								ng-model='reservationInformation.sex'>男 <input
 								type="radio" id="" name="sex" value="女"
 								ng-model='reservationInformation.sex'>女
 						</p>
 
 					</div>
 					<div class='col-xs-3'>
-						<p class="input-group">
-
-							<input type="text" class="form-control"
-								datepicker-popup="{{format}}" ng-model="reservationInformation.date" is-open="opened"
-								min-date="minDate" max-date="'2015-06-22'"
-								datepicker-options="dateOptions"
-								date-disabled="disabled(date, mode)" ng-required="true"
-								close-text="Close" /> <span class="input-group-btn">
-								<button type="button" class="btn btn-default"
-									ng-click="open($event)">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</button>
-							</span>
-						</p>
-
+						<div class="">
+							<div class="">
+								<div class='input-group date' id='dateTimePicker'>
+									<input type='text' id='reservation_date' ng-model='reservationInformation.date'
+										class="form-control" data-date-format="yyyy-mm-dd" placeholder="预约日期"/> <span
+										class="input-group-addon cursor-to-hand"> <span
+										class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
+						</div>
 					</div>
+
 				</div>
 
 
-				<div  >
+				<div>
 					<div class='row'>
-					<div class='col-xs-12'>
-					<h3>套餐：</h3>
-					</div>
+						<div class='col-xs-12'>
+							<h3>套餐：</h3>
+						</div>
 					</div>
 					<div ng-repeat='physicalExamination in physicalExaminations'>
 						<input type='radio' value='{{physicalExamination.name}}'
@@ -85,8 +82,7 @@
 				</div>
 
 				<p>
-					<a class="btn btn-success btn-large"
-						ng-click='submit()'>确认</a>
+					<a class="btn btn-success btn-large" ng-click='submit()'>确认</a>
 				</p>
 			</div>
 
