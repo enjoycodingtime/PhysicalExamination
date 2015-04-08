@@ -39,6 +39,9 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/officeCtrl', {
 		templateUrl : 'views/admin/officeCtrl.html',
 		controller : 'officeCtrlController'
+	}).when('/manageExaminationProject', {
+		templateUrl : 'views/admin/manageExaminationProject.html',
+		controller : 'manageExaminationProjectCtrl'
 	}).otherwise({
 		redirectTo : '/'
 	});

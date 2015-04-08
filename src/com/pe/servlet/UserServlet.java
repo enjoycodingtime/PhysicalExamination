@@ -176,5 +176,53 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		
+		//根据科室名查询项目
+		if (action.equals("getExaminationProjectByOfficeName")) {
+			try {
+				String office_name = request.getParameter("office_name");
+				ExaminationProjectDao examinationProjectDao = new ExaminationProjectDao();
+				List<ExaminationProject> list = examinationProjectDao
+						.getExaminationProjectsByOffice(office_name);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//添加体检项目
+		if(action.equals("addExaminationProject")){
+			try {
+				String office_name = request.getParameter("office_name");
+				String project_name = request.getParameter("project_name");
+				String reference_standard = request.getParameter("reference_standard");
+				ExaminationProjectDao.addProject(office_name,project_name,reference_standard);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		// 删除体检项目
+		if (action.equals("deleteExaminationProject")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				ExaminationProjectDao.deleteProject(id);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//修改科室
+		if (action.equals("modifyProject")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("project_id"));
+				String project_name = request.getParameter("project_name");
+				String reference_standard = request.getParameter("reference_standard");
+				ExaminationProjectDao.modifyProject(id, project_name, reference_standard);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+				
+		
 	}
 }

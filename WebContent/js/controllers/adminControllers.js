@@ -183,7 +183,7 @@ angular.module('peApp').controller('officeCtrlController',
 			$scope.delete_office_action = function (office_id,office_name){
 				swal({
 					title : "Alert",
-					text : "确认删除该<"+office_name+">这个科室吗？",
+					text : "确认删除<"+office_name+">这个科室吗？",
 					type : "warning",
 					showCancelButton: true,
 	                confirmButtonColor: "#5CB85C",
@@ -226,4 +226,161 @@ angular.module('peApp').controller('officeCtrlController',
 							
 			}
 			
+			$scope.manage_examination_project = function (office_name) {
+				$location.path('manageExaminationProject');
+				$location.search('office_name',office_name);
+			}
+			
+		});
+
+angular.module('peApp').controller('manageExaminationProjectCtrl',
+		function($scope, $http, $location,$route) {
+			$scope.office_name = $location.search()['office_name'];
+			$http({
+				method : 'POST',
+				url : 'getExaminationProjectByOfficeName.com',
+				data : {
+					office_name : $scope.office_name
+				}
+			}).success(function(data) {
+				if (data == "error") {
+					swal({
+						title : "Error!",
+						text : "系统错误，请联系管理员",
+						type : "warning",
+						timer : 3000
+					})
+				} else {
+					$scope.examinationProjects = data;
+				}
+
+				// 加载成功之后做一些事
+			}).error(function(data, status, headers, config) {
+				swal({
+					title : "Error!",
+					text : "系统错误2，请联系管理员",
+					type : "warning",
+					timer : 3000
+				})
+			});
+			
+			$scope.addExaminationProject = function(){
+				$http({
+					method : 'POST',
+					url : 'addExaminationProject.com',
+					data : {
+						office_name:$location.search()['office_name'],
+						project_name : $scope.project_name,
+						reference_standard : $scope.reference_standard
+					}
+				}).success(function(data) {
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "添加失败",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						swal({
+							title : "sucess!",
+							text : "添加成功",
+							type : "success",
+							timer : 2000
+						});
+						$route.reload();
+					}
+
+					// 加载成功之后做一些事
+				}).error(function(data, status, headers, config) {
+					// 处理错误
+
+					console.log('sorry');
+				});
+			}
+			
+			$scope.delete_examination_project = function (id,name){
+				swal({
+					title : "Alert",
+					text : "确认删除<"+name+">这个科室吗？",
+					type : "warning",
+					showCancelButton: true,
+	                confirmButtonColor: "#5CB85C",
+	                confirmButtonText: "yes",
+	                closeOnConfirm: true },
+	                function(isConfirm){
+	                	if(isConfirm){
+	                		$http({
+		    					method : 'POST',
+		    					url : 'deleteExaminationProject.com',
+		    					data : {
+		    						id : id
+		    					}
+		    				}).success(function(data) {
+		    					if (data == "error") {
+		    						swal({
+		    							title : "Error!",
+		    							text : "删除失败",
+		    							type : "warning",
+		    							timer : 3000
+		    						})
+		    					} else {
+		    						swal({
+		    							title : "sucess!",
+		    							text : "删除成功",
+		    							type : "success",
+		    							timer : 2000
+		    						});
+		    						$route.reload();
+		    					}
+		    					// 加载成功之后做一些事
+		    				}).error(function(data, status, headers, config) {
+		    					// 处理错误
+		    					console.log('sorry');
+		    				});		
+	                	}
+	                	
+	                	
+				})
+							
+			}
+			
+			$scope.modifyExaminationProject = function (id,project_name,reference_standard){
+				$scope.project_id = id;
+				$scope.modify_project_name = project_name;				
+				$scope.modify_reference_standard = reference_standard;				
+			}
+			$scope.modify_project_action = function (){
+				$http({
+					method : 'POST',
+					url : 'modifyProject.com',
+					data : {
+						project_id : $scope.project_id,
+						project_name : $scope.modify_project_name,
+						reference_standard : $scope.modify_reference_standard
+					}
+				}).success(function(data) {
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "修改失败",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						swal({
+							title : "sucess!",
+							text : "修改成功",
+							type : "success",
+							timer : 2000
+						});
+						$route.reload();
+					}
+					// 加载成功之后做一些事
+				}).error(function(data, status, headers, config) {
+					// 处理错误
+
+					console.log('sorry');
+				});				
+			}
 		});
