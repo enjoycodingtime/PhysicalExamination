@@ -59,12 +59,16 @@ public class OfficeDao {
 		
 	}
 	
-	public static void deleteOffice(int id){
+	public static void deleteOffice(int id,String office_name){
 		try {
 			conn = DBUtil.getConnection();
 			String sql = "delete from office where id=?";
+			String sql2 = "delete from examination_project where office_name=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
+			ps.executeUpdate();
+			ps = conn.prepareStatement(sql2);
+			ps.setString(1, office_name);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

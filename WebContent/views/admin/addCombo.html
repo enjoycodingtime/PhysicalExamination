@@ -9,30 +9,81 @@
 			<div class="span9">
 				<h1>添加套餐</h1>
 				<div class='row'>
-					<div class='col-xs-3'>
-						<p class='input-group'>
-							<span>套餐名字:</span><input type="text" class="form-control" id=""
+					<div class='col-xs-1 text-right'>
+							<span>套餐名字:</span>
+					</div>
+					<div class='col-xs-2'>
+							<input type="text" class="form-control" id=""
 								name="name" placeholder="输入套餐名" ng-model='combo_name'>
-						</p>
+					</div>
+					<div class='col-xs-1 text-right'>
+							<span>选择科室:</span>
+					</div>
+					<div class='col-xs-2'>
+							<select ng-model="office" class="form-control"   ng-options="office.office_name for office in offices" ng-change="selectChange()">
+                           </select>
+					</div>
+					<div class='col-xs-1'>
+                           <button type="button" data-toggle="modal" data-target="#searchByOffice" ng-click='searchByOfficeAction(office.office_name)' class="btn btn-success button-width">ok</button>
 					</div>
 				</div>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
 				 <tr>
-				 	<th></th>
-				 	<th>项目编号</th>
 				 	<th>所属科室</th>
 				 	<th>项目名称</th>
+				 	<th>参照标准</th>
+				 	<th>操作</th>
 				 </tr>
 				</thead>
 				<tbody>
-				<tr ng-repeat = 'examinationProjectItem in examinationProjectItems'>
-					<td><input type="checkbox" ng-click='selectOneProject(examinationProjectItem)'></td>
-					<td>{{examinationProjectItem.id}}</td>
-					<td>{{examinationProjectItem.office_name}}</td>
-					<td>{{examinationProjectItem.project_name}}</td>
+				<tr ng-repeat = 'project in projectArray'>
+					<td>{{project.office_name}}</td>
+					<td>{{project.project_name}}</td>
+					<td>{{project.reference_standard}}</td>
+					<td><button type="button" ng-click='delete_project_action(project)' class="btn btn-danger button-width">删除</button></td>
 				</tr>
 				</tbody>
 				</table>
 				<button ng-click='addCombo()'>ok</button>
 			</div>
+			<div>
+					<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">科室选择</h4>
+								</div>
+								<div class="modal-body">
+								<h1>科室：{{office_name}}</h1>
+								<table class="table table-word-wrap clear-float-left">
+									<thead>
+										<tr>
+											<th></th>
+											<th>项目名称</th>
+											<th>参照标准</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat='examinationProject in examinationProjects'>
+											<td><input type="checkbox" ng-click='selectOneProject(examinationProject)'></td>
+											<td>{{examinationProject.project_name}}</td>
+											<td><textarea class="form-control " rows="2" data-items="50" ng-model ="examinationProject.reference_standard"' ng-disabled="true"></textarea></td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">ok</button>
+							</div>
+						</div>
+						</div>
+					</div>
+					</div>

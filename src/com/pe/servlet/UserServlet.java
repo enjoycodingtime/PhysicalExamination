@@ -16,6 +16,7 @@ import com.pe.dao.ExaminationProjectDao;
 import com.pe.dao.OfficeDao;
 import com.pe.dao.ReservationDao;
 import com.pe.dao.UserDao;
+import com.pe.entity.Combo;
 import com.pe.entity.ExaminationProject;
 import com.pe.entity.Office;
 import com.pe.entity.Reservation;
@@ -171,7 +172,8 @@ public class UserServlet extends HttpServlet {
 		if (action.equals("deleteOffice")) {
 			try {
 				int id = Integer.parseInt(request.getParameter("office_id"));
-				OfficeDao.deleteOffice(id);
+				String office_name = request.getParameter("office_name");
+				OfficeDao.deleteOffice(id,office_name);
 			} catch (Exception e) {
 				out.print("error");
 			}
@@ -222,7 +224,18 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
-				
+		//查询套餐		
+		if (action.equals("getCombos")) {
+			try {
+				ComboDao comboDao = new ComboDao();
+				List<Combo> list = comboDao.getCombos();
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());				
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
 		
 	}
 }

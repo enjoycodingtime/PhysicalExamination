@@ -7,27 +7,28 @@
 		<!--/span-->
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<div class="span9">
-				<h1>科室管理</h1><button type="button" data-toggle="modal" data-target="#addOffice" class="btn btn-success button-width">添加科室</button>
+				<h1>套餐列表</h1>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
 				 <tr>
-				 	<th>科室名称</th>
-				 	<th>门牌号</th>
-				 	<th>科室操作</th>
-				 	<th>项目操作</th>
+				 	<th>套餐名称</th>
+				 	<th></th>
+				 	<th></th>
+				 	<th></th>
 				 </tr>
 				</thead>
 				<tbody>
-				<tr ng-repeat = 'office in offices'>
-					<td>{{office.office_name}}</td>
-					<td>{{office.office_number}}</td>
+				<tr ng-repeat = 'combo in combos'>
+					<td>{{combo.combo_name}}</td>
+					 <td>
+					<button type="button" ng-click='manage_combo_examination_project(office.id)' class="btn btn-success button-width">查看项目</button> 
+					 </td>				
 					<td>
 					<button type="button" data-toggle="modal" data-target="#modifyOffice" ng-click='modifyOfficeAction(office.id,office.office_name,office.office_number)' class="btn btn-success button-width">修改</button>
+					</td>
+					<td>
 					<button type="button" ng-click='delete_office_action(office.id,office.office_name)' class="btn btn-danger button-width">删除</button>
 					 </td>
-					 <td>
-					<button type="button" ng-click='manage_examination_project(office.office_name)' class="btn btn-success button-width">管理</button> 
-					 </td>				
 				</tr>
 				</tbody>
 				</table>
