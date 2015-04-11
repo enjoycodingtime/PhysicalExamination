@@ -32,7 +32,6 @@ public class ComboDao {
 		List<Combo> list = new ArrayList<Combo>();
 		conn = DBUtil.getConnection();
 		String sql = "select * from combo";
-
 		ps = conn.prepareStatement(sql);
 		rs = ps.executeQuery();
 		while (rs.next()) {
@@ -40,6 +39,23 @@ public class ComboDao {
 			String combo_name = rs.getString("combo_name");
 			String combo_items = rs.getString("combo_items");
 
+			Combo combo = new Combo(id,combo_name, combo_items);
+			list.add(combo);
+		}
+		return list;
+	}
+	
+	public List<Combo> getComboById(int comboid) throws Exception {
+		List<Combo> list = new ArrayList<Combo>();
+		conn = DBUtil.getConnection();
+		String sql = "select * from combo where id=?";
+		ps = conn.prepareStatement(sql);
+		ps.setInt(1, comboid);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			int id = rs.getInt("id");
+			String combo_name = rs.getString("combo_name");
+			String combo_items = rs.getString("combo_items");
 			Combo combo = new Combo(id,combo_name, combo_items);
 			list.add(combo);
 		}

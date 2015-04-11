@@ -21,7 +21,7 @@
 				<tr ng-repeat = 'combo in combos'>
 					<td>{{combo.combo_name}}</td>
 					 <td>
-					<button type="button" ng-click='manage_combo_examination_project(office.id)' class="btn btn-success button-width">查看项目</button> 
+					<button type="button" ng-click='manage_combo_examination_project(combo.id)' class="btn btn-success button-width">查看项目</button> 
 					 </td>				
 					<td>
 					<button type="button" data-toggle="modal" data-target="#modifyOffice" ng-click='modifyOfficeAction(office.id,office.office_name,office.office_number)' class="btn btn-success button-width">修改</button>

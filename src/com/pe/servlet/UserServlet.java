@@ -236,6 +236,18 @@ public class UserServlet extends HttpServlet {
 			}
 		}
 		
+		//根据套餐id查询套餐信息
+		if (action.equals("getComboById")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				ComboDao comboDao = new ComboDao();
+				List<Combo> list = comboDao.getComboById(id);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());				
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 		
 	}
 }
