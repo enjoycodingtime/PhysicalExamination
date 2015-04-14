@@ -61,4 +61,32 @@ public class ComboDao {
 		}
 		return list;
 	}
+
+	public static void deleteCombo(int id) {
+		// TODO Auto-generated method stub
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "delete from combo where id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void modifyCombo(int id,String combo_name,String combo_items){
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "update combo set combo_name=?,combo_items=? where id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(3, id);
+			ps.setString(1, combo_name);
+			ps.setString(2, combo_items);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

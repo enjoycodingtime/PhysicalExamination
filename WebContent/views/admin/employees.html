@@ -1,0 +1,100 @@
+<div ng-include="'views/admin/adminHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/admin/adminSidebar.html'"></div>
+		</div>
+		<!--/span-->
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="span9">
+				<h1>员工管理</h1>
+				<!--<button type="button" data-toggle="modal" data-target="#addEmployee" class="btn btn-success button-width">添加员工</button>-->
+				<table class="table table-word-wrap clear-float-left">
+				<thead>
+				 <tr>
+				 	<th>姓名</th>
+				 	<th>职位</th>
+				 	<th>操作</th>
+				 </tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat = 'employee in employees'>
+					<td>{{employee.name}}</td>
+					<td>{{employee.position}}</td>
+					<td>
+					<button type="button" data-toggle="modal" data-target="#modifyEmployee" ng-click='modifyEmployeeAction(employee.id,employee.name,employee.position)' class="btn btn-success button-width">修改</button>
+					<button type="button" ng-click='delete_employee_action(employee.id,employee.name)' class="btn btn-danger button-width">删除</button>
+					 </td>
+								
+				</tr>
+				</tbody>
+				</table>
+				<div>
+					<div class="modal fade" id="addEmployee" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">添加员工</h4>
+								</div>
+								<div class="modal-body">
+									<h2>填写员工信息</h2>
+									<p>
+										用户名：<input type="text" ng-model='office_name' />
+									</p>
+									<p>
+										职位：<input type="text" ng-model='office_number' />
+									</p>
+
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary"
+										ng-click='add_office_action()'
+										ng-disabled="!office_name || !office_number">ok</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal fade" id="modifyEmployee" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">修改</h4>
+								</div>
+								<div class="modal-body">
+									<h2>修改员工信息</h2>
+									<p>
+										用户名：<input type="text" ng-model='modify_name' />
+									</p>
+									<p>
+										职位：
+										<select  ng-model="modify_position"  ng-options="modify_position.name for modify_position in positions">
+                           </select>
+									</p>
+
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary"
+										ng-click='modify_employee_action()'
+										ng-disabled="!modify_name || !modify_position">ok</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	</div>
+</div>
+

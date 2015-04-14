@@ -36,6 +36,18 @@ public class UserDao {
 		return list;
 	}
 	public static Users findByName(String username) throws Exception{
+		if(!DBUtil.isHaveTable("combo")) {
+			DBUtil.initComboDb();
+		}
+		if(!DBUtil.isHaveTable("examination_project")) {
+			DBUtil.initExaminationProject();
+		}
+		if(!DBUtil.isHaveTable("office")) {
+			DBUtil.initOffice();
+		}
+		if(!DBUtil.isHaveTable("reservation")) {
+			DBUtil.initReservation();
+		}
 		
 		Users users =null;
 		conn = DBUtil.getConnection();
@@ -64,5 +76,31 @@ public static void sign_in(String username,String password,String position){
 		
 //		return null;
 	}
+public static void modifyEmployee(int id, String name, String position) {
+	// TODO Auto-generated method stub
+	try {
+		conn = DBUtil.getConnection();
+		String sql = "update Users set name=?,position=? where id=?";
+		ps = conn.prepareStatement(sql);
+		ps.setInt(3, id);
+		ps.setString(1, name);
+		ps.setString(2, position);
+		ps.executeUpdate();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+public static void deleteEmployee(int id) {
+	// TODO Auto-generated method stub
+	try {
+		conn = DBUtil.getConnection();
+		String sql = "delete from Users where id=?";
+		ps = conn.prepareStatement(sql);
+		ps.setInt(1, id);
+		ps.executeUpdate();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
 	
 }

@@ -248,6 +248,57 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		//删除套餐
+		if (action.equals("deleteCombo")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("office_id"));
+				ComboDao.deleteCombo(id);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//修改套餐
+		if (action.equals("modifyCombo")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				String combo_name = request.getParameter("combo_name");
+				String combo_items = request.getParameter("combo_items");
+				ComboDao.modifyCombo(id, combo_name, combo_items);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//获取用户信息
+		if (action.equals("getEmployees")) {
+			try {
+				UserDao userDao = new UserDao();
+				List<Users> list = userDao.findAll();
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());	
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		if (action.equals("modifyEmployee")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				String name = request.getParameter("name");
+				String position = request.getParameter("position");
+				UserDao.modifyEmployee(id, name, position);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		if (action.equals("deleteEmployee")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				UserDao.deleteEmployee(id);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
 		
 	}
 }

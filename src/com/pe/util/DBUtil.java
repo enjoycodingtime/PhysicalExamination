@@ -11,12 +11,12 @@ public class DBUtil {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		} catch (Exception e) {
-			System.out.println("Çý¶¯¼ÓÔØ³ö´í");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½");
 			e.printStackTrace();
 		}
 	}
 	/**
-	 * ´ËÀàÎª´´½¨Á¬½Ó
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
@@ -26,14 +26,14 @@ public class DBUtil {
 		try {
 			conn=DriverManager.getConnection("jdbc:sqlserver://localhost;DatabaseName=PE;user=sa;password=111111");
 		} catch (Exception e) {
-			System.out.println("Á¬½Ó³ö´í£¡");
+			System.out.println("ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½");
 			e.printStackTrace();
 			throw e;
 		}
 		return conn;
 	}
 	/**
-	 * ¹Ø±ÕÁ¬½Ó
+	 * ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public static void close(Connection conn,PreparedStatement ps,ResultSet rs){
 		try {
@@ -47,7 +47,88 @@ public class DBUtil {
 				conn.close();
 			}
 		} catch (Exception e) {
-			System.out.println("¹Ø±ÕÒì³£");
+			System.out.println("ï¿½Ø±ï¿½ï¿½ì³£");
+		}
+	}
+	
+	public static boolean isHaveTable(String table_name) throws Exception {
+		Connection conn = null;
+		conn = DBUtil.getConnection();
+		ResultSet rs = conn.getMetaData().getTables(null, null, table_name, null);
+		if(rs.next()) {
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public static void initComboDb(){
+		try {
+			Connection conn = null;
+			conn = DBUtil.getConnection();
+			String sql = "create table combo("
+					+ " id int identity(1,1) primary key,"
+					+ "combo_name varchar(50),"
+					+ "combo_items varchar(1000)"
+					+ ")";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void initExaminationProject(){
+		try {
+			Connection conn = null;
+			conn = DBUtil.getConnection();
+			String sql = "create table examination_project("
+					+ " id int identity(1,1) primary key,"
+					+ "office_name varchar(50),"
+					+ "project_name varchar(50),"
+					+ "reference_standard varchar(1000)"
+					+ ")";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void initOffice(){
+		try {
+			Connection conn = null;
+			conn = DBUtil.getConnection();
+			String sql = "create table office("
+					+ " id int identity(1,1) primary key,"
+					+ "office_name varchar(50),"
+					+ "office_number varchar(50),"
+					+ ")";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void initReservation(){
+		try {
+			Connection conn = null;
+			conn = DBUtil.getConnection();
+			String sql = "create table reservation("
+					+ " id int identity(1,1) primary key,"
+					+ "name varchar(50),"
+					+ "age varchar(50),"
+					+ "sex varchar(50),"
+					+ "phone_number varchar(50),"
+					+ "date varchar(50),"
+					+ "physical_examination varchar(1000),"
+					+ ")";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

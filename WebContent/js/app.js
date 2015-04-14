@@ -48,6 +48,12 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/manageComboExaminationProject', {
 		templateUrl : 'views/admin/manageComboExaminationProject.html',
 		controller : 'manageComboExaminationProjectCtrl'
+	}).when('/employees', {
+		templateUrl : 'views/admin/employees.html',
+		controller : 'employeesCtrl'
+	}).when('/modifyCombo', {
+		templateUrl : 'views/admin/modifyCombo.html',
+		controller : 'modifyComboCtrl'
 	}).otherwise({
 		redirectTo : '/'
 	});
