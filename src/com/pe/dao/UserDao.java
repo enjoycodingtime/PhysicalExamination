@@ -48,6 +48,9 @@ public class UserDao {
 		if(!DBUtil.isHaveTable("reservation")) {
 			DBUtil.initReservation();
 		}
+		if(!DBUtil.isHaveTable("registration")) {
+			DBUtil.initRegistration();
+		}
 		
 		Users users =null;
 		conn = DBUtil.getConnection();

@@ -122,7 +122,31 @@ public class DBUtil {
 					+ "sex varchar(50),"
 					+ "phone_number varchar(50),"
 					+ "date varchar(50),"
+					+ "combo varchar(50),"
 					+ "physical_examination varchar(1000),"
+					+ ")";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void initRegistration() {
+		// TODO Auto-generated method stub
+		try {
+			Connection conn = null;
+			conn = DBUtil.getConnection();
+			String sql = "create table registration("
+					+ " id int identity(1,1) primary key,"
+					+ "name varchar(50),"
+					+ "age varchar(50),"
+					+ "sex varchar(50),"
+					+ "phone_number varchar(50),"
+					+ "date varchar(50),"
+					+ "combo varchar(50),"
+					+ "physical_examination varchar(1000),"
+					+ "comments varchar(1000),"
 					+ ")";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.executeUpdate();

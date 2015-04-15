@@ -9,6 +9,7 @@ public class Reservation {
 	private String phone_number;
 	private String date;
 	private String physical_examination;
+	private String combo;
 	
 	public int getId() {
 		return id;
@@ -52,9 +53,15 @@ public class Reservation {
 	public void setPhysical_examination(String physical_examination) {
 		this.physical_examination = physical_examination;
 	}
-	
+	public String getCombo() {
+		return combo;
+	}
+	public void setCombo(String combo) {
+		this.combo = combo;
+	}
 	public Reservation(int id, String name, String sex, String age,
-			String phone_number, String date, String physical_examination) {
+			String phone_number, String date, String physical_examination,
+			String combo) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -63,6 +70,7 @@ public class Reservation {
 		this.phone_number = phone_number;
 		this.date = date;
 		this.physical_examination = physical_examination;
+		this.combo = combo;
 	}
 	
 

@@ -9,7 +9,21 @@
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="span9">
 			<div class="leaderboard">
-				<h1>体检预约</h1>
+				<h1>体检预约表</h1>				
+				<div class='row'>
+					<div class='col-xs-3'>
+						<p class='input-group'>
+							<input type="text" class="form-control"
+								 placeholder="search"
+								ng-model='query'><span class="input-group-btn">
+								<button type="button" class="btn btn-default"
+									ng-click="search(id)">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</p>
+					</div>
+				</div>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
 				 <tr>
@@ -20,21 +34,63 @@
 				 	<th>电话</th>
 				 	<th>日期</th>
 				 	<th>套餐</th>				 	
+				 	<th>项目</th>				 	
 				 </tr>
 				</thead>
 				<tbody>
-				<tr ng-repeat = 'reservationItem in reservationItems'>
+				<tr ng-repeat = 'reservationItem in reservationItems | filter:query'>
 					<td>{{reservationItem.id}}</td>
 					<td>{{reservationItem.name}}</td>
 					<td>{{reservationItem.sex}}</td>
 					<td>{{reservationItem.age}}</td>
 					<td>{{reservationItem.phone_number}}</td>
 					<td>{{reservationItem.date}}</td>
-					<td>{{reservationItem.physical_examination}}</td>
+					<td>{{reservationItem.combo || '自选'}}</td>
+					<td><button type="button" data-toggle="modal" data-target="#reservation_physical_examination" ng-click='show_physical_examination(reservationItem.physical_examination)' ng class="btn btn-success button-width">查看项目</button></td>
 				</tr>
 				</tbody>
 				</table>
 			</div>
 			</div>
         </div>
+        
+        <div>
+					<div class="modal fade" id="reservation_physical_examination" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">预约的检查项目</h4>
+								</div>
+								<div class="modal-body">
+								<table class="table table-word-wrap clear-float-left">
+									<thead>
+										<tr>
+											<th>科室名称</th>
+											<th>项目名称</th>
+											<th>参照标准</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat='examinationProject in selected_physical_examination'>
+											<td>{{examinationProject.office_name}}</td>
+											<td>{{examinationProject.project_name}}</td>
+											<td><textarea class="form-control " rows="2" data-items="50" ng-model ="examinationProject.reference_standard"' ng-disabled="true"></textarea></td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">ok</button>
+							</div>
+						</div>
+						</div>
+					</div>
+					</div>
 		

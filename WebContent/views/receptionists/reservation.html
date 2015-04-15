@@ -64,25 +64,66 @@
 					</div>
 
 				</div>
-
-
-				<div>
+				<div class='row'>
+					<div class='col-xs-2'><h3>选择项目：</h3></div>
+					<div class='col-xs-1'><button type="button"  ng-click='taocan =true;zixuan = false' class="btn btn-success button-width">套餐</button></div>
+					<div class='col-xs-1'><button type="button"  ng-click='taocan =false;zixuan = true' class="btn btn-success button-width">自选</button></div>
+				
+				</div>
+				<div clasee='row' ng-show='zixuan'>
+				<div class='col-xs-1 text-right'>
+							<span>选择科室:</span>
+					</div>
+					<div class='col-xs-2'>
+							<select ng-model="office" class="form-control"   ng-options="office.office_name for office in offices" ng-change="selectChange()">
+                           </select>
+					</div>
+					<div class='col-xs-1'>
+                           <button type="button" data-toggle="modal" data-target="#searchByOffice" ng-click='searchByOfficeAction(office.office_name)' class="btn btn-success button-width">选择项目</button>
+					</div>
+					</div>
+				<div ng-show='taocan'>
 					<div class='row'>
 						<div class='col-xs-12'>
 							<h3>套餐：</h3>
 						</div>
 					</div>
 					<div ng-repeat='physicalExamination in physicalExaminations'>
-						<input type='radio' value='{{physicalExamination.name}}'
-							ng-model='reservationInformation.physicalExamination'
-							name='physicalExaminations' /> <label>{{physicalExamination.name}}</label>
+						<input type='radio' value='{{physicalExamination.combo_name}}'
+							ng-model='reservationInformation.combo'
+							name='physicalExaminations' ng-click='findByCombo(physicalExamination.id)'/> <label>{{physicalExamination.combo_name}}</label>
 					</div>
+				</div>
+				
 
-
+				<div>
+				</div>
+				<div>
+				<div ng-if='projectArray.length !=0'>
+					<table class="table table-word-wrap clear-float-left">
+				<thead>
+				 <tr>
+				 	<th>所属科室</th>
+				 	<th>项目名称</th>
+				 	<th>参照标准</th>
+				 	<th>操作</th>
+				 </tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat = 'project in projectArray'>
+					<td>{{project.office_name}}</td>
+					<td>{{project.project_name}}</td>
+					<td>{{project.reference_standard}}</td>
+					<td><button type="button" ng-click='delete_project_action(project)' class="btn btn-danger button-width">删除</button></td>
+				</tr>
+				</tbody>
+				</table>
+				</div>
+				
 				</div>
 
 				<p>
-					<a class="btn btn-success btn-large" ng-click='submit()'>确认</a>
+					<a class="btn btn-success btn-large" ng-click='submit()' ng-if='projectArray.length !=0'>确认</a>
 				</p>
 			</div>
 
@@ -90,3 +131,45 @@
 		</div>
 	</div>
 </div>
+
+
+<div>
+					<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">科室选择</h4>
+								</div>
+								<div class="modal-body">
+								<h1>科室：{{office_name}}</h1>
+								<table class="table table-word-wrap clear-float-left">
+									<thead>
+										<tr>
+											<th></th>
+											<th>项目名称</th>
+											<th>参照标准</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat='examinationProject in examinationProjects'>
+											<td><input type="checkbox" ng-click='selectOneProject(examinationProject)'></td>
+											<td>{{examinationProject.project_name}}</td>
+											<td><textarea class="form-control " rows="2" data-items="50" ng-model ="examinationProject.reference_standard"' ng-disabled="true"></textarea></td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">ok</button>
+							</div>
+						</div>
+						</div>
+					</div>
+					</div>

@@ -27,4 +27,8 @@ angular.module('peApp').controller('reservationBoxCtrl',
 				})
 			});
 			
+			$scope.show_physical_examination = function (physical_examination) {
+				$scope.selected_physical_examination = JSON.parse(physical_examination);
+			}
+			
 		});

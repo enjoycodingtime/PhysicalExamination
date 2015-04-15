@@ -73,12 +73,12 @@ public class UserServlet extends HttpServlet {
 				String age = request.getParameter("age");
 				String sex = request.getParameter("sex");
 				String date = request.getParameter("date");
-				String phone_number = request.getParameter("phoneNumber");
+				String phone_number = request.getParameter("phone_number");
+				String combo = request.getParameter("combo");
 				String physical_examination = request
-						.getParameter("physicalExamination");
-
+						.getParameter("physical_examination");
 				ReservationDao.insertReservation(name, sex, age, phone_number,
-						date, physical_examination);
+						date, physical_examination, combo);
 
 				out.print("ok");
 
@@ -92,6 +92,7 @@ public class UserServlet extends HttpServlet {
 				ReservationDao reservationDao = new ReservationDao();
 				List<Reservation> list = reservationDao.getReservation();
 				JSONArray jarray = JSONArray.fromObject(list);
+//				System.out.println(jarray);
 				out.println(jarray.toString());
 			} catch (Exception e) {
 				out.print("error");
@@ -106,6 +107,25 @@ public class UserServlet extends HttpServlet {
 				List<Reservation> list = reservationDao.getReservationById(id);
 				JSONArray jarray = JSONArray.fromObject(list);
 				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		//登记
+		if (action.equals("registrate")) {
+			try {
+				String name = request.getParameter("name");
+				String age = request.getParameter("age");
+				String date = request.getParameter("date");
+				String sex = request.getParameter("sex");
+				String combo = request.getParameter("combo");
+				String phone_number = request.getParameter("phone_number");
+				String physical_examination = request.getParameter("physical_examination");
+				ReservationDao.insertRegistrate(name, sex, age, phone_number,
+						date, physical_examination, combo);
+
+				out.print("ok");
 			} catch (Exception e) {
 				out.print("error");
 			}

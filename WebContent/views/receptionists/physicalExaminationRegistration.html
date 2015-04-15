@@ -49,10 +49,10 @@
 					<td>{{reservationInfo.age}}</td>
 					<td>{{reservationInfo.phone_number}}</td>
 					<td>{{reservationInfo.date}}</td>
-					<td>{{reservationInfo.physical_examination}}</td>
+					<td>{{reservationInfo.combo ||"自选"}}</td>
 				</tr>
 				<tr><td colspan="7">
-				<button type="button" class="btn btn-default">确认登记</button>
+				<button type="button" class="btn btn-success btu-width" ng-click='registrate()'>确认登记</button>
 				</td></tr>
 				</tbody>
 				</table>
