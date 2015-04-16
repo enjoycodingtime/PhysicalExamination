@@ -19,7 +19,7 @@ public class ReservationDao {
 	private static ResultSet rs =null;
 	public static void insertReservation (String name,String sex,String age,String phone_number,String date,String physical_examination,String combo) throws Exception{
 		conn = DBUtil.getConnection();
-		String sql = "insert into reservation(name,sex,age,phone_number,date,physical_examination,combo) values(?,?,?,?,?,?,?)";
+		String sql = "insert into reservation(name,sex,age,phone_number,date,physical_examination,combo,status) values(?,?,?,?,?,?,?,?)";
 		ps =conn.prepareStatement(sql);
 		ps.setString(1, name);
 		ps.setString(2, sex);
@@ -28,6 +28,7 @@ public class ReservationDao {
 		ps.setString(5, date);
 		ps.setString(6, physical_examination);
 		ps.setString(7, combo);
+		ps.setInt(8, 0);
 		ps.executeUpdate();
 	}
 	
@@ -61,8 +62,9 @@ public class ReservationDao {
 			String date = rs.getString("date");
 			String physical_examination = rs.getString("physical_examination");
 			String combo = rs.getString("combo");
+			int status = rs.getInt("status");
 			
-			Reservation reservation =new Reservation(id,name,sex,age,phone_number,date,physical_examination,combo);
+			Reservation reservation =new Reservation(id,name,sex,age,phone_number,date,physical_examination,combo,status);
 			list.add(reservation);
 		}
 		return list;
@@ -83,10 +85,25 @@ public class ReservationDao {
 			String date = rs.getString("date");
 			String physical_examination = rs.getString("physical_examination");
 			String combo = rs.getString("combo");
+			int status = rs.getInt("status");
 			
-			Reservation reservation =new Reservation(id1,name,sex,age,phone_number,date,physical_examination, combo);
+			Reservation reservation =new Reservation(id1,name,sex,age,phone_number,date,physical_examination, combo,status);
 			list.add(reservation);
 		}
 		return list;
+	}
+
+	public static void changeStatusOfReservation(int id) {
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "update reservation set status=1 where id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);			
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		// TODO Auto-generated method stub
+		
 	}
 }

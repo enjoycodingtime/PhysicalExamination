@@ -14,11 +14,13 @@ import net.sf.json.JSONArray;
 import com.pe.dao.ComboDao;
 import com.pe.dao.ExaminationProjectDao;
 import com.pe.dao.OfficeDao;
+import com.pe.dao.RegistrationDao;
 import com.pe.dao.ReservationDao;
 import com.pe.dao.UserDao;
 import com.pe.entity.Combo;
 import com.pe.entity.ExaminationProject;
 import com.pe.entity.Office;
+import com.pe.entity.Registration;
 import com.pe.entity.Reservation;
 import com.pe.entity.Users;
 
@@ -115,6 +117,7 @@ public class UserServlet extends HttpServlet {
 		//登记
 		if (action.equals("registrate")) {
 			try {
+				int id = Integer.parseInt(request.getParameter("id"));
 				String name = request.getParameter("name");
 				String age = request.getParameter("age");
 				String date = request.getParameter("date");
@@ -124,6 +127,7 @@ public class UserServlet extends HttpServlet {
 				String physical_examination = request.getParameter("physical_examination");
 				ReservationDao.insertRegistrate(name, sex, age, phone_number,
 						date, physical_examination, combo);
+				ReservationDao.changeStatusOfReservation(id);
 
 				out.print("ok");
 			} catch (Exception e) {
@@ -314,6 +318,41 @@ public class UserServlet extends HttpServlet {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));
 				UserDao.deleteEmployee(id);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		//体检登记表
+		if (action.equals("getRegistrationList")) {
+			try {
+				RegistrationDao registrationDao = new RegistrationDao();
+				List<Registration> list = registrationDao.getRegistration();
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//添加分检结果
+		if (action.equals("tijiaofenjianjieguo")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				String physical_examination_result = request
+						.getParameter("physical_examination_result");
+				RegistrationDao.addExamineResult(id,
+						physical_examination_result);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//添加总检结果
+		if (action.equals("tijiaozongjianjieguo")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				String comments = request.getParameter("comments");
+				RegistrationDao.addAllExamineResult(id,
+						comments);
 			} catch (Exception e) {
 				out.print("error");
 			}

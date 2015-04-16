@@ -1,8 +1,8 @@
 package com.pe.entity;
 
-public class Reservation {
+public class Registration {
 	private int id;
-	
+
 	private String name;
 	private String sex;
 	private String age;
@@ -10,8 +10,7 @@ public class Reservation {
 	private String date;
 	private String physical_examination;
 	private String combo;
-	private int status;
-	
+	private String comments;
 	public int getId() {
 		return id;
 	}
@@ -60,15 +59,15 @@ public class Reservation {
 	public void setCombo(String combo) {
 		this.combo = combo;
 	}
-	public int getStatus() {
-		return status;
+	public String getComments() {
+		return comments;
 	}
-	public void setStatus(int status) {
-		this.status = status;
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
-	public Reservation(int id, String name, String sex, String age,
+	public Registration(int id, String name, String sex, String age,
 			String phone_number, String date, String physical_examination,
-			String combo, int status) {
+			String combo, String comments) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -78,8 +77,7 @@ public class Reservation {
 		this.date = date;
 		this.physical_examination = physical_examination;
 		this.combo = combo;
-		this.status = status;
+		this.comments = comments;
 	}
 	
-
 }

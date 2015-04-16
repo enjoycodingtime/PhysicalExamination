@@ -124,6 +124,7 @@ public class DBUtil {
 					+ "date varchar(50),"
 					+ "combo varchar(50),"
 					+ "physical_examination varchar(1000),"
+					+ "status int,"
 					+ ")";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.executeUpdate();
