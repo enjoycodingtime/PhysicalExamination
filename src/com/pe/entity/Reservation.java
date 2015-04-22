@@ -2,16 +2,19 @@ package com.pe.entity;
 
 public class Reservation {
 	private int id;
-	
 	private String name;
 	private String sex;
-	private String age;
+	private String birthday;
+	private String idCard;
+	private String address;
+	private String marriage;
+	private String nationa;
+	private String reservation_date;
 	private String phone_number;
 	private String date;
 	private String physical_examination;
 	private String combo;
 	private int status;
-	
 	public int getId() {
 		return id;
 	}
@@ -30,11 +33,35 @@ public class Reservation {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public String getAge() {
-		return age;
+	public String getBirthday() {
+		return birthday;
 	}
-	public void setAge(String age) {
-		this.age = age;
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+	public String getIdCard() {
+		return idCard;
+	}
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
+	public String getMarriage() {
+		return marriage;
+	}
+	public void setMarriage(String marriage) {
+		this.marriage = marriage;
+	}
+	public String getNationa() {
+		return nationa;
+	}
+	public void setNationa(String nationa) {
+		this.nationa = nationa;
+	}
+	public String getReservation_date() {
+		return reservation_date;
+	}
+	public void setReservation_date(String reservation_date) {
+		this.reservation_date = reservation_date;
 	}
 	public String getPhone_number() {
 		return phone_number;
@@ -66,20 +93,33 @@ public class Reservation {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public Reservation(int id, String name, String sex, String age,
-			String phone_number, String date, String physical_examination,
-			String combo, int status) {
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public Reservation(int id, String name, String sex, String birthday,
+			String idCard, String address, String marriage, String nationa,
+			String reservation_date, String phone_number, String date,
+			String physical_examination, String combo, int status) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.sex = sex;
-		this.age = age;
+		this.birthday = birthday;
+		this.idCard = idCard;
+		this.address = address;
+		this.marriage = marriage;
+		this.nationa = nationa;
+		this.reservation_date = reservation_date;
 		this.phone_number = phone_number;
 		this.date = date;
 		this.physical_examination = physical_examination;
 		this.combo = combo;
 		this.status = status;
 	}
+
 	
 
 }

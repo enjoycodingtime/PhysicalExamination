@@ -72,15 +72,20 @@ public class UserServlet extends HttpServlet {
 		if (action.equals("reservation")) {
 			try {
 				String name = request.getParameter("name");
-				String age = request.getParameter("age");
 				String sex = request.getParameter("sex");
 				String date = request.getParameter("date");
+				String reservation_date = request.getParameter("reservation_date");
 				String phone_number = request.getParameter("phone_number");
+				String address = request.getParameter("address");
+				String birthday = request.getParameter("birthday");
+				String idCard = request.getParameter("idCard");
+				String marriage = request.getParameter("marriage");
 				String combo = request.getParameter("combo");
+				String national = request.getParameter("national");
 				String physical_examination = request
 						.getParameter("physical_examination");
-				ReservationDao.insertReservation(name, sex, age, phone_number,
-						date, physical_examination, combo);
+				ReservationDao.insertReservation(name, sex, birthday, address,phone_number,idCard,marriage,national,
+						date, reservation_date,physical_examination, combo);
 
 				out.print("ok");
 
@@ -119,14 +124,20 @@ public class UserServlet extends HttpServlet {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));
 				String name = request.getParameter("name");
-				String age = request.getParameter("age");
-				String date = request.getParameter("date");
 				String sex = request.getParameter("sex");
-				String combo = request.getParameter("combo");
+				String date = request.getParameter("date");
+				String reservation_date = request.getParameter("reservation_date");
 				String phone_number = request.getParameter("phone_number");
-				String physical_examination = request.getParameter("physical_examination");
-				ReservationDao.insertRegistrate(name, sex, age, phone_number,
-						date, physical_examination, combo);
+				String address = request.getParameter("address");
+				String birthday = request.getParameter("birthday");
+				String idCard = request.getParameter("idCard");
+				String marriage = request.getParameter("marriage");
+				String combo = request.getParameter("combo");
+				String national = request.getParameter("national");
+				String physical_examination = request
+						.getParameter("physical_examination");
+				ReservationDao.insertRegistrate(name, sex, birthday, address,phone_number,idCard,marriage,national,
+						date, reservation_date,physical_examination, combo);
 				ReservationDao.changeStatusOfReservation(id);
 
 				out.print("ok");

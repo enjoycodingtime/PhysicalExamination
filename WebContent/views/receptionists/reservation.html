@@ -7,123 +7,125 @@
 				<!--/.well -->
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<div class='row'>
-					<div class='col-xs-12'>
-						<h1>体检预约</h1>
-					</div>
-				</div>
-				<div class='row'>
-					<div class='col-xs-3'>
-						<p class='input-group'>
-							<span>姓名:</span><input type="text" class="form-control" id=""
+
+				<div>
+					<table class="table table-bordered" align="center">
+						<tr>
+							<td class="col-xs-1"><b> 姓名:</b></td>
+							<td class="col-xs-3"><input type="text" class="form-control" id=""
 								name="name" placeholder="输入姓名"
-								ng-model='reservationInformation.name'>
-						</p>
+								ng-model='reservationInformation.name'></td>
+							<td class="col-xs-1"><b>身份证号码:</b></td>
+							<td class="col-xs-3"><input type="text" class="form-control"
+								name="idCard" id="" placeholder="输入身份证号码"
+								ng-model='reservationInformation.idCard'></td>
+							<td class="col-xs-1"><b>电话:</b></td>
+							<td class="col-xs-3"><input type="text" class="form-control"
+								name="number" id="" placeholder="输入电话"
+								ng-model='reservationInformation.phone_number'
+								onkeyup="this.value=this.value.replace(/\D/g,'')"
+								onafterpaste="this.value=this.value.replace(/\D/g,'')"></td>
+						</tr>
+						<tr>
+							<td class="col-xs-1"><b>民族:</b></td>
+							<td class="col-xs-3"><select
+								ng-model="reservationInformation.national" class="form-control"
+								ng-options="national for national in nationals"
+								ng-change="selectChange()" >
+							</select></td>
+							<td class="col-xs-1"><b>家庭住址:</b></td>
+							<td class="col-xs-3"><input type="text" class="form-control"
+								name="address" id="" placeholder="输入地址"
+								ng-model='reservationInformation.address'></td>
+							<td class="col-xs-1"><b>婚否:</b></td>
+							<td class="col-xs-3"> <select
+								ng-model="reservationInformation.marriage" class="form-control"
+								ng-options="marriage for marriage in marriages"
+								ng-change="selectChange()">
+							</select></td>
+							
+						</tr>
+						<tr>
+							<td class="col-xs-1"><b>体检日期:</b></td>
+							<td class="col-xs-3"><div class='input-group date' id='dateTimePicker'>
 
-					</div>
-					<div class='col-xs-3'>
-						<p class='input-group'>
-							<span>年龄:</span><input type="number" class="form-control"
-								name="age" id="" placeholder="输入年龄"
-								ng-model='reservationInformation.age'>
-						</p>
-
-					</div>
-					<div class='col-xs-3'>
-						<p class='input-group'>
-							<span>电话:</span><input type="number" class="form-control"
-								name="age" id="" placeholder="输入电话"
-								ng-model='reservationInformation.phone_number'>
-						</p>
-
-					</div>
-				</div>
-				<div class='row'>
-					<div class='col-xs-3'>
-
-						<p class='input-group'>
-							<span>性别:</span> <input type="radio" id="" name="sex" value="男"
-								ng-model='reservationInformation.sex'>男 <input
-								type="radio" id="" name="sex" value="女"
-								ng-model='reservationInformation.sex'>女
-						</p>
-
-					</div>
-					<div class='col-xs-3'>
-						<div class="">
-							<div class="">
-								<div class='input-group date' id='dateTimePicker'>
-									<input type='text' id='reservation_date' ng-model='reservationInformation.date'
-										class="form-control" data-date-format="yyyy-mm-dd" placeholder="预约日期"/> <span
+									<input type='text' id='reservation_date'
+										ng-model='reservationInformation.date' class="form-control"
+										data-date-format="yyyy-mm-dd" placeholder="选择体检日期"
+										readonly='true' /> <span
 										class="input-group-addon cursor-to-hand"> <span
 										class="glyphicon glyphicon-calendar"></span>
 									</span>
-								</div>
+								</div></td>
+							<td class="col-xs-1"><b>选择体检内容：</b></td>
+							<td class="col-xs-3 "> 
+							<div  class="col-lg-4"></div>
+							<div  class="col-lg-2">
+							<button type="button" ng-click='taocan =true;zixuan = false'
+							class="btn btn-success button-width">套餐</button>
 							</div>
+							<div  class="col-lg-2">
+							<button type="button" ng-click='taocan =false;zixuan = true'
+							class="btn btn-success button-width">自选</button>
+							</div>
+							<div  class="col-lg-4"></div>
+							</td>
+							<td class="col-xs-1"><b ng-show='taocan'>选择套餐：</b><b ng-show='zixuan'>选择科室：</b></td>
+							<td class="col-xs-3">
+							<div ng-show='zixuan'>
+							<div  class="col-lg-6">
+						<select ng-model="office" class="form-control"
+							ng-options="office.office_name for office in offices"
+							ng-change="selectChange()">
+						</select>
 						</div>
+						<div  class="col-lg-6">
+						<button type="button" data-toggle="modal"
+							data-target="#searchByOffice"
+							ng-click='searchByOfficeAction(office.office_name)'
+							class="btn btn-success button-width">选择项目</button>
+					</div>
+					</div>
+					<div ng-show='taocan'>
+						<select ng-model="physicalExamination"  class="form-control"
+							ng-options="physicalExamination.combo_name for physicalExamination in physicalExaminations"
+							ng-change='findByCombo(physicalExamination.id)' >
+						</select>
+					</div>					
+					</td>
+						</tr>
+					</table>
+				</div>
+				<div></div>
+				<div>
+					<div ng-if='projectArray.length !=0'>
+						<table class="table table-word-wrap clear-float-left">
+							<thead>
+								<tr>
+									<th>所属科室</th>
+									<th>项目名称</th>
+									<th>参照标准</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat='project in projectArray'>
+									<td>{{project.office_name}}</td>
+									<td>{{project.project_name}}</td>
+									<td>{{project.reference_standard}}</td>
+									<td><button type="button"
+											ng-click='delete_project_action(project)'
+											class="btn btn-danger button-width">删除</button></td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 
-				</div>
-				<div class='row'>
-					<div class='col-xs-2'><h3>选择项目：</h3></div>
-					<div class='col-xs-1'><button type="button"  ng-click='taocan =true;zixuan = false' class="btn btn-success button-width">套餐</button></div>
-					<div class='col-xs-1'><button type="button"  ng-click='taocan =false;zixuan = true' class="btn btn-success button-width">自选</button></div>
-				
-				</div>
-				<div clasee='row' ng-show='zixuan'>
-				<div class='col-xs-1 text-right'>
-							<span>选择科室:</span>
-					</div>
-					<div class='col-xs-2'>
-							<select ng-model="office" class="form-control"   ng-options="office.office_name for office in offices" ng-change="selectChange()">
-                           </select>
-					</div>
-					<div class='col-xs-1'>
-                           <button type="button" data-toggle="modal" data-target="#searchByOffice" ng-click='searchByOfficeAction(office.office_name)' class="btn btn-success button-width">选择项目</button>
-					</div>
-					</div>
-				<div ng-show='taocan'>
-					<div class='row'>
-						<div class='col-xs-12'>
-							<h3>套餐：</h3>
-						</div>
-					</div>
-					<div ng-repeat='physicalExamination in physicalExaminations'>
-						<input type='radio' value='{{physicalExamination.combo_name}}'
-							ng-model='reservationInformation.combo'
-							name='physicalExaminations' ng-click='findByCombo(physicalExamination.id)'/> <label>{{physicalExamination.combo_name}}</label>
-					</div>
-				</div>
-				
-
-				<div>
-				</div>
-				<div>
-				<div ng-if='projectArray.length !=0'>
-					<table class="table table-word-wrap clear-float-left">
-				<thead>
-				 <tr>
-				 	<th>所属科室</th>
-				 	<th>项目名称</th>
-				 	<th>参照标准</th>
-				 	<th>操作</th>
-				 </tr>
-				</thead>
-				<tbody>
-				<tr ng-repeat = 'project in projectArray'>
-					<td>{{project.office_name}}</td>
-					<td>{{project.project_name}}</td>
-					<td>{{project.reference_standard}}</td>
-					<td><button type="button" ng-click='delete_project_action(project)' class="btn btn-danger button-width">删除</button></td>
-				</tr>
-				</tbody>
-				</table>
-				</div>
-				
 				</div>
 
 				<p>
-					<a class="btn btn-success btn-large" ng-click='submit()' ng-if='projectArray.length !=0'>确认</a>
+					<a class="btn btn-success btn-large" ng-click='submit()'
+						ng-if='projectArray.length !=0'>确认</a>
 				</p>
 			</div>
 
@@ -134,42 +136,45 @@
 
 
 <div>
-					<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"
-						aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-									<h4 class="modal-title" id="myModalLabel">科室选择</h4>
-								</div>
-								<div class="modal-body">
-								<h1>科室：{{office_name}}</h1>
-								<table class="table table-word-wrap clear-float-left">
-									<thead>
-										<tr>
-											<th></th>
-											<th>项目名称</th>
-											<th>参照标准</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat='examinationProject in examinationProjects'>
-											<td><input type="checkbox" ng-click='selectOneProject(examinationProject)'></td>
-											<td>{{examinationProject.project_name}}</td>
-											<td><textarea class="form-control " rows="2" data-items="50" ng-model ="examinationProject.reference_standard"' ng-disabled="true"></textarea></td>
-										</tr>
-									</tbody>
-								</table>
+	<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">科室选择</h4>
+				</div>
+				<div class="modal-body">
+					<h1>科室：{{office_name}}</h1>
+					<table class="table table-word-wrap clear-float-left">
+						<thead>
+							<tr>
+								<th></th>
+								<th>项目名称</th>
+								<th>参照标准</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat='examinationProject in examinationProjects'>
+								<td><input type="checkbox"
+									ng-click='selectOneProject(examinationProject)'></td>
+								<td>{{examinationProject.project_name}}</td>
+								<td><textarea class="form-control " rows="2"
+										data-items="50"
+										ng-model="examinationProject.reference_standard"
+										' ng-disabled="true"></textarea></td>
+							</tr>
+						</tbody>
+					</table>
 
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal">ok</button>
-							</div>
-						</div>
-						</div>
-					</div>
-					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">ok</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
