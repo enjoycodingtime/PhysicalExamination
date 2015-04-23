@@ -37,10 +37,11 @@
 					<tbody>
 						<tr
 							ng-repeat='registrationList in registrationLists track by $index| filter:query'>
-							<td>{{registrationList.id}}</td>
+						<td>{{registrationList.id}}</td>
 							<td>{{registrationList.name}}</td>
-							<td>{{registrationList.sex}}</td>
-							<td>{{registrationList.age}}</td>
+							<td ng-if='registrationList.sex=="man"'>男</td>
+							<td ng-if='registrationList.sex=="woman"'>女</td>
+							<td>{{registrationList.birthday}}</td>
 							<td>{{registrationList.phone_number}}</td>
 							<td>{{registrationList.date}}</td>
 							<td>{{registrationList.combo || '自选'}}</td>

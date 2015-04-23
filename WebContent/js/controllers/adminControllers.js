@@ -155,6 +155,23 @@ angular.module('peApp').controller('officeCtrlController',
 					})
 				} else {
 					$scope.offices = data;
+					$scope.paginationConf = {
+							currentPage : 1,
+							totalItems : data.length,
+							itemsPerPage : 15,
+							pagesLength : 15,
+							perPageOptions : [ 10, 20, 30, 40, 50 ],
+							rememberPerPage : 'perPageItems',
+							onChange : function() {
+								var items = [];
+								for (var int = 0; int < data.length; int++) {
+									if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+										items.push(data[int]);
+									}
+								}
+								$scope.offices = items;
+							}
+						};
 				}
 
 				// 加载成功之后做一些事
@@ -460,6 +477,23 @@ angular.module('peApp').controller('selectComboCtrl',
 					})
 				} else {
 					$scope.combos = data;
+					$scope.paginationConf = {
+							currentPage : 1,
+							totalItems : data.length,
+							itemsPerPage : 15,
+							pagesLength : 15,
+							perPageOptions : [ 10, 20, 30, 40, 50 ],
+							rememberPerPage : 'perPageItems',
+							onChange : function() {
+								var items = [];
+								for (var int = 0; int < data.length; int++) {
+									if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+										items.push(data[int]);
+									}
+								}
+								$scope.combos = items;
+							}
+						};
 				}
 
 				// 加载成功之后做一些事
@@ -742,6 +776,23 @@ angular.module('peApp').controller('employeesCtrl',
 					})
 				} else {
 					$scope.employees = data;
+					$scope.paginationConf = {
+							currentPage : 1,
+							totalItems : data.length,
+							itemsPerPage : 15,
+							pagesLength : 15,
+							perPageOptions : [ 10, 20, 30, 40, 50 ],
+							rememberPerPage : 'perPageItems',
+							onChange : function() {
+								var items = [];
+								for (var int = 0; int < data.length; int++) {
+									if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+										items.push(data[int]);
+									}
+								}
+								$scope.employees = items;
+							}
+						};
 				}
 
 				// 加载成功之后做一些事

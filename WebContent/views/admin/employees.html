@@ -29,6 +29,10 @@
 				</tr>
 				</tbody>
 				</table>
+				
+				<div ng-if='employees.length'>
+				<tm-pagination conf="paginationConf"></tm-pagination>
+				</div>
 				<div>
 					<div class="modal fade" id="addEmployee" tabindex="-1" role="dialog"
 						aria-labelledby="myModalLabel" aria-hidden="true">

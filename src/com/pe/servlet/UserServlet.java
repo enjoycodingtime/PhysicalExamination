@@ -68,7 +68,7 @@ public class UserServlet extends HttpServlet {
 			}
 
 		}
-
+		//添加预约信息
 		if (action.equals("reservation")) {
 			try {
 				String name = request.getParameter("name");
@@ -93,11 +93,51 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		//修改预约信息
+		if (action.equals("updateReservation")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				String name = request.getParameter("name");
+				String sex = request.getParameter("sex");
+				String date = request.getParameter("date");
+				String reservation_date = request.getParameter("reservation_date");
+				String phone_number = request.getParameter("phone_number");
+				String address = request.getParameter("address");
+				String birthday = request.getParameter("birthday");
+				String idCard = request.getParameter("idCard");
+				String marriage = request.getParameter("marriage");
+				String combo = request.getParameter("combo");
+				String national = request.getParameter("nationa");
+				String physical_examination = request
+						.getParameter("physical_examination");
+				ReservationDao.updateReservation(id,name, sex, birthday, address,phone_number,idCard,marriage,national,
+						date, reservation_date,physical_examination, combo);
+
+				out.print("ok");
+
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 		// 获取预约信息
 		if (action.equals("getReservation")) {
 			try {
 				ReservationDao reservationDao = new ReservationDao();
 				List<Reservation> list = reservationDao.getReservation();
+				JSONArray jarray = JSONArray.fromObject(list);
+//				System.out.println(jarray);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//通过时间查询预约信息
+		if (action.equals("getReservationByDate")) {
+			try {
+				String rule = request.getParameter("rule");
+				String date = request.getParameter("date");
+				ReservationDao reservationDao = new ReservationDao();
+				List<Reservation> list = reservationDao.getReservationByDate(rule,date);
 				JSONArray jarray = JSONArray.fromObject(list);
 //				System.out.println(jarray);
 				out.println(jarray.toString());

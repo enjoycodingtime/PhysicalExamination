@@ -31,6 +31,11 @@
 				</tr>
 				</tbody>
 				</table>
+				
+				<div ng-if='offices.length'>
+				<tm-pagination conf="paginationConf"></tm-pagination>
+				</div>
+				
 				<div>
 					<div class="modal fade" id="addOffice" tabindex="-1" role="dialog"
 						aria-labelledby="myModalLabel" aria-hidden="true">

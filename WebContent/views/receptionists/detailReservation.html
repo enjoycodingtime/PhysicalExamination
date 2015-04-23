@@ -7,7 +7,7 @@
 				<!--/.well -->
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1>体检预约</h1>	
+				<h1>预约详情</h1>	
 				<div>
 					<table class="table table-bordered" align="center">
 						<tr>
@@ -29,10 +29,9 @@
 						<tr>
 							<td class="col-xs-1"><b>民族:</b></td>
 							<td class="col-xs-3"><select
-								ng-model="reservationInformation.national" class="form-control"
+								ng-model="reservationInformation.nationa" class="form-control"
 								ng-options="national for national in nationals"
 								ng-change="selectChange()" >
-								<option value=''>请选择</option>
 							</select></td>
 							<td class="col-xs-1"><b>家庭住址:</b></td>
 							<td class="col-xs-3"><input type="text" class="form-control"
@@ -43,7 +42,6 @@
 								ng-model="reservationInformation.marriage" class="form-control"
 								ng-options="marriage for marriage in marriages"
 								ng-change="selectChange()">
-								<option value=''>请选择</option>
 							</select></td>
 							
 						</tr>

@@ -63,6 +63,9 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/zongjian', {
 		templateUrl : 'views/doctor/zongjian.html',
 		controller : 'zongjianCtrl'
+	}).when('/detailReservation', {
+		templateUrl : 'views/receptionists/detailReservation.html',
+		controller : 'detailReservationCtrl'
 	}).otherwise({
 		redirectTo : '/'
 	});

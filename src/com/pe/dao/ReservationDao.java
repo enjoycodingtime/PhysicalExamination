@@ -92,6 +92,52 @@ public class ReservationDao {
 		}
 		return list;
 	}
+
+	public List<Reservation> getReservationByDate(String rule,String date1) throws Exception{
+		
+		List<Reservation> list = new ArrayList<Reservation>();
+		conn=DBUtil.getConnection();
+		if(rule.equals("reservation_date")) {
+			String sql ="select * from reservation where reservation_date=?";
+			ps =conn.prepareStatement(sql);
+			ps.setString(1, date1);
+			rs= ps.executeQuery();
+		}else if(rule.equals("date")) {
+			String sql ="select * from reservation where date=?";
+			ps =conn.prepareStatement(sql);
+			ps.setString(1, date1);
+			rs= ps.executeQuery();
+		}else {
+			String sql ="select * from reservation";
+			ps =conn.prepareStatement(sql);
+			rs= ps.executeQuery();
+		}	
+	
+		while(rs.next()){
+			int id = rs.getInt("id");
+			String name = rs.getString("name");
+			String birthday = rs.getString("birthday");
+			String sex = rs.getString("sex");
+			String address = rs.getString("address");
+			String idCard = rs.getString("idCard");
+			String marriage = rs.getString("marriage");
+			String nationa = rs.getString("nationa");
+			String phone_number = rs.getString("phone_number");
+			String date = rs.getString("date");
+			String reservation_date = rs.getString("reservation_date");
+			String physical_examination = rs.getString("physical_examination");
+			String combo = rs.getString("combo");
+			int status = rs.getInt("status");
+			
+			Reservation reservation =new Reservation(id, name, sex, birthday,
+					 idCard, address, marriage,  nationa,
+					 reservation_date,  phone_number,  date,
+					 physical_examination,  combo, status);
+			list.add(reservation);
+		}
+		return list;
+	}
+	
 	public List<Reservation> getReservationById(int id) throws Exception{
 		List<Reservation> list = new ArrayList<Reservation>();
 		conn=DBUtil.getConnection();
@@ -135,6 +181,34 @@ public class ReservationDao {
 			e.printStackTrace();
 		}
 		// TODO Auto-generated method stub
+		
+	}
+
+	public static void updateReservation(int id, String name, String sex,
+			String birthday, String address, String phone_number,
+			String idCard, String marriage, String nationa, String date,
+			String reservation_date, String physical_examination, String combo) throws Exception{
+		// TODO Auto-generated method stub
+		
+		conn = DBUtil.getConnection();
+		String sql = "update reservation set name=?, sex=?, birthday=?, address=?,phone_number=?,idCard=?,marriage=?,nationa=?,"
+				+ "date=?, reservation_date=?,physical_examination=?,combo=?,status=? where id=?";
+		ps =conn.prepareStatement(sql);
+		ps.setString(1, name);
+		ps.setString(2, sex);
+		ps.setString(3, birthday);
+		ps.setString(4, address);
+		ps.setString(5, phone_number);
+		ps.setString(6, idCard);
+		ps.setString(7, marriage);
+		ps.setString(8, nationa);
+		ps.setString(9, date);
+		ps.setString(10, reservation_date);
+		ps.setString(11, physical_examination);
+		ps.setString(12, combo);
+		ps.setInt(13, 0);
+		ps.setInt(14, id);
+		ps.executeUpdate();
 		
 	}
 }

@@ -108,7 +108,6 @@ angular
 								timer : 2000
 							})
 						} else {
-							console.log($scope.reservationInformation);
 							gateway.call('reservation.com',
 									$scope.reservationInformation).then(
 									function(d) {

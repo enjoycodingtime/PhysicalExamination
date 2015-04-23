@@ -23,6 +23,8 @@
 							</span>
 						</p>
 					</div>
+					<div class='col-xs-2'><button type="button" ng-click='allReservation()' ng class="btn btn-success button-width" ng-disabled="allReservationButton">所有体检登记</button></div>
+					<div class='col-xs-2'><button type="button" ng-click='todayReservation()' ng class="btn btn-success button-width"ng-disabled="todayReservationButton">今日体检登记</button></div>
 				</div>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
@@ -30,9 +32,9 @@
 				 	<th>序号</th>
 				 	<th>姓名</th>
 				 	<th>性别</th>
-				 	<th>年龄</th>
+				 	<th>出生日期</th>
 				 	<th>电话</th>
-				 	<th>日期</th>
+				 	<th>体检日期</th>
 				 	<th>套餐</th>				 	
 				 	<th>项目</th>				 	
 				 </tr>
@@ -41,8 +43,9 @@
 				<tr ng-repeat = 'registrationList in registrationLists | filter:query'>
 					<td>{{registrationList.id}}</td>
 					<td>{{registrationList.name}}</td>
-					<td>{{registrationList.sex}}</td>
-					<td>{{registrationList.age}}</td>
+					<td ng-if="registrationList.sex == 'man'">男</td>
+					<td ng-if="registrationList.sex == 'woman'">女</td>
+					<td>{{registrationList.birthday}}</td>
 					<td>{{registrationList.phone_number}}</td>
 					<td>{{registrationList.date}}</td>
 					<td>{{registrationList.combo || '自选'}}</td>
@@ -50,6 +53,9 @@
 				</tr>
 				</tbody>
 				</table>
+				<div ng-if='registrationLists.length'>
+				<tm-pagination conf="paginationConf"></tm-pagination>
+				</div>
 			</div>
 			</div>
         </div>

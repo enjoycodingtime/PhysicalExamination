@@ -23,6 +23,10 @@
 							</span>
 						</p>
 					</div>
+					
+					<div class='col-xs-2'><button type="button" ng-click='allReservation()' ng class="btn btn-success button-width" ng-disabled="allReservationButton">所有预约</button></div>
+					<div class='col-xs-2'><button type="button" ng-click='todayReservation()' ng class="btn btn-success button-width" ng-disabled="todayReservationButton">今日预约</button></div>
+					<div class='col-xs-2'><button type="button" ng-click='todayExapination()' ng class="btn btn-success button-width" ng-disabled="todayExapinationButton">今日体检</button></div>
 				</div>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
@@ -32,25 +36,33 @@
 				 	<th>性别</th>
 				 	<th>出生日期</th>
 				 	<th>电话</th>
-				 	<th>日期</th>
+				 	<th>预约日期</th>
+				 	<th>体检日期</th>
 				 	<th>套餐</th>				 	
+				 	<th>状态</th>				 	
 				 	<th>项目</th>				 	
 				 </tr>
 				</thead>
 				<tbody>
-				<tr ng-repeat = 'reservationItem in reservationItems | filter:query'>
-					<td>{{reservationItem.id}}</td>
+				<tr ng-repeat = 'reservationItem in reservationItems track by $index| filter:query'>
+					<td ><a ng-click='detailReservation(reservationItem.id)'>{{reservationItem.id}}</a></td>
 					<td>{{reservationItem.name}}</td>
 					<td ng-if="reservationItem.sex == 'man'">男</td>
-					<td ng-if="!reservationItem.sex == 'man'">女</td>
+					<td ng-if="reservationItem.sex == 'woman'">女</td>
 					<td>{{reservationItem.birthday}}</td>
 					<td>{{reservationItem.phone_number}}</td>
+					<td>{{reservationItem.reservation_date}}</td>
 					<td>{{reservationItem.date}}</td>
 					<td>{{reservationItem.combo || '自选'}}</td>
+					<td ng-if="reservationItem.status == '0'">未登记检查</td>
+					<td ng-if="reservationItem.status == '1'">已登记检查</td>
 					<td><button type="button" data-toggle="modal" data-target="#reservation_physical_examination" ng-click='show_physical_examination(reservationItem.physical_examination)' ng class="btn btn-success button-width">查看项目</button></td>
 				</tr>
 				</tbody>
 				</table>
+				<div ng-if='reservationItems.length'>
+				<tm-pagination conf="paginationConf"></tm-pagination>
+				</div>
 			</div>
 			</div>
         </div>

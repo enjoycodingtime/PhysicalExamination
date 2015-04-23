@@ -35,9 +35,10 @@
 				 	<th>序号</th>
 				 	<th>姓名</th>
 				 	<th>性别</th>
-				 	<th>年龄</th>
+				 	<th>出生日期</th>
 				 	<th>电话</th>
 				 	<th>预约日期</th>
+				 	<th>体检日期</th>
 				 	<th>套餐</th>				 	
 				 </tr>
 				</thead>
@@ -45,9 +46,11 @@
 				<tr>
 					<td>{{reservationInfo.id}}</td>
 					<td>{{reservationInfo.name}}</td>
-					<td>{{reservationInfo.sex}}</td>
-					<td>{{reservationInfo.age}}</td>
+					<td ng-if="reservationInfo.sex == 'man'">男</td>
+					<td ng-if="reservationItem.sex == 'woman'">女</td>
+					<td>{{reservationInfo.birthday}}</td>
 					<td>{{reservationInfo.phone_number}}</td>
+					<td>{{reservationInfo.reservation_date}}</td>
 					<td>{{reservationInfo.date}}</td>
 					<td>{{reservationInfo.combo ||"自选"}}</td>
 				</tr>

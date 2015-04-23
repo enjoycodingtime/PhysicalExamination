@@ -33,6 +33,23 @@ angular.module('peApp').controller('fenjianCtrl',
 						})
 					}
 				})
+//				$scope.paginationConf = {
+//					currentPage : 1,
+//					totalItems : $scope.physicalExaminationOfThisOffice.length,
+//					itemsPerPage : 15,
+//					pagesLength : 15,
+//					perPageOptions : [ 10, 20, 30, 40, 50 ],
+//					rememberPerPage : 'perPageItems',
+//					onChange : function() {
+//						var items = [];
+//						for (var int = 0; int < $scope.physicalExaminationOfThisOffice.length; int++) {
+//							if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+//								items.push($scope.physicalExaminationOfThisOffice[int]);
+//							}
+//						}
+//						$scope.physicalExaminationOfThisOffice = items;
+//					}
+//				};
 			}
 			$scope.selectChange = function() {
 				$scope.getPhysicalExaminationsByOffice($scope.office.office_name);
@@ -58,6 +75,7 @@ angular.module('peApp').controller('fenjianCtrl',
 					} else {
 						swal("Success!", "保存分检结果成功", "success");
 						$scope.getPhysicalExaminationsByOffice($scope.office.office_name);
+						
 					}
 				});
 			}
