@@ -12,15 +12,15 @@
 					<table class="table table-bordered" align="center">
 						<tr>
 							<td class="col-xs-1"><b> 姓名:</b></td>
-							<td class="col-xs-3"><input type="text" class="form-control" id=""
+							<td class="col-xs-3"><input type="text" ng-disabled = 'modify' class="form-control" id=""
 								name="name" placeholder="输入姓名"
 								ng-model='reservationInformation.name'></td>
 							<td class="col-xs-1"><b>身份证号码:</b></td>
-							<td class="col-xs-3"><input type="text" class="form-control"
+							<td class="col-xs-3"><input type="text" ng-disabled = 'modify' class="form-control"
 								name="idCard" id="" placeholder="输入身份证号码"
 								ng-model='reservationInformation.idCard'></td>
 							<td class="col-xs-1"><b>电话:</b></td>
-							<td class="col-xs-3"><input type="text" class="form-control"
+							<td class="col-xs-3"><input type="text"  ng-disabled = 'modify' class="form-control"
 								name="number" id="" placeholder="输入电话"
 								ng-model='reservationInformation.phone_number'
 								onkeyup="this.value=this.value.replace(/\D/g,'')"
@@ -29,17 +29,17 @@
 						<tr>
 							<td class="col-xs-1"><b>民族:</b></td>
 							<td class="col-xs-3"><select
-								ng-model="reservationInformation.nationa" class="form-control"
+								ng-model="reservationInformation.nationa" ng-disabled = 'modify' class="form-control"
 								ng-options="national for national in nationals"
 								ng-change="selectChange()" >
 							</select></td>
 							<td class="col-xs-1"><b>家庭住址:</b></td>
-							<td class="col-xs-3"><input type="text" class="form-control"
+							<td class="col-xs-3"><input type="text" ng-disabled = 'modify' class="form-control"
 								name="address" id="" placeholder="输入地址"
 								ng-model='reservationInformation.address'></td>
 							<td class="col-xs-1"><b>婚否:</b></td>
 							<td class="col-xs-3"> <select
-								ng-model="reservationInformation.marriage" class="form-control"
+								ng-model="reservationInformation.marriage" ng-disabled = 'modify' class="form-control"
 								ng-options="marriage for marriage in marriages"
 								ng-change="selectChange()">
 							</select></td>
@@ -52,20 +52,20 @@
 									<input type='text' id='reservation_date'
 										ng-model='reservationInformation.date' class="form-control"
 										data-date-format="yyyy-mm-dd" placeholder="选择体检日期"
-										readonly='true' /> <span
-										class="input-group-addon cursor-to-hand"> <span
-										class="glyphicon glyphicon-calendar"></span>
+										readonly='true'  /> <span
+										class="input-group-addon cursor-to-hand" > <span
+										class="glyphicon glyphicon-calendar" ></span>
 									</span>
 								</div></td>
 							<td class="col-xs-1"><b>选择体检内容：</b></td>
 							<td class="col-xs-3 "> 
 							<div  class="col-lg-3"></div>
 							<div  class="col-lg-3">
-							<button type="button" ng-click='taocan =true;zixuan = false'
+							<button type="button" ng-disabled = 'modify'  ng-click='taocan =true;zixuan = false'
 							class="btn btn-success button-width">套餐</button>
 							</div>
 							<div  class="col-lg-3">
-							<button type="button" ng-click='taocan =false;zixuan = true'
+							<button type="button" ng-disabled = 'modify'  ng-click='taocan =false;zixuan = true'
 							class="btn btn-success button-width">自选</button>
 							</div>
 							<div  class="col-lg-3"></div>
@@ -115,17 +115,27 @@
 									<td>{{project.reference_standard}}</td>
 									<td><button type="button"
 											ng-click='delete_project_action(project)'
-											class="btn btn-danger button-width">删除</button></td>
+											class="btn btn-danger button-width" ng-disabled = 'modify' >删除</button></td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 
 				</div>
-
+				
 				<p>
+					<div class= 'row'>
+						<div class='col-xs-4'></div>
+						<div ></div>
+					<a class="btn btn-success btn-large" ng-click='modify()'
+						ng-if='modify'>修改</a>
 					<a class="btn btn-success btn-large" ng-click='submit()'
-						ng-if='projectArray.length !=0'>确认</a>
+						ng-if='projectArray.length !=0 && !modify'>确认</a>
+					<a class="btn btn-success btn-large" ng-click='cancel()'
+						ng-if='projectArray.length !=0 && !modify'>取消</a>
+						<div class='col-xs-4'></div>
+					</div>
+					
 				</p>
 			</div>
 

@@ -145,6 +145,18 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		
+		if (action.equals("getRegistrateByDate")) {
+			try {
+				String date = request.getParameter("date");
+				RegistrationDao registrationDao = new RegistrationDao();
+				List<Registration> list = registrationDao.getRegistrateByDate(date);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 
 		// 查询预约信息
 		if (action.equals("isReservation")) {

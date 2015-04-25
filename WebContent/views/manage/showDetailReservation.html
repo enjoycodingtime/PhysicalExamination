@@ -1,0 +1,111 @@
+<div ng-include="'views/manage/manageHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/manage/manageSidebar.html'"></div>
+		</div>
+		<!--/span-->
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<h1>预约详情</h1>	
+				<div>
+					<table class="table table-bordered" align="center">
+						<tr>
+							<td class="col-xs-1"><b> 姓名:</b></td>
+							<td class="col-xs-3">{{reservationInformation.name}}</td>
+							<td class="col-xs-1"><b>身份证号码:</b></td>
+							<td class="col-xs-3">{{reservationInformation.idCard}}</td>
+							<td class="col-xs-1"><b>电话:</b></td>
+							<td class="col-xs-3">{{reservationInformation.phone_number}}</td>
+						</tr>
+						<tr>
+							<td class="col-xs-1"><b>民族:</b></td>
+							<td class="col-xs-3">{{reservationInformation.nationa}}</td>
+							<td class="col-xs-1"><b>家庭住址:</b></td>
+							<td class="col-xs-3">{{reservationInformation.address}}</td>
+							<td class="col-xs-1"><b>婚否:</b></td>
+							<td class="col-xs-3">{{reservationInformation.marriage}} </td>
+						</tr>
+						<tr>
+						<td class="col-xs-1"><b>预约日期:</b></td>
+						<td class="col-xs-3">{{reservationInformation.reservation_date}}</td>
+						<td class="col-xs-1"><b>体检日期:</b></td>
+							<td class="col-xs-3">{{reservationInformation.date}}</td>
+						<td class="col-xs-1">状态:</td>
+						<td class="col-xs-3" ng-if='reservationInformation.status =="0"'>未登记检查</td>
+						<td class="col-xs-3" ng-if='reservationInformation.status =="1"'>已登记检查</td>
+					</tr>
+					</table>
+				</div>
+				<div></div>
+				<div>
+					<div ng-if='projectArray.length !=0'>
+						<table class="table table-word-wrap clear-float-left">
+							<thead>
+								<tr>
+									<th>所属科室</th>
+									<th>项目名称</th>
+									<th>参照标准</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat='project in projectArray'>
+									<td>{{project.office_name}}</td>
+									<td>{{project.project_name}}</td>
+									<td>{{project.reference_standard}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</div>
+
+
+<div>
+	<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">科室选择</h4>
+				</div>
+				<div class="modal-body">
+					<h1>科室：{{office_name}}</h1>
+					<table class="table table-word-wrap clear-float-left">
+						<thead>
+							<tr>
+								<th></th>
+								<th>项目名称</th>
+								<th>参照标准</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat='examinationProject in examinationProjects'>
+								<td><input type="checkbox"
+									ng-click='selectOneProject(examinationProject)'></td>
+								<td>{{examinationProject.project_name}}</td>
+								<td><textarea class="form-control " rows="2"
+										data-items="50"
+										ng-model="examinationProject.reference_standard"
+										' ng-disabled="true"></textarea></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">ok</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,33 @@
+<div ng-include="'views/manage/manageHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/manage/manageSidebar.html'"></div>
+		</div>
+		<!--/span-->
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="span9">
+				<h1>套餐统计 </h1>
+				<p/>
+				<table class="table table-word-wrap clear-float-left">
+				<thead>
+				 <tr>
+				 	<th>套餐名称</th>
+				 	<th></th>
+				 </tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat = 'combo in combos'>
+					<td>{{combo.combo_name}}</td>
+					 <td>
+					<button type="button" ng-click='manage_combo_examination_project(combo.id)' class="btn btn-success button-width">查看</button> 
+					 </td>					
+				</tr>
+				</tbody>
+				</table>
+				<div ng-if='combos.length'>
+				<tm-pagination conf="paginationConf"></tm-pagination>
+				</div>
+			</div>
+</div>
+

@@ -1,31 +1,27 @@
-<div ng-include="'views/admin/adminHeader.html'"></div>
+<div ng-include="'views/manage/manageHeader.html'"></div>
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span3">
-			<div ng-include="'views/admin/adminSidebar.html'"></div>
+			<div ng-include="'views/manage/manageSidebar.html'"></div>
 		</div>
 		<!--/span-->
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<div class="span9">
-				<h1>套餐：{{combo_name}}</h1> 
+				<h1>科室：{{office_name}}</h1>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
 				 <tr>
-					<th>所属科室</th>
 				 	<th>项目名称</th>
 				 	<th>参照标准</th>
 				 </tr>
 				</thead>
 				<tbody>
-				<tr ng-repeat = 'combo in combos'>
-					<td>{{combo.office_name}}</td>
-					<td>{{combo.project_name}}</td>
-					<td>{{combo.reference_standard}}</td>
+				<tr ng-repeat = 'examinationProject in examinationProjects'>
+					<td>{{examinationProject.project_name}}</td>
+					<td>{{examinationProject.reference_standard}}</td>
 				</tr>
 				</tbody>
 				</table>
-				<div>   
-				</div>
 	</div>
 </div>
 

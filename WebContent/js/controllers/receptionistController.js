@@ -70,7 +70,7 @@ angular.module('peApp').controller(
 		});
 angular.module('peApp').controller(
 		'detailReservationCtrl',
-		function($scope, $http, $location,fGateway) {
+		function($scope, $http, $location,fGateway,$route) {
 			var gateway = new fGateway();
 			var id = $location.search().id;
 			$(function() {
@@ -223,4 +223,11 @@ angular.module('peApp').controller(
 					}
 		        }
 		    });
+			$scope.modify = true;
+			$scope.modify = function () {
+				$scope.modify = false;
+			}
+			$scope.cancel = function () {
+				$route.reload()
+			}
 		});

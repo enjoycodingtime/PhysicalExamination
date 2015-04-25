@@ -1,0 +1,51 @@
+<div ng-include="'views/manage/manageHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/manage/manageSidebar.html'"></div>
+		</div>
+		<!--/span-->
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="span9">
+				<h1>体检日报 </h1>
+				<div class='row'>
+					<div class='col-xs-1 text-right'><b>日期</b></div>
+					<div class='col-xs-2'><div class='input-group date' id='dateTimePicker'>
+									<input type='text' id='reservation_date'
+										ng-model='reservationInformation.date' class="form-control"
+										data-date-format="yyyy-mm-dd" placeholder="选择体检日期"
+										readonly='true' /> <span
+										class="input-group-addon cursor-to-hand"> <span
+										class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div></div>
+					<div class='col-xs-1'><button class='btn btn-success' ng-click='getDayReport()'>确定</button></div>
+				</div>
+				<p/>
+				<div class='row'>
+					<div class='col-xs-4'>
+						<table class="table table-word-wrap clear-float-left">
+							<thead>
+								<tr>
+									<th class="col-xs-2">日期</th>
+									<th class="col-xs-2">已体检数量</th>
+									<th class="col-xs-2">未体检数量</th>
+									<th class="col-xs-2">登记数量</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>{{date}}</td>
+									<td>{{registratedNumber}}</td>
+									<td>{{notRegistratedNumber}}</td>
+									<td>{{allRegistrateNumber}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class='row'>
+				</div>
+			</div>
+</div>
+

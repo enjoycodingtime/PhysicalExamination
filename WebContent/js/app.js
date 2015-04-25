@@ -42,11 +42,17 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/manageExaminationProject', {
 		templateUrl : 'views/admin/manageExaminationProject.html',
 		controller : 'manageExaminationProjectCtrl'
+	}).when('/manageExaminationProject1', {
+		templateUrl : 'views/manage/manageExaminationProject.html',
+		controller : 'manageExaminationProjectCtrl'
 	}).when('/selectCombo', {
 		templateUrl : 'views/admin/selectCombo.html',
 		controller : 'selectComboCtrl'
 	}).when('/manageComboExaminationProject', {
 		templateUrl : 'views/admin/manageComboExaminationProject.html',
+		controller : 'manageComboExaminationProjectCtrl'
+	}).when('/manageComboExaminationProject1', {
+		templateUrl : 'views/manage/manageComboExaminationProject.html',
 		controller : 'manageComboExaminationProjectCtrl'
 	}).when('/employees', {
 		templateUrl : 'views/admin/employees.html',
@@ -66,6 +72,21 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/detailReservation', {
 		templateUrl : 'views/receptionists/detailReservation.html',
 		controller : 'detailReservationCtrl'
+	}).when('/showDetailReservation', {
+		templateUrl : 'views/manage/showDetailReservation.html',
+		controller : 'showDetailReservationCtrl'
+	}).when('/queryDayReport', {
+		templateUrl : 'views/manage/queryDayReport.html',
+		controller : 'queryDayReportCtrl'
+	}).when('/queryReservatioin', {
+		templateUrl : 'views/manage/queryReservatioin.html',
+		controller : 'queryReservatioinCtrl'
+	}).when('/comboStatistics', {
+		templateUrl : 'views/manage/comboStatistics.html',
+		controller : 'comboStatisticsCtrl'
+	}).when('/officeStatistics', {
+		templateUrl : 'views/manage/officeStatistics.html',
+		controller : 'officeStatisticsCtrl'
 	}).otherwise({
 		redirectTo : '/'
 	});
