@@ -91,7 +91,11 @@ angular
 								'#reservation_date').val();
 						$scope.reservationInformation.physical_examination = JSON
 								.stringify($scope.projectArray);
-						$scope.reservationInformation.combo = $scope.physicalExamination.combo_name;
+						try{
+							$scope.reservationInformation.combo = $scope.physicalExamination.combo_name;
+						}catch (e) {
+							$scope.reservationInformation.combo = '自选';
+						}
 						$scope.reservationInformation = resolved($scope.reservationInformation);
 						if (verify($scope.reservationInformation)) {
 							swal({
