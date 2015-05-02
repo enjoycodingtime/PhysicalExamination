@@ -29,7 +29,8 @@ public class UserDao {
 			String name = rs.getString("name");
 			String pwd = rs.getString("password");
 			String position = rs.getString("position");
-			Users user = new Users(id, name, pwd, position);	
+			String permission = rs.getString("permission");
+			Users user = new Users(id, name, pwd, position,permission);	
 			list.add(user);
 			
 		}
@@ -61,7 +62,8 @@ public class UserDao {
 			int id = rs.getInt("id");
 			String password = rs.getString("password");
 			String position = rs.getString("position");
-			users = new Users(id,username,password, position);
+			String permission = rs.getString("permission");
+			users = new Users(id,username,password, position,permission);
 		}
 		return users;
 	}
@@ -100,6 +102,19 @@ public static void deleteEmployee(int id) {
 		String sql = "delete from Users where id=?";
 		ps = conn.prepareStatement(sql);
 		ps.setInt(1, id);
+		ps.executeUpdate();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+public static void setPermission(int id, String permission) {
+	// TODO Auto-generated method stub
+	try {
+		conn = DBUtil.getConnection();
+		String sql = "update Users set permission=? where id=?";
+		ps = conn.prepareStatement(sql);
+		ps.setInt(2, id);
+		ps.setString(1, permission);
 		ps.executeUpdate();
 	} catch (Exception e) {
 		e.printStackTrace();

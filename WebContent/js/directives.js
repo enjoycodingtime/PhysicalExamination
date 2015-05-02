@@ -11,6 +11,18 @@ angular.module('peApp').directive('fDateTimePicker', function(){
     }
 });
 
+angular.module('peApp').directive('btnLogin', function(){
+    return function(scope, element, attrs){
+        element.bind("keydown keypress", function (event){
+            if(event.which === 13){
+                scope.$apply(function(){
+                    scope.$eval(attrs.btnLogin);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+});
 angular.module('peApp').directive('tmPagination',function(){
     return {
         restrict: 'EA',

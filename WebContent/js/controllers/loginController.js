@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('peApp').controller('logInCtrl',
-		function($scope, $http, $location) {
+		function($scope, $http, $location,$window) {
 			$scope.log_in = function() {
 				$http({
 					method : 'POST',
@@ -19,13 +19,31 @@ angular.module('peApp').controller('logInCtrl',
 							timer : 3000
 						})
 					} else {
-						swal({
-							title : "sucess!",
-							text : "登陆成功",
-							type : "success",
-							timer : 2000
-						});
-						$location.path(data);
+						if(data[0].permission) {
+							
+							var userInfo = {
+									name:data[0].name,
+									position:data[0].position,
+									permission:data[0].permission
+							}							
+							$window.sessionStorage.userInfo = JSON.stringify(userInfo);
+							var username = JSON.parse($window.sessionStorage.userInfo).name;							
+							swal({
+								title : "sucess!",
+								text : username+" 登陆成功",
+								type : "success",
+								timer : 2000
+							});
+							$location.path(data[0].position);
+						}else{
+							swal({
+								title : "Alert!",
+								text : "该账号还未通过管理审核！",
+								type : "warning",
+								timer : 2000
+							});
+						}
+						
 					}
 
 					// 加载成功之后做一些事

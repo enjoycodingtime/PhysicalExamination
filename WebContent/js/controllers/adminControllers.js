@@ -1,5 +1,23 @@
 'use strict';
 
+angular.module('peApp').controller('adminHearderCtrl',
+		function($scope, $http, $location,$window,LoginService) {
+			$scope.username = JSON.parse($window.sessionStorage.userInfo).name;
+			var position = JSON.parse($window.sessionStorage.userInfo).position;
+			if(position != 'admin'){
+				swal({
+					title : "Error!",
+					text : "没权限打开该页面！",
+					type : "warning",
+					timer : 3000
+				})
+				$location.path('/');
+			}
+			$scope.logout = function () {
+				LoginService.logout();
+				$location.path('/');
+			}
+		});
 angular.module('peApp').controller('adminHomeCtrl',
 		function($scope, $http, $location) {
 
@@ -220,6 +238,8 @@ angular.module('peApp').controller('officeCtrlController',
 				$scope.modify_name = office_name;
 				$scope.modify_number = office_number;				
 			}
+			
+			
 			$scope.modify_office_action = function (){
 				$http({
 					method : 'POST',
@@ -752,7 +772,8 @@ angular.module('peApp').controller('modifyComboCtrl',
 		});
 
 angular.module('peApp').controller('employeesCtrl',
-		function($scope, $http, $location, $route) {
+		function($scope, $http, $location, $route,EmployeeService,fGateway) {
+			var gateway = new fGateway();
 			$scope.positions = [ {
 				name : '总台医师',
 				id:'receptionist'
@@ -808,9 +829,37 @@ angular.module('peApp').controller('employeesCtrl',
 				$scope.id = id;
 				$scope.modify_name = username;
 				$scope.modify_position= position;
+			};
+			
+			$scope.setPermissionAction = function (employee){
+				$scope.permissionList = EmployeeService.permissionList[employee.position];
+				$scope.employee = employee;
+				
+			};
+			$scope.setPermission = function(){
+				gateway.call('setPermission.com',{
+					id:$scope.employee.id,
+					permission:$scope.permission}).then(function(data){
+						if (data == "error") {
+							swal({
+								title : "Error!",
+								text : "系统错误，请联系管理员",
+								type : "warning",
+								timer : 3000
+							})
+						}else{
+							swal({
+								title : "sucess!",
+								text : "授权成功！",
+								type : "success",
+								timer : 2000
+							});
+							$route.reload();
+						}
+					});
 			}
+			
 			$scope.modify_employee_action = function () {
-				console.log($scope.id,$scope.modify_name, $scope.modify_position.id)
 				$http({
 					method : 'POST',
 					url : 'modifyEmployee.com',

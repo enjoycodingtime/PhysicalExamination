@@ -3,90 +3,136 @@
 var peApp = angular.module('peApp', [ 'ngRoute' ]);
 
 peApp.config([ '$routeProvider', function($routeProvider) {
+	
+	var auth = function($q, $location, LoginService) {
+        var deferred = $q.defer();
+        LoginService.hasLoggedin().then(function(hasLogin) {
+            if (hasLogin != 'yes') {
+            	$location.path('/');
+                deferred.reject();
+            }
+            setTimeout(function() {
+                deferred.resolve();
+            }, 0);
+        });
+        return deferred.promise;
+    };
+    
 	$routeProvider.when('/', {
 		templateUrl : 'views/log_in.html',
 		controller : 'logInCtrl'
 	}).when('/receptionist', {
 		templateUrl : 'views/receptionists/receptionist.html',
-		controller : 'receptionistCtrl'
+		controller : 'receptionistCtrl',
+        resolve: {auth: auth}
 	}).when('/admin', {
 		templateUrl : 'views/admin/adminHome.html',
-		controller : 'adminHomeCtrl'
+		controller : 'adminHomeCtrl',
+        resolve: {auth: auth}
 	}).when('/doctor', {
 		templateUrl : 'views/doctor/doctorHome.html',
-		controller : 'doctorHomeCtrl'
+		controller : 'doctorHomeCtrl',
+        resolve: {auth: auth}
 	}).when('/manage', {
 		templateUrl : 'views/manage/manageHome.html',
-		controller : 'manageHomeCtrl'
+		controller : 'manageHomeCtrl',
+        resolve: {auth: auth}
 	}).when('/reservation', {
 		templateUrl : 'views/receptionists/reservation.html',
-		controller : 'reservationCtrl'
+		controller : 'reservationCtrl',
+        resolve: {auth: auth}
 	}).when('/addCombo', {
 		templateUrl : 'views/admin/addCombo.html',
-		controller : 'addComboCtrl'
+		controller : 'addComboCtrl',
+        resolve: {auth: auth}
 	}).when('/editCombo', {
 		templateUrl : 'views/admin/editCombo.html',
-		controller : 'comboCtrl'
+		controller : 'comboCtrl',
+        resolve: {auth: auth}
 	}).when('/deleteCombo', {
 		templateUrl : 'views/admin/deleteCombo.html',
-		controller : 'comboCtrl'
+		controller : 'comboCtrl',
+        resolve: {auth: auth}
 	}).when('/reservationBox', {
 		templateUrl : 'views/receptionists/reservationBox.html',
-		controller : 'reservationBoxCtrl'
+		controller : 'reservationBoxCtrl',
+        resolve: {auth: auth}
 	}).when('/physicalExaminationRegistration', {
 		templateUrl : 'views/receptionists/physicalExaminationRegistration.html',
-		controller : 'physicalExaminationRegistrationCtrl'
+		controller : 'physicalExaminationRegistrationCtrl',
+        resolve: {auth: auth}
 	}).when('/officeCtrl', {
 		templateUrl : 'views/admin/officeCtrl.html',
-		controller : 'officeCtrlController'
+		controller : 'officeCtrlController',
+        resolve: {auth: auth}
 	}).when('/manageExaminationProject', {
 		templateUrl : 'views/admin/manageExaminationProject.html',
-		controller : 'manageExaminationProjectCtrl'
+		controller : 'manageExaminationProjectCtrl',
+        resolve: {auth: auth}
 	}).when('/manageExaminationProject1', {
 		templateUrl : 'views/manage/manageExaminationProject.html',
-		controller : 'manageExaminationProjectCtrl'
+		controller : 'manageExaminationProjectCtrl',
+        resolve: {auth: auth}
 	}).when('/selectCombo', {
 		templateUrl : 'views/admin/selectCombo.html',
-		controller : 'selectComboCtrl'
+		controller : 'selectComboCtrl',
+        resolve: {auth: auth}
 	}).when('/manageComboExaminationProject', {
 		templateUrl : 'views/admin/manageComboExaminationProject.html',
-		controller : 'manageComboExaminationProjectCtrl'
+		controller : 'manageComboExaminationProjectCtrl',
+        resolve: {auth: auth}
 	}).when('/manageComboExaminationProject1', {
 		templateUrl : 'views/manage/manageComboExaminationProject.html',
-		controller : 'manageComboExaminationProjectCtrl'
+		controller : 'manageComboExaminationProjectCtrl',
+        resolve: {auth: auth}
 	}).when('/employees', {
 		templateUrl : 'views/admin/employees.html',
-		controller : 'employeesCtrl'
+		controller : 'employeesCtrl',
+        resolve: {auth: auth}
 	}).when('/modifyCombo', {
 		templateUrl : 'views/admin/modifyCombo.html',
-		controller : 'modifyComboCtrl'
+		controller : 'modifyComboCtrl',
+        resolve: {auth: auth}
 	}).when('/registrationList', {
 		templateUrl : 'views/receptionists/registrationList.html',
-		controller : 'registrationListCtrl'
+		controller : 'registrationListCtrl',
+        resolve: {auth: auth}
 	}).when('/fenjian', {
 		templateUrl : 'views/doctor/fenjian.html',
-		controller : 'fenjianCtrl'
+		controller : 'fenjianCtrl',
+        resolve: {auth: auth}
 	}).when('/zongjian', {
 		templateUrl : 'views/doctor/zongjian.html',
-		controller : 'zongjianCtrl'
+		controller : 'zongjianCtrl',
+        resolve: {auth: auth}
 	}).when('/detailReservation', {
 		templateUrl : 'views/receptionists/detailReservation.html',
-		controller : 'detailReservationCtrl'
+		controller : 'detailReservationCtrl',
+        resolve: {auth: auth}
 	}).when('/showDetailReservation', {
 		templateUrl : 'views/manage/showDetailReservation.html',
-		controller : 'showDetailReservationCtrl'
+		controller : 'showDetailReservationCtrl',
+        resolve: {auth: auth}
 	}).when('/queryDayReport', {
 		templateUrl : 'views/manage/queryDayReport.html',
-		controller : 'queryDayReportCtrl'
+		controller : 'queryDayReportCtrl',
+        resolve: {auth: auth}
 	}).when('/queryReservatioin', {
 		templateUrl : 'views/manage/queryReservatioin.html',
-		controller : 'queryReservatioinCtrl'
+		controller : 'queryReservatioinCtrl',
+        resolve: {auth: auth}
+	}).when('/queryRegistration', {
+		templateUrl : 'views/manage/queryRegistration.html',
+		controller : 'queryRegistrationCtrl',
+        resolve: {auth: auth}
 	}).when('/comboStatistics', {
 		templateUrl : 'views/manage/comboStatistics.html',
-		controller : 'comboStatisticsCtrl'
+		controller : 'comboStatisticsCtrl',
+        resolve: {auth: auth}
 	}).when('/officeStatistics', {
 		templateUrl : 'views/manage/officeStatistics.html',
-		controller : 'officeStatisticsCtrl'
+		controller : 'officeStatisticsCtrl',
+        resolve: {auth: auth}
 	}).otherwise({
 		redirectTo : '/'
 	});

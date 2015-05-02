@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONArray;
 
@@ -39,14 +40,17 @@ public class UserServlet extends HttpServlet {
 				url.lastIndexOf("."));
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		//
+		HttpSession httpSession = request.getSession();
+		//登陆
 		if (action.equals("home")) {
 			try {
 				String password = request.getParameter("password");
 				String username = request.getParameter("username");
 				Users users = UserDao.findByName(username);
 				if (users != null && users.getPassword().equals(password)) {
-					out.print(users.getPosition());
+					httpSession.setAttribute("username", username);
+					JSONArray jarray = JSONArray.fromObject(users);
+					out.print(jarray.toString());
 				} else {
 					out.print("error");
 				}
@@ -54,8 +58,44 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		
+		//判断用户是否登陆
+		if (action.equals("hasLoggedin")) {
+			try {
+				String username = request.getParameter("username");
+				if (username.equals(httpSession.getAttribute("username"))) {
+					out.print("yes");
+				} else {
+					out.print("error");
+				}
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//退出登录
+		if (action.equals("logout")) {
+			try {
+				httpSession.invalidate();
+				out.print("ok");
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		//设置权限
+		if (action.equals("setPermission")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				String permission = request.getParameter("permission");
+				UserDao.setPermission(id, permission);
+				out.print("ok");
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}		
 
-		//
+
+		//注册账号
 		if (action.equals("signIn")) {
 			try {
 				String password = request.getParameter("password");

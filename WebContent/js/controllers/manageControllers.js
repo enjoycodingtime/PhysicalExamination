@@ -1,5 +1,22 @@
 'use strict';
-
+angular.module('peApp').controller('manageHearderCtrl',
+		function($scope, $http, $location,$window,LoginService) {
+			$scope.username = JSON.parse($window.sessionStorage.userInfo).name;
+			var position = JSON.parse($window.sessionStorage.userInfo).position;
+			if(position != 'manage'){
+				swal({
+					title : "Error!",
+					text : "没权限打开该页面！",
+					type : "warning",
+					timer : 3000
+				})
+				$location.path('/');
+			}
+			$scope.logout = function () {
+				LoginService.logout();
+				$location.path('/');
+			}
+		});
 angular.module('peApp').controller('manageHomeCtrl',
 		function($scope, $http, $location) {
 
@@ -36,7 +53,6 @@ angular.module('peApp').controller('queryDayReportCtrl',
 								timer : 3000
 							})
 						}else {
-							console.log(data)
 							$scope.allRegistrateNumber = data.length;
 							$scope.registratedNumber = 0;
 							

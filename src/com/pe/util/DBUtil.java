@@ -11,30 +11,24 @@ public class DBUtil {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		} catch (Exception e) {
-			System.out.println("�������س���");
+			System.out.println("error");
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
+	
 	public static Connection getConnection() throws Exception{
 		
-		Connection conn = null;//jdbc:sqlserver://localhost;DatabaseName=test;user=sa;password=111111
+		Connection conn = null;
 		try {
 			conn=DriverManager.getConnection("jdbc:sqlserver://localhost;DatabaseName=PE;user=sa;password=111111");
 		} catch (Exception e) {
-			System.out.println("���ӳ���");
+			System.out.println("error");
 			e.printStackTrace();
 			throw e;
 		}
 		return conn;
 	}
-	/**
-	 * �ر�����
-	 */
+	
 	public static void close(Connection conn,PreparedStatement ps,ResultSet rs){
 		try {
 			if(rs!=null){
@@ -47,7 +41,7 @@ public class DBUtil {
 				conn.close();
 			}
 		} catch (Exception e) {
-			System.out.println("�ر��쳣");
+			System.out.println("error");
 		}
 	}
 	

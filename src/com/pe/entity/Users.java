@@ -5,6 +5,8 @@ public class Users {
      private String name;
      private String password;
      private String position;
+     private String permission;
+     
      
 
 	public String getPosition() {
@@ -36,12 +38,21 @@ public class Users {
 		super();
 	}
 	
-	public Users(Integer id, String name, String password, String position) {
+	public String getPermission() {
+		return permission;
+	}
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
+	
+	public Users(Integer id, String name, String password, String position,
+			String permission) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.position = position;
+		this.permission = permission;
 	}
 	@Override
 	public String toString() {
