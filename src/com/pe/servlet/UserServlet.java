@@ -45,10 +45,10 @@ public class UserServlet extends HttpServlet {
 		if (action.equals("home")) {
 			try {
 				String password = request.getParameter("password");
-				String username = request.getParameter("username");
-				Users users = UserDao.findByName(username);
+				String id = request.getParameter("id");
+				Users users = UserDao.findByName(id);
 				if (users != null && users.getPassword().equals(password)) {
-					httpSession.setAttribute("username", username);
+					httpSession.setAttribute("id", id);
 					JSONArray jarray = JSONArray.fromObject(users);
 					out.print(jarray.toString());
 				} else {
@@ -62,8 +62,8 @@ public class UserServlet extends HttpServlet {
 		//判断用户是否登陆
 		if (action.equals("hasLoggedin")) {
 			try {
-				String username = request.getParameter("username");
-				if (username.equals(httpSession.getAttribute("username"))) {
+				String id = request.getParameter("id");
+				if (id.equals(httpSession.getAttribute("id"))) {
 					out.print("yes");
 				} else {
 					out.print("error");
@@ -85,7 +85,7 @@ public class UserServlet extends HttpServlet {
 		//设置权限
 		if (action.equals("setPermission")) {
 			try {
-				int id = Integer.parseInt(request.getParameter("id"));
+				String id = request.getParameter("id");
 				String permission = request.getParameter("permission");
 				UserDao.setPermission(id, permission);
 				out.print("ok");
@@ -101,7 +101,8 @@ public class UserServlet extends HttpServlet {
 				String password = request.getParameter("password");
 				String username = request.getParameter("username");
 				String position = request.getParameter("position");
-				UserDao.sign_in(username, password, position);
+				String id= UserDao.sign_in(username, password, position);
+				out.print(id);
 
 			} catch (Exception e) {
 				out.print("error");

@@ -9,7 +9,7 @@ angular
 						$('#dateTimePicker').datetimepicker({
 							startDate : '-0d',
 							minView : "month",
-							format : "yyyy/m/dd",
+							format : "yyyy/m/d",
 							todayBtn : true,
 							todayHighlight : true,
 							autoclose : true

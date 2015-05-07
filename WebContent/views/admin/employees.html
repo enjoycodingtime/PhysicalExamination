@@ -11,6 +11,8 @@
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
 				 <tr>
+				 	
+				 	<th>工号</th>
 				 	<th>姓名</th>
 				 	<th>职位</th>
 				 	<th>权限</th>
@@ -19,6 +21,7 @@
 				</thead>
 				<tbody>
 				<tr ng-repeat = 'employee in employees'>
+					<td>{{employee.id}}</td>
 					<td>{{employee.name}}</td>
 					<td ng-if='employee.position=="admin"'>管理员</td>
 					<td ng-if='employee.position=="doctor"'>体检医师</td>

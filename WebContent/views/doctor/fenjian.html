@@ -32,6 +32,7 @@
 						</p>
 					</div>
 				</div>
+				<div ng-if='physicalExaminationOfThisOffice.length'>
 				<table class="table table-word-wrap clear-float-left">
 					<thead>
 						<tr>
@@ -47,7 +48,7 @@
 					</thead>
 					<tbody>
 						<tr
-							ng-repeat='registrationList in physicalExaminationOfThisOffice track by $index| filter:query'>
+							ng-repeat='registrationList in physicalExaminationOfThisOffice | filter:query'>
 							<td>{{registrationList.id}}</td>
 							<td>{{registrationList.name}}</td>
 							<td ng-if='registrationList.sex=="man"'>男</td>
@@ -61,11 +62,12 @@
 									data-target="#reservation_physical_examination"
 									ng-click='show_physical_examination(registrationList.id,registrationList.physical_examination)'
 									ng class="btn btn-success button-width">填写项目结果</button>
-								
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				</div>
+				<div ng-if='!physicalExaminationOfThisOffice.length'>今日待体检人数为0</div>
 				<div ng-if='physicalExaminationOfThisOffice.length'>
 				<tm-pagination conf="paginationConf"></tm-pagination>
 				</div>

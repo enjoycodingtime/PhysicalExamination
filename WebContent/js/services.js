@@ -20,9 +20,9 @@
 		function LoginService() {			
 			this.hasLoggedin = function() {
 				if($window.sessionStorage.userInfo){
-					var username = JSON.parse($window.sessionStorage.userInfo).name;
+					var id = JSON.parse($window.sessionStorage.userInfo).id;
 					return gateway.call('hasLoggedin.com',{
-						username : username
+						id : id
 					});
 				}else{
 					return gateway.call('hasLoggedin.com',{
@@ -43,8 +43,15 @@
 					manage:['科级','院级'],
 					doctor:['分检医师','总检医师'],
 					receptionist:['前台医师']
-			}			
+			}
+			this.positionCode = {
+					admin:'gl',
+					manage:'ld',
+					doctor:'ys',
+					receptionist:'zt'
+			}
 		}
 		return new EmployeeService();
-	})
+	});
+	
 })(angular.module('peApp'));

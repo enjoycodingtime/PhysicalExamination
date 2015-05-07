@@ -1,20 +1,20 @@
 'use strict';
 
 angular.module('peApp').controller('logInCtrl',
-		function($scope, $http, $location,$window) {
+		function($scope, $http, $location,$window,EmployeeService) {
 			$scope.log_in = function() {
 				$http({
 					method : 'POST',
 					url : 'home.com',
 					data : {
-						username : $scope.username,
+						id : $scope.id,
 						password : $scope.password
 						 }
 				}).success(function(data) {
 					if (data == "error") {
 						swal({
 							title : "Error!",
-							text : "用户名、密码或职位信息错误",
+							text : "员工号、密码或职位信息错误",
 							type : "warning",
 							timer : 3000
 						})
@@ -22,11 +22,13 @@ angular.module('peApp').controller('logInCtrl',
 						if(data[0].permission) {
 							
 							var userInfo = {
+									id:data[0].id,
 									name:data[0].name,
 									position:data[0].position,
 									permission:data[0].permission
 							}							
 							$window.sessionStorage.userInfo = JSON.stringify(userInfo);
+							var id = JSON.parse($window.sessionStorage.userInfo).id;							
 							var username = JSON.parse($window.sessionStorage.userInfo).name;							
 							swal({
 								title : "sucess!",
@@ -74,9 +76,8 @@ angular.module('peApp').controller('logInCtrl',
 					} else {
 						swal({
 							title : "sucess!",
-							text : "注册成功",
-							type : "success",
-							timer : 2000
+							text : "注册成功,员工号位："+data,
+							type : "success"
 						});
 					}
 

@@ -1,7 +1,7 @@
 package com.pe.entity;
 
 public class Users {
-	private Integer id;
+	private String id;
      private String name;
      private String password;
      private String position;
@@ -15,10 +15,10 @@ public class Users {
 	public void setPosition(String position) {
 		this.position = position;
 	}
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -45,7 +45,7 @@ public class Users {
 		this.permission = permission;
 	}
 	
-	public Users(Integer id, String name, String password, String position,
+	public Users(String id, String name, String password, String position,
 			String permission) {
 		super();
 		this.id = id;

@@ -18,9 +18,15 @@ angular.module('peApp').controller('doctorHearderCtrl',
 			}
 		});
 angular.module('peApp').controller('doctorHomeCtrl',
-		function($scope, $http, $location,$route) {
-
+		function($scope, $http, $location,$route,$window) {
+			$scope.permission = JSON.parse($window.sessionStorage.userInfo).permission;
 		});
+
+angular.module('peApp').controller('doctorSidebarCtrl',
+		function($scope, $http, $location,$route,$window) {
+	$scope.permission = JSON.parse($window.sessionStorage.userInfo).permission;
+		});
+
 angular.module('peApp').controller('fenjianCtrl',
 		function($scope, $http, $location, fGateway,$route) {
 			var gateway = new fGateway();
@@ -33,9 +39,10 @@ angular.module('peApp').controller('fenjianCtrl',
 			});
 			$scope.id = '';
 			$scope.selected_physical_examination = [];
+			$scope.date = new Date().toLocaleDateString();
 			$scope.getPhysicalExaminationsByOffice = function(office) {
 				$scope.physicalExaminationOfThisOffice = [];
-				gateway.call('getRegistrationList.com').then(function(d) {
+				gateway.call('getRegistrateByDate.com',{date:$scope.date}).then(function(d) {
 					if (d == 'error') {
 						swal("Sorry!", "系统错误", "error");
 					} else {
@@ -46,27 +53,28 @@ angular.module('peApp').controller('fenjianCtrl',
 								if(v.office_name == office && _.indexOf($scope.physicalExaminationOfThisOffice, value) == -1 && !v.result){
 									$scope.physicalExaminationOfThisOffice.push(value);
 								}
-							})
+							});
+							
+							$scope.paginationConf = {
+									currentPage : 1,
+									totalItems : $scope.physicalExaminationOfThisOffice.length,
+									itemsPerPage : 15,
+									pagesLength : 15,
+									perPageOptions : [ 10, 20, 30, 40, 50 ],
+									rememberPerPage : 'perPageItems',
+									onChange : function() {
+										var items = [];
+										for (var int = 0; int < $scope.physicalExaminationOfThisOffice.length; int++) {
+											if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+												items.push($scope.physicalExaminationOfThisOffice[int]);
+											}
+										}
+										$scope.physicalExaminationOfThisOffice = items;
+									}
+								};
 						})
 					}
 				})
-//				$scope.paginationConf = {
-//					currentPage : 1,
-//					totalItems : $scope.physicalExaminationOfThisOffice.length,
-//					itemsPerPage : 15,
-//					pagesLength : 15,
-//					perPageOptions : [ 10, 20, 30, 40, 50 ],
-//					rememberPerPage : 'perPageItems',
-//					onChange : function() {
-//						var items = [];
-//						for (var int = 0; int < $scope.physicalExaminationOfThisOffice.length; int++) {
-//							if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-//								items.push($scope.physicalExaminationOfThisOffice[int]);
-//							}
-//						}
-//						$scope.physicalExaminationOfThisOffice = items;
-//					}
-//				};
 			}
 			$scope.selectChange = function() {
 				$scope.getPhysicalExaminationsByOffice($scope.office.office_name);

@@ -18,6 +18,7 @@ angular.module('peApp').controller('physicalExaminationRegistrationCtrl',
 			
 			$scope.registrate = function () {
 				var date = new Date().toLocaleDateString();
+				console.log(date,$scope.reservationInfo.date)
 				if($scope.reservationInfo.status ==1) {
 					swal("Sorry!", "该预约已经登记", "error");
 					return 0;

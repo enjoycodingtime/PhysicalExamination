@@ -1,7 +1,9 @@
-<div class="col-sm-3 col-md-2 sidebar" ng-controller='comboSideBarCtrl'>
-	<ul class="nav nav-list">
+<div class="col-sm-3 col-md-2 sidebar" ng-controller='doctorSidebarCtrl'>
+	<ul class="nav nav-list" ng-if='permission == "分检医师"'>
 		<li class="nav-header">分检</li>
-		<li><a ng-href="#fenjian">分检</a></li>
+		<li><a ng-href="#fenjian">分检</a></li>		
+	</ul>
+	<ul ng-if='permission == "总检医师"'>
 		<li class="nav-header">总检</li>
 		<li><a ng-href="#zongjian">总检</a></li>
 	</ul>
