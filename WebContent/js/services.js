@@ -33,6 +33,32 @@
 			this.logout = function(){
 				return gateway.call('logout.com');
 			}
+			this.pathOfPosition = function(position) {
+				var path = '';
+				switch (position) {
+				case '管理员':
+					path = 'admin';
+					break;	
+				case '总台主管':
+				case '科室主管':
+				case '院长':
+				case '副院长':
+					path = 'manage';
+					break;
+				case '总台医师':
+					path = 'receptionist';
+					break;
+				case '总检医师':
+					path = 'zongjian';
+					break;
+				case '分检医师':
+					path = 'fenjian';
+					break;
+				default:
+					break;
+				}
+				return path;
+			}
 		}
 		return new LoginService();
 	});
@@ -50,6 +76,8 @@
 					doctor:'ys',
 					receptionist:'zt'
 			}
+			this.positions = ['管理员','总台医师','总台主管','分检医师','总检医师','科室主管','院长','副院长'];
+			this.managePositions = ['总台主管','科室主管','院长','副院长'];
 		}
 		return new EmployeeService();
 	});

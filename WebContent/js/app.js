@@ -25,6 +25,9 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/receptionists/receptionist.html',
 		controller : 'receptionistCtrl',
         resolve: {auth: auth}
+	}).when('/changePassword', {
+		templateUrl : 'views/employee/changePassword.html',
+		controller : 'changePasswordCtrl',
 	}).when('/admin', {
 		templateUrl : 'views/admin/adminHome.html',
 		controller : 'adminHomeCtrl',

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('peApp').controller('logInCtrl',
-		function($scope, $http, $location,$window,EmployeeService) {
-			$scope.log_in = function() {
+		function($scope, $http, $location,$window,LoginService) {
+			$scope.log_in = function() {				
 				$http({
 					method : 'POST',
 					url : 'home.com',
@@ -19,13 +19,21 @@ angular.module('peApp').controller('logInCtrl',
 							timer : 3000
 						})
 					} else {
-						if(data[0].permission) {
-							
+						if($scope.password =='12345678'){
+							swal({
+								title : "Alert!",
+								text : "密码过于简单，请修改密码",
+								type : "warning",
+								timer:2000
+							})
+							$location.path('changePassword');
+							$location.search('id',$scope.id);
+						}else{
 							var userInfo = {
 									id:data[0].id,
 									name:data[0].name,
 									position:data[0].position,
-									permission:data[0].permission
+									office:data[0].office
 							}							
 							$window.sessionStorage.userInfo = JSON.stringify(userInfo);
 							var id = JSON.parse($window.sessionStorage.userInfo).id;							
@@ -36,49 +44,8 @@ angular.module('peApp').controller('logInCtrl',
 								type : "success",
 								timer : 2000
 							});
-							$location.path(data[0].position);
-						}else{
-							swal({
-								title : "Alert!",
-								text : "该账号还未通过管理审核！",
-								type : "warning",
-								timer : 2000
-							});
+							$location.path(LoginService.pathOfPosition(userInfo.position));
 						}
-						
-					}
-
-					// 加载成功之后做一些事
-				}).error(function(data, status, headers, config) {
-					// 处理错误
-
-					console.log('sorry');
-				});
-			}
-			
-			$scope.sign_in = function(){
-				$http({
-					method : 'POST',
-					url : 'signIn.com',
-					data : {
-						username : $scope.username,
-						password : $scope.password,
-						position : $scope.position
-					}
-				}).success(function(data) {
-					if (data == "error") {
-						swal({
-							title : "Error!",
-							text : "注册失败",
-							type : "warning",
-							timer : 3000
-						})
-					} else {
-						swal({
-							title : "sucess!",
-							text : "注册成功,员工号位："+data,
-							type : "success"
-						});
 					}
 
 					// 加载成功之后做一些事

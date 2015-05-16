@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('peApp').controller('adminHearderCtrl',
-		function($scope, $http, $location,$window,LoginService) {
+		function($scope, $http, $location,$window,fGateway,LoginService) {
 			$scope.username = JSON.parse($window.sessionStorage.userInfo).name;
 			var position = JSON.parse($window.sessionStorage.userInfo).position;
-			if(position != 'admin'){
+			if(position != '管理员'){
 				swal({
 					title : "Error!",
 					text : "没权限打开该页面！",
@@ -23,7 +23,7 @@ angular.module('peApp').controller('adminHomeCtrl',
 
 		});
 angular.module('peApp').controller('comboSideBarCtrl',
-		function($scope, $http, $location) {
+		function($scope, $http,fGateway, $location) {
 			$scope.isClickCombo = false;
 			$scope.showSecondMenu = function() {
 				$scope.isClickCombo = !$scope.isClickCombo;
@@ -34,7 +34,7 @@ angular.module('peApp').controller('comboSideBarCtrl',
 			}
 		});
 angular.module('peApp').controller('addComboCtrl',
-		function($scope, $http, $location) {
+		function($scope, $http,fGateway, $location) {
 			$http({
 				method : 'GET',
 				url : 'getOffice.com'
@@ -159,12 +159,10 @@ angular.module('peApp').controller('addComboCtrl',
 		});
 
 angular.module('peApp').controller('officeCtrlController',
-		function($scope, $http, $location,$route) {
-			$http({
-				method : 'GET',
-				url : 'getOffice.com'
-			}).success(function(data) {
-				if (data == "error") {
+		function($scope, $http, $location,fGateway,$route) {
+			var gateway = new fGateway();
+			gateway.call('getOffice.com').then(function(data) {
+				if (data == 'error') {
 					swal({
 						title : "Error!",
 						text : "系统错误",
@@ -191,23 +189,13 @@ angular.module('peApp').controller('officeCtrlController',
 							}
 						};
 				}
-
-				// 加载成功之后做一些事
-			}).error(function(data, status, headers, config) {
-				// 处理错误
-
-				console.log('sorry');
-			});
-			
+			});			
 			$scope.add_office_action = function(){
-				$http({
-					method : 'POST',
-					url : 'addOffice.com',
-					data : {
-						office_name : $scope.office_name,
-						office_number : $scope.office_number
-					}
-				}).success(function(data) {
+				gateway.call('addOffice.com',{
+					office_name : $scope.office_name,
+					office_type:$scope.office_type,
+					office_number : $scope.office_number
+				}).then(function(data){
 					if (data == "error") {
 						swal({
 							title : "Error!",
@@ -224,29 +212,26 @@ angular.module('peApp').controller('officeCtrlController',
 						});
 						$route.reload();
 					}
-
-					// 加载成功之后做一些事
-				}).error(function(data, status, headers, config) {
-					// 处理错误
-
-					console.log('sorry');
-				});
+				})
 			}
 			
-			$scope.modifyOfficeAction = function (id,office_name,office_number){
-				$scope.office_id = id;
-				$scope.modify_name = office_name;
-				$scope.modify_number = office_number;				
+			$scope.modifyOfficeAction = function (office){
+				$scope.office_id = office.id;
+				$scope.modify_name = office.office_name;
+				$scope.modify_number = office.office_number;				
+				$scope.modify_type = office.office_type;				
 			}
 			
 			
 			$scope.modify_office_action = function (){
+				console.log($scope.modify_type);
 				$http({
 					method : 'POST',
-					url : 'amodifyOffice.com',
+					url : 'modifyOffice.com',
 					data : {
 						office_id : $scope.office_id,
 						office_name : $scope.modify_name,
+						office_type:$scope.modify_type,
 						office_number : $scope.modify_number
 					}
 				}).success(function(data) {
@@ -330,7 +315,7 @@ angular.module('peApp').controller('officeCtrlController',
 		});
 
 angular.module('peApp').controller('manageExaminationProjectCtrl',
-		function($scope, $http, $location,$route) {
+		function($scope, $http, $location,fGateway,$route) {
 			$scope.office_name = $location.search()['office_name'];
 			$http({
 				method : 'POST',
@@ -483,7 +468,7 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 
 
 angular.module('peApp').controller('selectComboCtrl',
-		function($scope, $http, $location,$route) {
+		function($scope, $http, $location,fGateway,$route) {
 			$http({
 				method : 'GET',
 				url : 'getCombos.com'
@@ -582,7 +567,7 @@ angular.module('peApp').controller('selectComboCtrl',
 		});
 
 angular.module('peApp').controller('manageComboExaminationProjectCtrl',
-		function($scope, $http, $location,$route) {
+		function($scope, $http, $location,fGateway,$route) {
 			$scope.id = $location.search()['id'];
 			$http({
 				method : 'POST',
@@ -616,7 +601,7 @@ angular.module('peApp').controller('manageComboExaminationProjectCtrl',
 
 
 angular.module('peApp').controller('modifyComboCtrl',
-		function($scope, $http, $location,$route) {
+		function($scope, $http, $location,fGateway,$route) {
 			$scope.id = $location.search()['id'];
 			$http({
 				method : 'GET',
@@ -774,16 +759,14 @@ angular.module('peApp').controller('modifyComboCtrl',
 angular.module('peApp').controller('employeesCtrl',
 		function($scope, $http, $location, $route,EmployeeService,fGateway) {
 			var gateway = new fGateway();
-			$scope.positions = [ {
-				name : '总台医师',
-				id:'receptionist'
-			}, {
-				name : '体检医师',
-				id:'doctor'
-			}, {
-				name : '领导',
-				id:'manage'
-			} ];
+			gateway.call('getOffice.com').then(function(d) {
+				if (d == 'error') {
+					swal("Sorry!", "系统错误", "error");
+				} else {
+					$scope.offices = d;
+				}
+			});
+			$scope.positions = EmployeeService.positions;
 			$http({
 				method : 'GET',
 				url : 'getEmployees.com',
@@ -825,6 +808,31 @@ angular.module('peApp').controller('employeesCtrl',
 					timer : 3000
 				})
 			});
+			
+			$scope.sign_in = function(){
+				gateway.call('signIn.com', {
+					username : $scope.username,
+					password : '12345678',
+					office_id : $scope.office.id,
+					position : $scope.position
+				}).then(function(data) {
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "注册失败",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						swal({
+							title : "sucess!",
+							text : "注册成功,员工号位：" + data,
+							type : "success"
+						});
+					}
+				})
+			}
+			
 			$scope.modifyEmployeeAction = function(id,username,position) {
 				$scope.id = id;
 				$scope.modify_name = username;
@@ -894,6 +902,7 @@ angular.module('peApp').controller('employeesCtrl',
 			}
 			
 			$scope.delete_employee_action = function (id,name){
+				var gateway = new fGateway();
 				swal({
 					title : "Alert",
 					text : "确认移除<"+name+">这个员工的信息吗？",
@@ -904,14 +913,8 @@ angular.module('peApp').controller('employeesCtrl',
 	                closeOnConfirm: true },
 	                function(isConfirm){
 	                	if(isConfirm){
-	                		$http({
-		    					method : 'POST',
-		    					url : 'deleteEmployee.com',
-		    					data : {
-		    						id : id
-		    					}
-		    				}).success(function(data) {
-		    					if (data == "error") {
+	                		gateway.call('deleteEmployee.com',{id:id}).then(function(data){
+	                			if (data == "error") {
 		    						swal({
 		    							title : "Error!",
 		    							text : "删除失败",
@@ -927,11 +930,7 @@ angular.module('peApp').controller('employeesCtrl',
 		    						});
 		    						$route.reload();
 		    					}
-		    					// 加载成功之后做一些事
-		    				}).error(function(data, status, headers, config) {
-		    					// 处理错误
-		    					console.log('sorry');
-		    				});		
+	                		})
 	                	}
 	                	
 	                	

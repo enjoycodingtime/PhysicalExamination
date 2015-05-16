@@ -1,9 +1,10 @@
 'use strict';
 angular.module('peApp').controller('manageHearderCtrl',
-		function($scope, $http, $location,$window,LoginService) {
+		function($scope, $http, $location,$window,LoginService,EmployeeService) {
 			$scope.username = JSON.parse($window.sessionStorage.userInfo).name;
 			var position = JSON.parse($window.sessionStorage.userInfo).position;
-			if(position != 'manage'){
+			var managePositions = EmployeeService.managePositions;
+			if(_.indexOf(managePositions, position) == -1){
 				swal({
 					title : "Error!",
 					text : "没权限打开该页面！",

@@ -8,43 +8,46 @@
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<div class="span9">
 				<h1>员工管理</h1>
+				<button type="button" data-toggle="modal" data-target="#addEmployee1"
+					class="btn btn-success button-width">添加员工</button>
 				<table class="table table-word-wrap clear-float-left">
-				<thead>
-				 <tr>
-				 	
-				 	<th>工号</th>
-				 	<th>姓名</th>
-				 	<th>职位</th>
-				 	<th>权限</th>
-				 	<th>操作</th>
-				 </tr>
-				</thead>
-				<tbody>
-				<tr ng-repeat = 'employee in employees'>
-					<td>{{employee.id}}</td>
-					<td>{{employee.name}}</td>
-					<td ng-if='employee.position=="admin"'>管理员</td>
-					<td ng-if='employee.position=="doctor"'>体检医师</td>
-					<td ng-if='employee.position=="receptionist"'>前台医师</td>
-					<td ng-if='employee.position=="manage"'>领导</td>
-					<td ng-if='employee.permission'>{{employee.permission}}</td>
-					<td ng-if='!employee.permission'>待授权</td>
-					<td>
-					<button type="button" data-toggle="modal" data-target="#setPermission" ng-click='setPermissionAction(employee)' class="btn btn-success button-width">授权</button>
-					<button type="button" data-toggle="modal" data-target="#modifyEmployee" ng-click='modifyEmployeeAction(employee.id,employee.name,employee.position)' class="btn btn-success button-width">修改</button>
-					<button type="button" ng-click='delete_employee_action(employee.id,employee.name)' class="btn btn-danger button-width">删除</button>
-					 </td>
-								
-				</tr>
-				</tbody>
+					<thead>
+						<tr>
+
+							<th>工号</th>
+							<th>姓名</th>
+							<th>科室</th>
+							<th>职位</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat='employee in employees'>
+							<td>{{employee.id}}</td>
+							<td>{{employee.name}}</td>
+							<td>{{employee.office}}</td>
+							<td>{{employee.position}}</td>
+							
+							<td>
+								<button type="button" data-toggle="modal"
+									data-target="#modifyEmployee"
+									ng-click='modifyEmployeeAction(employee.id,employee.name,employee.position)'
+									class="btn btn-success button-width">修改</button>
+								<button type="button"
+									ng-click='delete_employee_action(employee.id,employee.name)'
+									class="btn btn-danger button-width">删除</button>
+							</td>
+
+						</tr>
+					</tbody>
 				</table>
-				
+
 				<div ng-if='employees.length'>
-				<tm-pagination conf="paginationConf"></tm-pagination>
+					<tm-pagination conf="paginationConf"></tm-pagination>
 				</div>
 				<div>
-					<div class="modal fade" id="addEmployee" tabindex="-1" role="dialog"
-						aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal fade" id="addEmployee" tabindex="-1"
+						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -74,8 +77,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="modal fade" id="modifyEmployee" tabindex="-1" role="dialog"
-						aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal fade" id="modifyEmployee" tabindex="-1"
+						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -91,9 +94,9 @@
 										用户名：<input type="text" ng-model='modify_name' />
 									</p>
 									<p>
-										职位：
-										<select  ng-model="modify_position"  ng-options="modify_position.name for modify_position in positions">
-                          				</select>
+										职位： <select ng-model="modify_position"
+											ng-options="modify_position.name for modify_position in positions">
+										</select>
 									</p>
 
 								</div>
@@ -106,48 +109,54 @@
 								</div>
 							</div>
 						</div>
+					</div>					
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="addEmployee1" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">添加员工</h4>
 					</div>
-					<div class="modal fade" id="setPermission" tabindex="-1" role="dialog"
-						aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-									<h4 class="modal-title" id="myModalLabel">修改</h4>
-								</div>
-								<div class="modal-body">
-									<h2>修改员工权限</h2>
-									<p>
-										用户名：{{employee.name}}
-									</p>
-									<p>
-										职位：
-										<span ng-if='employee.position=="admin"'>管理员</span>
-                    					<span ng-if='employee.position=="doctor"'>体检医师</span>
-                    					<span ng-if='employee.position=="receptionist"'>前台医师</span>
-                   						<span ng-if='employee.position=="manage"'>领导</span>
-									</p>
-									<p>
-										权限：：
-										<select  ng-model="permission"  ng-options="permissions for permissions in permissionList">
-										<option value=''>请选择</option></select>
-									</p>
-
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">Close</button>
-									<button type="button" class="btn btn-primary"
-										ng-click='setPermission()'
-										ng-disabled="!permission">ok</button>
-								</div>
-							</div>
-						</div>
+					<div class="modal-body">
+						<h2>添加员工</h2>
+						<table class="table table-bordered" align="center">
+							<tr>
+								<td class="col-xs-1"><b>姓名:</b></td>
+								<td class="col-xs-4"><input class='form-control' type="text" name="username"
+									ng-model='username' placeholder="Name" /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-1"><b>密码:</b></td>
+								<td class="col-xs-4"><input class='form-control' type="text" name="password"
+									  value='12345678' ng-disabled="true" /></td>
+							</tr>
+							<tr>
+								<td class="col-xs-1"><b>科室:</b></td>
+								<td class="col-xs-4"><select ng-model="office"
+									class="form-control"
+									ng-options="office.office_name for office in offices">
+								</select></td>
+							</tr>
+							<tr>
+								<td class="col-xs-1"><b>职位:</b></td>
+								<td class="col-xs-4"> <select ng-model="position" class="form-control"
+											ng-options="position for position in positions">
+										</select></td>
+							</tr>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary" ng-click='sign_in()'
+							ng-disabled="!username || !office.id || !position">ok</button>
 					</div>
 				</div>
-	</div>
-</div>
-
+			</div>
+		</div>

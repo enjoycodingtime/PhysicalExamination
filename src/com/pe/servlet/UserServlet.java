@@ -46,7 +46,7 @@ public class UserServlet extends HttpServlet {
 			try {
 				String password = request.getParameter("password");
 				String id = request.getParameter("id");
-				Users users = UserDao.findByName(id);
+				Users users = UserDao.findById(id);
 				if (users != null && users.getPassword().equals(password)) {
 					httpSession.setAttribute("id", id);
 					JSONArray jarray = JSONArray.fromObject(users);
@@ -82,12 +82,12 @@ public class UserServlet extends HttpServlet {
 			}
 		}
 		
-		//设置权限
-		if (action.equals("setPermission")) {
+		//修改密码
+		if (action.equals("changePassword")) {
 			try {
 				String id = request.getParameter("id");
-				String permission = request.getParameter("permission");
-				UserDao.setPermission(id, permission);
+				String password = request.getParameter("password");
+				UserDao.changePassword(id, password);
 				out.print("ok");
 			} catch (Exception e) {
 				out.print("error");
@@ -101,7 +101,8 @@ public class UserServlet extends HttpServlet {
 				String password = request.getParameter("password");
 				String username = request.getParameter("username");
 				String position = request.getParameter("position");
-				String id= UserDao.sign_in(username, password, position);
+				int office_id = Integer.parseInt(request.getParameter("office_id"));
+				String id= UserDao.sign_in(username, password, position,office_id);
 				out.print(id);
 
 			} catch (Exception e) {
@@ -279,19 +280,21 @@ public class UserServlet extends HttpServlet {
 			try {
 				String office_name = request.getParameter("office_name");
 				String office_number = request.getParameter("office_number");
-				OfficeDao.addOffice(office_name,office_number);
+				int office_type = Integer.parseInt(request.getParameter("office_type"));
+				OfficeDao.addOffice(office_name,office_type,office_number);
 			} catch (Exception e) {
 				out.print("error");
 			}
 		}
 		
 		//修改科室
-		if (action.equals("amodifyOffice")) {
+		if (action.equals("modifyOffice")) {
 			try {
 				int id = Integer.parseInt(request.getParameter("office_id"));
 				String office_name = request.getParameter("office_name");
 				String office_number = request.getParameter("office_number");
-				OfficeDao.modifyOffice(id,office_name, office_number);
+				int office_type = Integer.parseInt(request.getParameter("office_type"));
+				OfficeDao.modifyOffice(id,office_name, office_type,office_number);
 			} catch (Exception e) {
 				out.print("error");
 			}
@@ -420,7 +423,7 @@ public class UserServlet extends HttpServlet {
 		
 		if (action.equals("deleteEmployee")) {
 			try {
-				int id = Integer.parseInt(request.getParameter("id"));
+				String id = request.getParameter("id");
 				UserDao.deleteEmployee(id);
 			} catch (Exception e) {
 				out.print("error");

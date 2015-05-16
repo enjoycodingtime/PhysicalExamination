@@ -11,7 +11,7 @@ angular.module('peApp').controller('receptionistsHeaderCtrl',
 		function($scope, $http, $location,$window,LoginService) {
 			$scope.username = JSON.parse($window.sessionStorage.userInfo).name;
 			var position = JSON.parse($window.sessionStorage.userInfo).position;
-			if(position != 'receptionist'){
+			if(position != '总台医师'){
 				swal({
 					title : "Error!",
 					text : "没权限打开该页面！",

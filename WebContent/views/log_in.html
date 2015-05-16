@@ -1,56 +1,22 @@
 <div class="container" ng-controller='logInCtrl'>
-		<form>	
-        <section class="loginBox row-fluid">
-          <section class="span7 left">
-          	<h1>标准体检信息管理系统</h1>
-            <h2>用户登录</h2>
-            <p><input type="text" name="username" ng-model = 'id' placeholder="员工号" btn-Login='log_in()'/></p>
-            <p><input type="password" name="password" ng-model = 'password' placeholder="Password" btn-Login='log_in()'/>          
-          <section class="span1"><input type="button" value=" 登录 " ng-click='log_in()' class="btn btn-primary">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">注册</button>          
-          </section>
-        </section>
-        </section></form>
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">注册</h4>
-				</div>
-				<div class="modal-body">
-					<h2>用户注册</h2>
-					<p>
-						姓名：<input type="text" name="username" ng-model='username'
-							placeholder="Name" />
-					</p>
-					<p>
-						密码：<input type="password" name="password" ng-model='password'
-							placeholder="Password" />
-							</p>
-					<p>
-						确认密码：<input type="password" name="password" ng-model='password2'
-							placeholder="Password" />
-							</p>
-					<p>
-						<input type="radio" name="position" ng-model='position'
-							value="receptionist" />前台 <input type="radio" name="position"
-							ng-model='position' value="doctor" />医生 <input type="radio"
-							name="position" ng-model='position' value="manage" />领导 
-					</p>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" ng-click='sign_in()' ng-disabled="password !=password2  || !position || !username">ok</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	<form>
+		<section class="loginBox row-fluid">
+			<section class="span7 left">
+				<h1>标准体检信息管理系统</h1>
+				<h2>用户登录</h2>
+				<p>
+					<input type="text" name="username" ng-model='id' placeholder="员工号"
+						btn-Login='log_in()' />
+				</p>
+				<p>
+					<input type="password" name="password" ng-model='password'
+						placeholder="Password" btn-Login='log_in()' />
+					<section class="span1">
+						<input type="button" value=" 登录 " ng-click='log_in()'
+							class="btn btn-primary">
+					</section>
+			</section>
+		</section>
+	</form>	
 	<!-- /.modal -->
 </div>
-    

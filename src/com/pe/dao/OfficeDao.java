@@ -26,32 +26,38 @@ public class OfficeDao {
 		while(rs.next()){
 			int id = rs.getInt("id");
 			String office_name = rs.getString("office_name");
+			int office_type = rs.getInt("office_type");
 			String office_number = rs.getString("office_number");
 			
-			Office office =new Office(id,office_name,office_number);
+			Office office =new Office(id,office_name,office_type,office_number);
 			list.add(office);
 		}
 		return list;
 	}
-	public static void addOffice(String office_name,String office_number){
+	public static void addOffice(String office_name,int office_type, String office_number){
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "insert into office(office_name,office_number) values('"+office_name+"','"+office_number+"')";
-			Statement stmt=conn.createStatement();
-			stmt.executeUpdate(sql);		
+			String sql = "insert into office(office_name,office_type,office_number) values(?,?,?)";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, office_name);
+			ps.setInt(2, office_type);
+			ps.setString(3, office_number);
+			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 	}
-	public static void modifyOffice(int id,String office_name,String office_number){
+	public static void modifyOffice(int id,String office_name,int office_type, String office_number){
 		try {
+			System.out.println(office_type);
 			conn = DBUtil.getConnection();
-			String sql = "update office set office_name=?,office_number=? where id=?";
+			String sql = "update office set office_name=?,office_number=?,office_type=? where id=?";
 			ps = conn.prepareStatement(sql);
-			ps.setInt(3, id);
 			ps.setString(1, office_name);
 			ps.setString(2, office_number);
+			ps.setInt(3, office_type);
+			ps.setInt(4, id);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

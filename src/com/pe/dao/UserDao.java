@@ -19,7 +19,7 @@ public class UserDao {
 	public static List<Users> findAll() throws Exception {
 		List<Users> list = new ArrayList<Users>();
 		conn = DBUtil.getConnection();
-		String sql = "select * from Users ";
+		String sql = "select Users.id,Users.name,Users.password,Users.position,Office.office_name from Users INNER JOIN Office ON Users.office_id=Office.id";
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		while (rs.next()) {
@@ -27,57 +27,57 @@ public class UserDao {
 			String name = rs.getString("name");
 			String pwd = rs.getString("password");
 			String position = rs.getString("position");
-			String permission = rs.getString("permission");
-			Users user = new Users(id, name, pwd, position, permission);
+			String office_name = rs.getString("office_name");
+			Users user = new Users(id, name, pwd, position, office_name);
 			list.add(user);
-
 		}
 		return list;
 	}
 
-	public static Users findByName(String id1) throws Exception {
-		if (!DBUtil.isHaveTable("combo")) {
-			DBUtil.initComboDb();
-		}
-		if (!DBUtil.isHaveTable("examination_project")) {
-			DBUtil.initExaminationProject();
-		}
-		if (!DBUtil.isHaveTable("office")) {
-			DBUtil.initOffice();
-		}
-		if (!DBUtil.isHaveTable("reservation")) {
-			DBUtil.initReservation();
-		}
-		if (!DBUtil.isHaveTable("registration")) {
-			DBUtil.initRegistration();
-		}
-
+	public static Users findById(String id1) throws Exception {
+//		if (!DBUtil.isHaveTable("combo")) {
+//			DBUtil.initComboDb();
+//		}
+//		if (!DBUtil.isHaveTable("examination_project")) {
+//			DBUtil.initExaminationProject();
+//		}
+//		if (!DBUtil.isHaveTable("office")) {
+//			DBUtil.initOffice();
+//		}
+//		if (!DBUtil.isHaveTable("reservation")) {
+//			DBUtil.initReservation();
+//		}
+//		if (!DBUtil.isHaveTable("registration")) {
+//			DBUtil.initRegistration();
+//		}
 		Users users = null;
 		conn = DBUtil.getConnection();
-		String sql = "select * from Users where id='" + id1 + "'";
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery(sql);
+		String sql = "select Users.id,Users.name,Users.password,Users.position,Office.office_name from Users INNER JOIN Office ON Users.office_id=Office.id  where Users.id=?";
+		ps = conn.prepareStatement(sql);
+		ps.setString(1, id1);
+		rs= ps.executeQuery();
 		while (rs.next()) {
 			String id = rs.getString("id");
 			String username = rs.getString("name");
 			String password = rs.getString("password");
 			String position = rs.getString("position");
-			String permission = rs.getString("permission");
-			users = new Users(id, username, password, position, permission);
+			String office = rs.getString("office_name");
+			users = new Users(id, username, password, position, office);
 		}
 		return users;
 	}
 
-	public static String sign_in(String username, String password, String position) {
+	public static String sign_in(String username, String password, String position, int office_id) {
 		String employeeCode = generateEmployeeCode(position);
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "insert into Users(id,name,password,position) values(?,?,?,?)";
+			String sql = "insert into Users(id,name,password,position,office_id) values(?,?,?,?,?)";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1,employeeCode);
 			ps.setString(2,username);
 			ps.setString(3,password);
 			ps.setString(4,position);
+			ps.setInt(5,office_id);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,18 +91,34 @@ public class UserDao {
 	private static String generateEmployeeCode(String position) {
 		Calendar cal = Calendar.getInstance();
 		String year = String.valueOf(cal.get(Calendar.YEAR));//获取年份
+		year = year.substring(2);
 		String month=String.valueOf(cal.get(Calendar.MONTH));//获取月份
 		String positionCode = null;
 		String count = null;
 		switch (position) {
-		case "doctor":
-			positionCode = "YS";
+		case "管理员":
+			positionCode = "AD";
 			break;
-		case "manage":
-			positionCode = "LD";
+		case "总台医师":
+			positionCode = "ZD";
 			break;
-		case "receptionist":
-			positionCode = "QT";
+		case "总台主管":
+			positionCode = "ZM";
+			break;
+		case "分检医师":
+			positionCode = "FJ";
+			break;
+		case "总检医师":
+			positionCode = "ZJ";
+			break;
+		case "科室主管":
+			positionCode = "ZG";
+			break;
+		case "院长":
+			positionCode = "YZ";
+			break;
+		case "副院长":
+			positionCode = "FZ";
 			break;
 		default:
 			break;
@@ -138,13 +154,13 @@ public class UserDao {
 		}
 	}
 
-	public static void deleteEmployee(int id) {
+	public static void deleteEmployee(String id) {
 		// TODO Auto-generated method stub
 		try {
 			conn = DBUtil.getConnection();
 			String sql = "delete from Users where id=?";
 			ps = conn.prepareStatement(sql);
-			ps.setInt(1, id);
+			ps.setString(1, id);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -159,6 +175,20 @@ public class UserDao {
 			ps = conn.prepareStatement(sql);
 			ps.setString(2, id);
 			ps.setString(1, permission);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void changePassword(String id, String password) {
+		// TODO Auto-generated method stub
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "update Users set password=? where id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(2, id);
+			ps.setString(1, password);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

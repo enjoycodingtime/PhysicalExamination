@@ -7,35 +7,47 @@
 		<!--/span-->
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<div class="span9">
-				<h1>科室管理</h1><button type="button" data-toggle="modal" data-target="#addOffice" class="btn btn-success button-width">添加科室</button>
+				<h1>科室管理</h1>
+				<button type="button" data-toggle="modal" data-target="#addOffice"
+					class="btn btn-success button-width">添加科室</button>
 				<table class="table table-word-wrap clear-float-left">
-				<thead>
-				 <tr>
-				 	<th>科室名称</th>
-				 	<th>门牌号</th>
-				 	<th>科室操作</th>
-				 	<th>项目操作</th>
-				 </tr>
-				</thead>
-				<tbody>
-				<tr ng-repeat = 'office in offices'>
-					<td>{{office.office_name}}</td>
-					<td>{{office.office_number}}</td>
-					<td>
-					<button type="button" data-toggle="modal" data-target="#modifyOffice" ng-click='modifyOfficeAction(office.id,office.office_name,office.office_number)' class="btn btn-success button-width">修改</button>
-					<button type="button" ng-click='delete_office_action(office.id,office.office_name)' class="btn btn-danger button-width">删除</button>
-					 </td>
-					 <td>
-					<button type="button" ng-click='manage_examination_project(office.office_name)' class="btn btn-success button-width">管理</button> 
-					 </td>				
-				</tr>
-				</tbody>
+					<thead>
+						<tr>
+							<th>科室名称</th>
+							<th>科室类型</th>
+							<th>门牌号</th>
+							<th>科室操作</th>
+							<th>项目操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat='office in offices'>
+							<td>{{office.office_name}}</td>
+							<td ng-if='office.office_type == "1"'>功能科室</td>
+							<td ng-if='office.office_type == "0"'>非功能科室</td>
+							<td>{{office.office_number}}</td>
+							<td>
+								<button type="button" data-toggle="modal"
+									data-target="#modifyOffice"
+									ng-click='modifyOfficeAction(office)'
+									class="btn btn-success button-width">修改</button>
+								<button type="button"
+									ng-click='delete_office_action(office.id,office.office_name)'
+									class="btn btn-danger button-width">删除</button>
+							</td>
+							<td>
+								<button type="button"
+									ng-click='manage_examination_project(office.office_name)'
+									class="btn btn-success button-width">管理</button>
+							</td>
+						</tr>
+					</tbody>
 				</table>
-				
+
 				<div ng-if='offices.length'>
-				<tm-pagination conf="paginationConf"></tm-pagination>
+					<tm-pagination conf="paginationConf"></tm-pagination>
 				</div>
-				
+
 				<div>
 					<div class="modal fade" id="addOffice" tabindex="-1" role="dialog"
 						aria-labelledby="myModalLabel" aria-hidden="true">
@@ -50,13 +62,21 @@
 								</div>
 								<div class="modal-body">
 									<h2>填写科室信息</h2>
-									<p>
-										科室名称：<input type="text" ng-model='office_name' />
-									</p>
-									<p>
-										门牌号：<input type="text" ng-model='office_number' />
-									</p>
-
+									<table class="table table-bordered" align="center">
+										<tr>
+											<td class="col-xs-1"><b>科室名称:</b></td>
+											<td class="col-xs-4"><input type="text" class="form-control" placeholder="输入科室名字" ng-model='office_name'></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>科室类型:</b></td>
+											<td class="col-xs-4"><input type="radio" ng-model='office_type' value="1" />功能科室  <input type="radio" ng-model='office_type' value="0" />非功能科室 </td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>门牌号:</b></td>
+											<td class="col-xs-4"><input type="text" class="form-control" placeholder="输入科室门牌号" ng-model='office_number'></td>
+										</tr>
+									</table>
+									<i>(非功能科室不出现在检验项目中)</i>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default"
@@ -68,8 +88,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="modal fade" id="modifyOffice" tabindex="-1" role="dialog"
-						aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal fade" id="modifyOffice" tabindex="-1"
+						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -81,13 +101,21 @@
 								</div>
 								<div class="modal-body">
 									<h2>填写科室信息</h2>
-									<p>
-										科室名称：<input type="text" ng-model='modify_name' />
-									</p>
-									<p>
-										门牌号：<input type="text" ng-model='modify_number' />
-									</p>
-
+									<table class="table table-bordered" align="center">
+										<tr>
+											<td class="col-xs-1"><b>科室名称:</b></td>
+											<td class="col-xs-4"><input type="text" class="form-control" placeholder="输入科室名字" ng-model='modify_name'></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>科室类型:</b></td>
+											<td class="col-xs-4"><input type="radio" ng-checked="modify_type" name='nodify_type' ng-model='modify_type' value="1" />功能科室  <input type="radio" name='nodify_type' ng-checked="!modify_type" ng-model='modify_type' value="0" />非功能科室 </td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>门牌号:</b></td>
+											<td class="col-xs-4"><input type="text" class="form-control" placeholder="输入科室门牌号" ng-model='modify_number'></td>
+										</tr>
+									</table>
+									<i>(非功能科室不出现在检验项目中)</i>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default"
@@ -100,6 +128,5 @@
 						</div>
 					</div>
 				</div>
-	</div>
-</div>
-
+			</div>
+		</div>
