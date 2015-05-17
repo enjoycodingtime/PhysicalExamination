@@ -138,22 +138,6 @@ public class UserDao {
 	// TODO Auto-generated method stub
 	
 }
-
-	public static void modifyEmployee(int id, String name, String position) {
-		// TODO Auto-generated method stub
-		try {
-			conn = DBUtil.getConnection();
-			String sql = "update Users set name=?,position=? where id=?";
-			ps = conn.prepareStatement(sql);
-			ps.setInt(3, id);
-			ps.setString(1, name);
-			ps.setString(2, position);
-			ps.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static void deleteEmployee(String id) {
 		// TODO Auto-generated method stub
 		try {
@@ -161,20 +145,6 @@ public class UserDao {
 			String sql = "delete from Users where id=?";
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, id);
-			ps.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void setPermission(String id, String permission) {
-		// TODO Auto-generated method stub
-		try {
-			conn = DBUtil.getConnection();
-			String sql = "update Users set permission=? where id=?";
-			ps = conn.prepareStatement(sql);
-			ps.setString(2, id);
-			ps.setString(1, permission);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -195,4 +165,20 @@ public class UserDao {
 		}
 	}
 
+	public static void modifyEmployee(String id, String name, String position,
+			int office_id) {
+		// TODO Auto-generated method stub
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "update Users set name=?,position=?,office_id=? where id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.setString(2, position);
+			ps.setInt(3, office_id);
+			ps.setString(4, id);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

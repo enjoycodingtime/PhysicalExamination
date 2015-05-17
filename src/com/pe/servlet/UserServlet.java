@@ -412,10 +412,11 @@ public class UserServlet extends HttpServlet {
 		}
 		if (action.equals("modifyEmployee")) {
 			try {
-				int id = Integer.parseInt(request.getParameter("id"));
+				String id = request.getParameter("id");
+				int office_id = Integer.parseInt(request.getParameter("office_id"));
 				String name = request.getParameter("name");
 				String position = request.getParameter("position");
-				UserDao.modifyEmployee(id, name, position);
+				UserDao.modifyEmployee(id, name, position,office_id);
 			} catch (Exception e) {
 				out.print("error");
 			}

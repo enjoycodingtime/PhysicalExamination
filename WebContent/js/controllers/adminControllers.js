@@ -833,10 +833,12 @@ angular.module('peApp').controller('employeesCtrl',
 				})
 			}
 			
-			$scope.modifyEmployeeAction = function(id,username,position) {
-				$scope.id = id;
-				$scope.modify_name = username;
-				$scope.modify_position= position;
+			$scope.modifyEmployeeAction = function(employee) {
+				$scope.id = employee.id;
+				$scope.modify_name = employee.name;
+				$scope.modify_position= employee.position;
+				$scope.modify_office_name= employee.office;
+				$scope.modify_office= _.findWhere($scope.offices,{office_name:$scope.modify_office_name});
 			};
 			
 			$scope.setPermissionAction = function (employee){
@@ -868,15 +870,12 @@ angular.module('peApp').controller('employeesCtrl',
 			}
 			
 			$scope.modify_employee_action = function () {
-				$http({
-					method : 'POST',
-					url : 'modifyEmployee.com',
-					data : {
+				gateway.call('modifyEmployee.com',{
 						id : $scope.id,
 						name : $scope.modify_name,
-						position : $scope.modify_position.id
-					}
-				}).success(function(data) {
+						position : $scope.modify_position,
+						office_id:$scope.modify_office.id
+				}).then(function(data){
 					if (data == "error") {
 						swal({
 							title : "Error!",
@@ -893,12 +892,7 @@ angular.module('peApp').controller('employeesCtrl',
 						});
 						$route.reload();
 					}
-					// 加载成功之后做一些事
-				}).error(function(data, status, headers, config) {
-					// 处理错误
-
-					console.log('sorry');
-				});	
+				})
 			}
 			
 			$scope.delete_employee_action = function (id,name){
