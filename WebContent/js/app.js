@@ -136,6 +136,14 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/manage/officeStatistics.html',
 		controller : 'officeStatisticsCtrl',
         resolve: {auth: auth}
+	}).when('/conclusion', {
+		templateUrl : 'views/admin/conclusion.html',
+		controller : 'conclusionCtrl',
+        resolve: {auth: auth}
+	}).when('/physicalFeature', {
+		templateUrl : 'views/admin/physicalFeature.html',
+		controller : 'physicalFeatureCtrl',
+        resolve: {auth: auth}
 	}).otherwise({
 		redirectTo : '/'
 	});

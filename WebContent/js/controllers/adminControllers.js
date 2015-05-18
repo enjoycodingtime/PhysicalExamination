@@ -307,23 +307,20 @@ angular.module('peApp').controller('officeCtrlController',
 							
 			}
 			
-			$scope.manage_examination_project = function (office_name) {
+			$scope.manage_examination_project = function (office) {
 				$location.path('manageExaminationProject');
-				$location.search('office_name',office_name);
+				$location.search('office_id',office.id);
+				$location.search('office_name',office.office_name);
 			}
 			
 		});
 
 angular.module('peApp').controller('manageExaminationProjectCtrl',
 		function($scope, $http, $location,fGateway,$route) {
+			var gateway = new fGateway();
+			$scope.office_id = $location.search()['office_id'];
 			$scope.office_name = $location.search()['office_name'];
-			$http({
-				method : 'POST',
-				url : 'getExaminationProjectByOfficeName.com',
-				data : {
-					office_name : $scope.office_name
-				}
-			}).success(function(data) {
+			gateway.call('getExaminationProjectByOfficeId.com',{office_id:$scope.office_id}).then(function(data){
 				if (data == "error") {
 					swal({
 						title : "Error!",
@@ -333,28 +330,63 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 					})
 				} else {
 					$scope.examinationProjects = data;
+					$scope.paginationConf = {
+							currentPage : 1,
+							totalItems : data.length,
+							itemsPerPage : 15,
+							pagesLength : 15,
+							perPageOptions : [ 10, 20, 30, 40, 50 ],
+							rememberPerPage : 'perPageItems',
+							onChange : function() {
+								var items = [];
+								for (var int = 0; int < data.length; int++) {
+									if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+										items.push(data[int]);
+									}
+								}
+								$scope.examinationProjects = items;
+							}
+						};
 				}
-
-				// 加载成功之后做一些事
-			}).error(function(data, status, headers, config) {
-				swal({
-					title : "Error!",
-					text : "系统错误2，请联系管理员",
-					type : "warning",
-					timer : 3000
-				})
-			});
+			})
+			gateway.call('getphysicalFeature.com').then(function(data){
+				if (data == "error") {
+					swal({
+						title : "Error!",
+						text : "系统错误，请联系管理员",
+						type : "warning",
+						timer : 3000
+					})
+				} else {
+					$scope.physicalFeatures = data;
+				}
+			})
+			$scope.projectArray = [];
+			$scope.selectphysicalFeature = function(physicalFeature) {
+						if (_.indexOf($scope.projectArray,
+								physicalFeature.id) != -1) {
+							$scope
+									.delete_project_action(physicalFeature.id);
+						} else {
+							$scope.projectArray.push(physicalFeature.id);
+						}
+						$scope.physical_feature_code = $scope.projectArray.join();
+			};
+			$scope.delete_project_action = function(project) {
+				var index = _.indexOf($scope.projectArray, project);
+				$scope.projectArray.splice(index, 1);
+			}
 			
 			$scope.addExaminationProject = function(){
-				$http({
-					method : 'POST',
-					url : 'addExaminationProject.com',
-					data : {
-						office_name:$location.search()['office_name'],
-						project_name : $scope.project_name,
-						reference_standard : $scope.reference_standard
-					}
-				}).success(function(data) {
+				$scope.physical_feature_id = JSON
+				.stringify($scope.projectArray);
+				gateway.call('addExaminationProject.com',{
+					office_id:$location.search()['office_id'],
+					physical_feature_id:$scope.physical_feature_id,
+					project_name : $scope.project_name,
+					price : $scope.price,
+					combo_price : $scope.combo_price
+				}).then(function(data){
 					if (data == "error") {
 						swal({
 							title : "Error!",
@@ -371,19 +403,13 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 						});
 						$route.reload();
 					}
-
-					// 加载成功之后做一些事
-				}).error(function(data, status, headers, config) {
-					// 处理错误
-
-					console.log('sorry');
-				});
+				})
 			}
 			
-			$scope.delete_examination_project = function (id,name){
+			$scope.delete_examination_project = function (examination_project){
 				swal({
 					title : "Alert",
-					text : "确认删除<"+name+">这个科室吗？",
+					text : "确认删除<"+examination_project.project_name+">这个科室吗？",
 					type : "warning",
 					showCancelButton: true,
 	                confirmButtonColor: "#5CB85C",
@@ -395,7 +421,7 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 		    					method : 'POST',
 		    					url : 'deleteExaminationProject.com',
 		    					data : {
-		    						id : id
+		    						id : examination_project.id
 		    					}
 		    				}).success(function(data) {
 		    					if (data == "error") {
@@ -426,19 +452,27 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 							
 			}
 			
-			$scope.modifyExaminationProject = function (id,project_name,reference_standard){
-				$scope.project_id = id;
-				$scope.modify_project_name = project_name;				
-				$scope.modify_reference_standard = reference_standard;				
+			$scope.modifyExaminationProject = function (examinationProject){
+				$scope.project_id = examinationProject.id;
+				$scope.project_name = examinationProject.project_name;				
+				$scope.price = examinationProject.price;				
+				$scope.combo_price = examinationProject.combo_price;				
+				$scope.physical_feature_id = examinationProject.physical_feature_id;
+				$scope.projectArray = JSON.parse($scope.physical_feature_id || '[]') ;
+				$scope.physical_feature_code = $scope.projectArray.join();
 			}
 			$scope.modify_project_action = function (){
+				$scope.physical_feature_id = JSON
+				.stringify($scope.projectArray);
 				$http({
 					method : 'POST',
 					url : 'modifyProject.com',
 					data : {
 						project_id : $scope.project_id,
-						project_name : $scope.modify_project_name,
-						reference_standard : $scope.modify_reference_standard
+						project_name : $scope.project_name,
+						price:$scope.price,
+						combo_price:$scope.combo_price,
+						physical_feature_id:$scope.physical_feature_id
 					}
 				}).success(function(data) {
 					if (data == "error") {
@@ -841,34 +875,6 @@ angular.module('peApp').controller('employeesCtrl',
 				$scope.modify_office= _.findWhere($scope.offices,{office_name:$scope.modify_office_name});
 			};
 			
-			$scope.setPermissionAction = function (employee){
-				$scope.permissionList = EmployeeService.permissionList[employee.position];
-				$scope.employee = employee;
-				
-			};
-			$scope.setPermission = function(){
-				gateway.call('setPermission.com',{
-					id:$scope.employee.id,
-					permission:$scope.permission}).then(function(data){
-						if (data == "error") {
-							swal({
-								title : "Error!",
-								text : "系统错误，请联系管理员",
-								type : "warning",
-								timer : 3000
-							})
-						}else{
-							swal({
-								title : "sucess!",
-								text : "授权成功！",
-								type : "success",
-								timer : 2000
-							});
-							$route.reload();
-						}
-					});
-			}
-			
 			$scope.modify_employee_action = function () {
 				gateway.call('modifyEmployee.com',{
 						id : $scope.id,
@@ -930,5 +936,135 @@ angular.module('peApp').controller('employeesCtrl',
 	                	
 				})
 							
+			}
+		});
+
+angular.module('peApp').controller('physicalFeatureCtrl',
+		function($scope, $http, $location,fGateway,$route) {
+			var gateway = new fGateway();
+			gateway.call('getphysicalFeature.com').then(function(data){
+				if (data == "error") {
+					swal({
+						title : "Error!",
+						text : "系统错误，请联系管理员",
+						type : "warning",
+						timer : 3000
+					})
+				} else {
+					$scope.physicalFeatures = data;
+					$scope.paginationConf = {
+							currentPage : 1,
+							totalItems : data.length,
+							itemsPerPage : 15,
+							pagesLength : 15,
+							perPageOptions : [ 10, 20, 30, 40, 50 ],
+							rememberPerPage : 'perPageItems',
+							onChange : function() {
+								var items = [];
+								for (var int = 0; int < data.length; int++) {
+									if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+										items.push(data[int]);
+									}
+								}
+								$scope.physicalFeatures = items;
+							}
+						};
+				}
+
+			})
+			$scope.add_physicalFeature_action = function(){
+				gateway.call('addphysicalFeature.com', {
+					name : $scope.name,
+					result : $scope.result,
+					operator : $scope.operator,
+					compare_man : $scope.compare_man,
+					compare_woman : $scope.compare_woman
+				}).then(function(data) {
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "添加失败",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						swal({
+							title : "sucess!",
+							text : "添加成功",
+							type : "success"
+						});
+						$route.reload();
+					}
+				})
+			}
+			
+			$scope.modifyphysicalFeatureAction = function(physicalFeature) {
+				$scope.id = physicalFeature.id;
+				$scope.modify_name = physicalFeature.name;
+				$scope.modify_result = physicalFeature.result;
+				$scope.modify_operator = physicalFeature.operator;
+				$scope.modify_compare_man = physicalFeature.compare_man;
+				$scope.modify_compare_woman = physicalFeature.compare_woman;
+			};
+			
+			$scope.modify_physicalFeature_action = function () {
+				gateway.call('modifyphysicalFeature.com',{
+						id : $scope.id,
+						name : $scope.modify_name,
+						result : $scope.modify_result,
+						operator : $scope.modify_operator,
+						compare_man : $scope.modify_compare_man,
+						compare_woman : $scope.modify_compare_woman
+				}).then(function(data){
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "修改失败",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						swal({
+							title : "sucess!",
+							text : "修改成功",
+							type : "success",
+							timer : 2000
+						});
+						$route.reload();
+					}
+				})
+			}
+			
+			$scope.delete_physicalFeature_action = function (id,name){
+				swal({
+					title : "Alert",
+					text : "确认移除<"+name+">这个体征词吗？",
+					type : "warning",
+					showCancelButton: true,
+		            confirmButtonColor: "#5CB85C",
+		            confirmButtonText: "yes",
+		            closeOnConfirm: true },
+		            function(isConfirm){
+		            	if(isConfirm){
+		            		gateway.call('deletephysicalFeature.com',{id:id}).then(function(data){
+		            			if (data == "error") {
+		    						swal({
+		    							title : "Error!",
+		    							text : "删除失败",
+		    							type : "warning",
+		    							timer : 3000
+		    						})
+		    					} else {
+		    						swal({
+		    							title : "sucess!",
+		    							text : "删除成功",
+		    							type : "success",
+		    							timer : 2000
+		    						});
+		    						$route.reload();
+		    					}
+		            		})
+		            	}
+				})
 			}
 		});

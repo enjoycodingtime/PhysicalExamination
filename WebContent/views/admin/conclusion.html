@@ -1,0 +1,121 @@
+<div ng-include="'views/admin/adminHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/admin/adminSidebar.html'"></div>
+		</div>
+		<!--/span-->
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="span9">
+				<h1>结论词管理 </h1>
+				<button type="button" data-toggle="modal" data-target="#addConclusion"
+					class="btn btn-success button-width">添加结论词</button>
+				<table class="table table-word-wrap clear-float-left">
+					<thead>
+						<tr>
+							<th>名字</th>
+							<th>结论词</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat='conclusion in conclusions'>
+							<td>{{conclusion.name}}</td>
+							<td>{{conclusion.conclusion}}</td>
+							<td>
+								<button type="button" data-toggle="modal"
+									data-target="#modifyConclusion"
+									ng-click='modifyConclusionAction(conclusion)'
+									class="btn btn-success button-width">修改</button>
+								<button type="button"
+									ng-click='delete_conclusion_action(conclusion.id,conclusion.name)'
+									class="btn btn-danger button-width">删除</button>
+							</td>
+
+						</tr>
+					</tbody>
+				</table>
+
+				<div ng-if='conclusions.length'>
+					<tm-pagination conf="paginationConf"></tm-pagination>
+				</div>
+				<div>					
+					<div class="modal fade" id="modifyConclusion" tabindex="-1"
+						role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">修改</h4>
+								</div>
+								<div class="modal-body">
+									<h2>修改结论词</h2>
+									<table class="table table-bordered" align="center">
+										<tr>
+											<td class="col-xs-1"><b>名字:</b></td>
+											<td class="col-xs-4"><input class='form-control'
+												type="text" ng-model='modify_name'
+												placeholder="Name" /></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>结论词:</b></td>
+											<td class="col-xs-4"><textarea class="form-control " 
+												data-items="50"
+												ng-model="modify_conclusion" placeholder="Conclusion"></textarea></td>
+										</tr>
+									</table>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary"
+										ng-click='modify_conclusion_action()'
+										ng-disabled="!modify_name || !modify_conclusion">ok</button>
+								</div>
+							</div>
+						</div>
+					</div>					
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="addConclusion" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">添加结论词</h4>
+					</div>
+					<div class="modal-body">
+									<h2>添加结论词</h2>
+									<table class="table table-bordered" align="center">
+										<tr>
+											<td class="col-xs-1"><b>名字:</b></td>
+											<td class="col-xs-4"><input class='form-control'
+												type="text" ng-model='name'
+												placeholder="Name" /></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>结论词:</b></td>
+											<td class="col-xs-4"><textarea class="form-control " 
+												data-items="50"
+												ng-model="conclusion" placeholder="Conclusion"></textarea></td>
+										</tr>
+									</table>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-primary"
+										ng-click='add_conclusion_action()'
+										ng-disabled="!name || !conclusion">ok</button>
+								</div>
+				</div>
+			</div>
+		</div>

@@ -7,26 +7,34 @@
 		<!--/span-->
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<div class="span9">
-				<h1>科室：{{office_name}}</h1><button type="button" data-toggle="modal" data-target="#addExaminationProject" class="btn btn-success button-width">添加项目</button>
+				<h1>科室：{{office_name}}</h1>
+				<button type="button" data-toggle="modal" data-target="#addExaminationProject" class="btn btn-success button-width">添加项目</button>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
 				 <tr>
 				 	<th>项目名称</th>
-				 	<th>参照标准</th>
+				 	<th>体征词编码</th>
+				 	<th>单项价格</th>
+				 	<th>套餐价格</th>
 				 	<th>项目操作</th>
 				 </tr>
 				</thead>
 				<tbody>
 				<tr ng-repeat = 'examinationProject in examinationProjects'>
 					<td>{{examinationProject.project_name}}</td>
-					<td>{{examinationProject.reference_standard}}</td>
+					<td>{{examinationProject.physical_feature_id}}</td>
+					<td>{{examinationProject.price}}</td>
+					<td>{{examinationProject.combo_price}}</td>
 					<td>
-					<button type="button" data-toggle="modal" data-target="#modifyExaminationProject" ng-click='modifyExaminationProject(examinationProject.id,examinationProject.project_name,examinationProject.reference_standard)' class="btn btn-success button-width">修改</button>
-					<button type="button" ng-click='delete_examination_project(examinationProject.id,examinationProject.project_name)' class="btn btn-danger button-width">删除</button>
+					<button type="button" data-toggle="modal" data-target="#modifyExaminationProject" ng-click='modifyExaminationProject(examinationProject)' class="btn btn-success button-width">修改</button>
+					<button type="button" ng-click='delete_examination_project(examinationProject)' class="btn btn-danger button-width">删除</button>
 					 </td>
 				</tr>
 				</tbody>
 				</table>
+				<div ng-if='examinationProjects'>
+					<tm-pagination conf="paginationConf"></tm-pagination>
+				</div>
 				<div>
 				
 				<div>
@@ -43,20 +51,42 @@
 								</div>
 								<div class="modal-body">
 									<h2>填写项目信息</h2>
-									<p>
-										项目名称：<input type="text" ng-model='project_name' />
-									</p>
-									<p>
-										参照标准：<input type="text" ng-model='reference_standard' />
-									</p>
-
+									<table class="table table-bordered" align="center">
+										<tr>
+											<td class="col-xs-1"><b>项目名称:</b></td>
+											<td class="col-xs-4"><input class='form-control'
+												type="text" ng-model='project_name'
+												 /></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>体征词:</b></td>
+											<td class="col-xs-4">
+											<input class='form-control'
+												type="text" ng-model='physical_feature_code'
+												 />
+											<button type="button" class="btn btn-success charge-to-button" data-backdrop="false" data-toggle="modal" data-target="#selectPhysicalFeature" >选择体征词</button>
+											</td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>单项价格:</b></td>
+											<td class="col-xs-4"><input class='form-control'
+												type="text" ng-model='price'
+												placeholder="..." /></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>套餐价格:</b></td>
+											<td class="col-xs-4"><input class='form-control'
+												type="text" ng-model='combo_price'
+												placeholder="..." /></td>
+										</tr>
+									</table>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-default"
 										data-dismiss="modal">Close</button>
 									<button type="button" class="btn btn-primary"
 										ng-click='addExaminationProject()'
-										ng-disabled="!project_name || !reference_standard">ok</button>
+										ng-disabled="!project_name">ok</button>
 								</div>
 							</div>
 						</div>
@@ -74,12 +104,35 @@
 								</div>
 								<div class="modal-body">
 									<h2>填写项目信息</h2>
-									<p>
-										项目名称：<input type="text" ng-model='modify_project_name' />
-									</p>
-									<p>
-										参照标准：<input type="text" ng-model='modify_reference_standard' />
-									</p>
+									<table class="table table-bordered" align="center">
+										<tr>
+											<td class="col-xs-1"><b>项目名称:</b></td>
+											<td class="col-xs-4"><input class='form-control'
+												type="text" ng-model='project_name'
+												 /></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>体征词:</b></td>
+											<td class="col-xs-4">
+											<input class='form-control'
+												type="text" ng-model='physical_feature_code'
+												 />
+											<button type="button" class="btn btn-success charge-to-button" data-backdrop="false" data-toggle="modal" data-target="#selectPhysicalFeature" >选择体征词</button>
+											</td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>单项价格:</b></td>
+											<td class="col-xs-4"><input class='form-control'
+												type="text" ng-model='price'
+												placeholder="..." /></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>套餐价格:</b></td>
+											<td class="col-xs-4"><input class='form-control'
+												type="text" ng-model='combo_price'
+												placeholder="..." /></td>
+										</tr>
+									</table>
 
 								</div>
 								<div class="modal-footer">
@@ -87,7 +140,49 @@
 										data-dismiss="modal">Close</button>
 									<button type="button" class="btn btn-primary"
 										ng-click='modify_project_action()'
-										ng-disabled="!modify_project_name || !modify_reference_standard">ok</button>
+										ng-disabled="!project_name ">ok</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal fade" id="selectPhysicalFeature" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">选择体征词</h4>
+								</div>
+								<div class="modal-body">
+										<table class="table table-bordered" align="center">
+											<thead>
+												<tr>
+													<th></th>
+													<th>名称</th>
+													<th>结论词</th>
+													<th>操作符</th>
+													<th>比较值（男）</th>
+													<th>比较值（女）</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat='physicalFeature in physicalFeatures'>
+													<td><input type="checkbox" ng-click='selectphysicalFeature(physicalFeature)'/></td>
+													<td>{{physicalFeature.name}}</td>
+													<td>{{physicalFeature.result}}</td>
+													<td>{{physicalFeature.operator}}</td>
+													<td>{{physicalFeature.compare_man}}</td>
+													<td>{{physicalFeature.compare_woman}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary"
+										data-dismiss="modal">ok</button>
 								</div>
 							</div>
 						</div>

@@ -50,7 +50,6 @@ public class OfficeDao {
 	}
 	public static void modifyOffice(int id,String office_name,int office_type, String office_number){
 		try {
-			System.out.println(office_type);
 			conn = DBUtil.getConnection();
 			String sql = "update office set office_name=?,office_number=?,office_type=? where id=?";
 			ps = conn.prepareStatement(sql);
@@ -65,22 +64,16 @@ public class OfficeDao {
 		
 	}
 	
-	public static void deleteOffice(int id,String office_name){
+	public static void deleteOffice(int id){
 		try {
 			conn = DBUtil.getConnection();
 			String sql = "delete from office where id=?";
-			String sql2 = "delete from examination_project where office_name=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
-			ps.executeUpdate();
-			ps = conn.prepareStatement(sql2);
-			ps.setString(1, office_name);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 	}
-	
-	
 }

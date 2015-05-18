@@ -13,14 +13,18 @@ import javax.servlet.http.HttpSession;
 import net.sf.json.JSONArray;
 
 import com.pe.dao.ComboDao;
+import com.pe.dao.ConclusionDao;
 import com.pe.dao.ExaminationProjectDao;
 import com.pe.dao.OfficeDao;
+import com.pe.dao.PhysicalFeatureDao;
 import com.pe.dao.RegistrationDao;
 import com.pe.dao.ReservationDao;
 import com.pe.dao.UserDao;
 import com.pe.entity.Combo;
+import com.pe.entity.Conclusion;
 import com.pe.entity.ExaminationProject;
 import com.pe.entity.Office;
+import com.pe.entity.PhysicalFeature;
 import com.pe.entity.Registration;
 import com.pe.entity.Reservation;
 import com.pe.entity.Users;
@@ -167,7 +171,6 @@ public class UserServlet extends HttpServlet {
 				ReservationDao reservationDao = new ReservationDao();
 				List<Reservation> list = reservationDao.getReservation();
 				JSONArray jarray = JSONArray.fromObject(list);
-//				System.out.println(jarray);
 				out.println(jarray.toString());
 			} catch (Exception e) {
 				out.print("error");
@@ -181,7 +184,6 @@ public class UserServlet extends HttpServlet {
 				ReservationDao reservationDao = new ReservationDao();
 				List<Reservation> list = reservationDao.getReservationByDate(rule,date);
 				JSONArray jarray = JSONArray.fromObject(list);
-//				System.out.println(jarray);
 				out.println(jarray.toString());
 			} catch (Exception e) {
 				out.print("error");
@@ -303,20 +305,19 @@ public class UserServlet extends HttpServlet {
 		if (action.equals("deleteOffice")) {
 			try {
 				int id = Integer.parseInt(request.getParameter("office_id"));
-				String office_name = request.getParameter("office_name");
-				OfficeDao.deleteOffice(id,office_name);
+				OfficeDao.deleteOffice(id);
 			} catch (Exception e) {
 				out.print("error");
 			}
 		}
 		
 		//根据科室名查询项目
-		if (action.equals("getExaminationProjectByOfficeName")) {
+		if (action.equals("getExaminationProjectByOfficeId")) {
 			try {
-				String office_name = request.getParameter("office_name");
+				int office_id = Integer.parseInt(request.getParameter("office_id"));
 				ExaminationProjectDao examinationProjectDao = new ExaminationProjectDao();
 				List<ExaminationProject> list = examinationProjectDao
-						.getExaminationProjectsByOffice(office_name);
+						.getExaminationProjectsByOffice(office_id);
 				JSONArray jarray = JSONArray.fromObject(list);
 				out.println(jarray.toString());
 			} catch (Exception e) {
@@ -326,10 +327,12 @@ public class UserServlet extends HttpServlet {
 		//添加体检项目
 		if(action.equals("addExaminationProject")){
 			try {
-				String office_name = request.getParameter("office_name");
+				int office_id = Integer.parseInt(request.getParameter("office_id"));
 				String project_name = request.getParameter("project_name");
-				String reference_standard = request.getParameter("reference_standard");
-				ExaminationProjectDao.addProject(office_name,project_name,reference_standard);
+				String price = request.getParameter("price");
+				String combo_price = request.getParameter("combo_price");
+				String physical_feature_id = request.getParameter("physical_feature_id");
+				ExaminationProjectDao.addProject(office_id,project_name,price,combo_price,physical_feature_id);
 			} catch (Exception e) {
 				out.print("error");
 			}
@@ -347,10 +350,12 @@ public class UserServlet extends HttpServlet {
 		//修改科室
 		if (action.equals("modifyProject")) {
 			try {
-				int id = Integer.parseInt(request.getParameter("project_id"));
+				int project_id = Integer.parseInt(request.getParameter("project_id"));
 				String project_name = request.getParameter("project_name");
-				String reference_standard = request.getParameter("reference_standard");
-				ExaminationProjectDao.modifyProject(id, project_name, reference_standard);
+				String price = request.getParameter("price");
+				String combo_price = request.getParameter("combo_price");
+				String physical_feature_id = request.getParameter("physical_feature_id");
+				ExaminationProjectDao.modifyProject(project_id,project_name,price,combo_price,physical_feature_id);
 			} catch (Exception e) {
 				out.print("error");
 			}
@@ -465,7 +470,95 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		if (action.equals("getConclusion")) {
+			try {
+				ConclusionDao conclusion = new ConclusionDao();
+				List<Conclusion> list = conclusion.getConclusion();
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());	
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 		
+		if (action.equals("addConclusion")) {
+			try {
+				String name = request.getParameter("name");
+				String conclusion = request.getParameter("conclusion");
+				ConclusionDao.addConclusion(name,
+						conclusion);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		if (action.equals("modifyConclusion")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				String name = request.getParameter("name");
+				String conclusion = request.getParameter("conclusion");
+				ConclusionDao.modifyConclusion(id, name,conclusion);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		if (action.equals("deleteConclusion")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				ConclusionDao.deleteConclusion(id);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		//体征词
+		if (action.equals("getphysicalFeature")) {
+			try {
+				PhysicalFeatureDao physicalFeature = new PhysicalFeatureDao();
+				List<PhysicalFeature> list = physicalFeature.getphysicalFeature();
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());	
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		if (action.equals("addphysicalFeature")) {
+			try {
+				String name = request.getParameter("name");
+				String result = request.getParameter("result");
+				String operator = request.getParameter("operator");
+				String compare_man = request.getParameter("compare_man");
+				String compare_woman = request.getParameter("compare_woman");
+				PhysicalFeatureDao.addphysicalFeature(name,result,operator,compare_man,compare_woman);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		if (action.equals("modifyphysicalFeature")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				String name = request.getParameter("name");
+				String result = request.getParameter("result");
+				String operator = request.getParameter("operator");
+				String compare_man = request.getParameter("compare_man");
+				String compare_woman = request.getParameter("compare_woman");
+				PhysicalFeatureDao.modifyphysicalFeature(id,name,result,operator,compare_man,compare_woman);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		if (action.equals("deletephysicalFeature")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				PhysicalFeatureDao.deletephysicalFeature(id);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 		
 	}
 }
