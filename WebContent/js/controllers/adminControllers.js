@@ -1068,3 +1068,129 @@ angular.module('peApp').controller('physicalFeatureCtrl',
 				})
 			}
 		});
+angular.module('peApp').controller('conclusionCtrl',
+		function($scope, $http, $location,fGateway,$route) {
+			var gateway = new fGateway();
+			gateway.call('getConclusion.com').then(function(data){
+				if (data == "error") {
+					swal({
+						title : "Error!",
+						text : "系统错误，请联系管理员",
+						type : "warning",
+						timer : 3000
+					})
+				} else {
+					$scope.conclusions = data;
+					$scope.paginationConf = {
+							currentPage : 1,
+							totalItems : data.length,
+							itemsPerPage : 15,
+							pagesLength : 15,
+							perPageOptions : [ 10, 20, 30, 40, 50 ],
+							rememberPerPage : 'perPageItems',
+							onChange : function() {
+								var items = [];
+								for (var int = 0; int < data.length; int++) {
+									if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+										items.push(data[int]);
+									}
+								}
+								$scope.conclusions = items;
+							}
+						};
+				}
+
+			})
+			$scope.add_conclusion_action = function(){
+				gateway.call('addConclusion.com', {
+					name : $scope.name,
+					conclusion : $scope.conclusion,
+					explain_disease : $scope.explain_disease,
+					suggestion : $scope.suggestion
+				}).then(function(data) {
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "添加失败",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						swal({
+							title : "sucess!",
+							text : "添加成功",
+							type : "success"
+						});
+						$route.reload();
+					}
+				})
+			}
+			
+			$scope.modifyConclusionAction = function(conclusion) {
+				$scope.id = conclusion.id;
+				$scope.modify_name = conclusion.name;
+				$scope.modify_conclusion = conclusion.conclusion;
+				$scope.modify_explain_disease = conclusion.explain_disease;
+				$scope.modify_suggestion = conclusion.suggestion;
+			};
+			
+			$scope.modify_conclusion_action = function () {
+				gateway.call('modifyConclusion.com',{
+						id : $scope.id,
+						name : $scope.modify_name,
+						conclusion : $scope.modify_conclusion,
+						explain_disease : $scope.modify_explain_disease,
+						suggestion : $scope.modify_suggestion
+				}).then(function(data){
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "修改失败",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						swal({
+							title : "sucess!",
+							text : "修改成功",
+							type : "success",
+							timer : 2000
+						});
+						$route.reload();
+					}
+				})
+			}
+			
+			$scope.delete_conclusion_action = function (id,name){
+				swal({
+					title : "Alert",
+					text : "确认移除<"+name+">这个结论词吗？",
+					type : "warning",
+					showCancelButton: true,
+		            confirmButtonColor: "#5CB85C",
+		            confirmButtonText: "yes",
+		            closeOnConfirm: true },
+		            function(isConfirm){
+		            	if(isConfirm){
+		            		gateway.call('deleteConclusion.com',{id:id}).then(function(data){
+		            			if (data == "error") {
+		    						swal({
+		    							title : "Error!",
+		    							text : "删除失败",
+		    							type : "warning",
+		    							timer : 3000
+		    						})
+		    					} else {
+		    						swal({
+		    							title : "sucess!",
+		    							text : "删除成功",
+		    							type : "success",
+		    							timer : 2000
+		    						});
+		    						$route.reload();
+		    					}
+		            		})
+		            	}
+				})
+			}
+		});

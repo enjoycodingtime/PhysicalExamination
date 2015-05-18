@@ -485,8 +485,10 @@ public class UserServlet extends HttpServlet {
 			try {
 				String name = request.getParameter("name");
 				String conclusion = request.getParameter("conclusion");
+				String explain_disease = request.getParameter("explain_disease");
+				String suggestion = request.getParameter("suggestion");
 				ConclusionDao.addConclusion(name,
-						conclusion);
+						conclusion,explain_disease,suggestion);
 			} catch (Exception e) {
 				out.print("error");
 			}
@@ -497,7 +499,10 @@ public class UserServlet extends HttpServlet {
 				int id = Integer.parseInt(request.getParameter("id"));
 				String name = request.getParameter("name");
 				String conclusion = request.getParameter("conclusion");
-				ConclusionDao.modifyConclusion(id, name,conclusion);
+				String explain_disease = request.getParameter("explain_disease");
+				String suggestion = request.getParameter("suggestion");
+				ConclusionDao.modifyConclusion(id, name,
+						conclusion,explain_disease,suggestion);
 			} catch (Exception e) {
 				out.print("error");
 			}

@@ -13,8 +13,10 @@
 				<table class="table table-word-wrap clear-float-left">
 					<thead>
 						<tr>
-							<th>名字</th>
+							<th>名称</th>
 							<th>结论词</th>
+							<th>疾病解释</th>
+							<th>总结建议</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -22,6 +24,8 @@
 						<tr ng-repeat='conclusion in conclusions'>
 							<td>{{conclusion.name}}</td>
 							<td>{{conclusion.conclusion}}</td>
+							<td>{{conclusion.explain_disease}}</td>
+							<td>{{conclusion.suggestion}}</td>
 							<td>
 								<button type="button" data-toggle="modal"
 									data-target="#modifyConclusion"
@@ -55,16 +59,28 @@
 									<h2>修改结论词</h2>
 									<table class="table table-bordered" align="center">
 										<tr>
-											<td class="col-xs-1"><b>名字:</b></td>
+											<td class="col-xs-1"><b>名称:</b></td>
 											<td class="col-xs-4"><input class='form-control'
 												type="text" ng-model='modify_name'
-												placeholder="Name" /></td>
+												 /></td>
 										</tr>
 										<tr>
 											<td class="col-xs-1"><b>结论词:</b></td>
 											<td class="col-xs-4"><textarea class="form-control " 
 												data-items="50"
-												ng-model="modify_conclusion" placeholder="Conclusion"></textarea></td>
+												ng-model="modify_conclusion" ></textarea></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>疾病解释:</b></td>
+											<td class="col-xs-4"><textarea class="form-control " 
+												data-items="50"
+												ng-model="modify_explain_disease" ></textarea></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>总结建议:</b></td>
+											<td class="col-xs-4"><textarea class="form-control " 
+												data-items="50"
+												ng-model="modify_suggestion" ></textarea></td>
 										</tr>
 									</table>
 								</div>
@@ -96,16 +112,28 @@
 									<h2>添加结论词</h2>
 									<table class="table table-bordered" align="center">
 										<tr>
-											<td class="col-xs-1"><b>名字:</b></td>
+											<td class="col-xs-1"><b>名称:</b></td>
 											<td class="col-xs-4"><input class='form-control'
 												type="text" ng-model='name'
-												placeholder="Name" /></td>
+												 /></td>
 										</tr>
 										<tr>
 											<td class="col-xs-1"><b>结论词:</b></td>
 											<td class="col-xs-4"><textarea class="form-control " 
 												data-items="50"
-												ng-model="conclusion" placeholder="Conclusion"></textarea></td>
+												ng-model="conclusion" ></textarea></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>疾病解释:</b></td>
+											<td class="col-xs-4"><textarea class="form-control " 
+												data-items="50"
+												ng-model="explain_disease"></textarea></td>
+										</tr>
+										<tr>
+											<td class="col-xs-1"><b>总结建议:</b></td>
+											<td class="col-xs-4"><textarea class="form-control " 
+												data-items="50"
+												ng-model="suggestion" ></textarea></td>
 										</tr>
 									</table>
 								</div>
