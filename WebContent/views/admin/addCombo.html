@@ -24,7 +24,7 @@
                            </select>
 					</div>
 					<div class='col-xs-1'>
-                           <button type="button" data-toggle="modal" data-target="#searchByOffice" ng-click='searchByOfficeAction(office.office_name)' class="btn btn-success button-width">选择项目</button>
+                           <button type="button" data-toggle="modal" data-target="#searchByOffice" ng-click='searchByOfficeAction(office)' class="btn btn-success button-width">选择项目</button>
 					</div>
 				</div>
 				<table class="table table-word-wrap clear-float-left">
@@ -32,7 +32,7 @@
 				 <tr>
 				 	<th>所属科室</th>
 				 	<th>项目名称</th>
-				 	<th>参照标准</th>
+				 	<th>单项价格</th>
 				 	<th>操作</th>
 				 </tr>
 				</thead>
@@ -40,12 +40,27 @@
 				<tr ng-repeat = 'project in projectArray'>
 					<td>{{project.office_name}}</td>
 					<td>{{project.project_name}}</td>
-					<td>{{project.reference_standard}}</td>
+					<td>{{project.price}}</td>
 					<td><button type="button" ng-click='delete_project_action(project)' class="btn btn-danger button-width">删除</button></td>
+				</tr>
+				<tr>
+					<td colspan="2" class='text-right'>价格总计：</td>
+					<td>{{calculateTotalAmount()}}</td>
 				</tr>
 				</tbody>
 				</table>
-				<button ng-click='addCombo()'>确认添加</button>
+				<div class='row'>
+					<div class='col-xs-1 text-right'>
+							<span>套餐价格:</span>
+					</div>
+					<div class='col-xs-2'>
+							<input type="text" class="form-control" id=""
+								name="name" placeholder="输入套餐价格" ng-model='combo_price' 
+								onkeyup="this.value=this.value.replace(/\D/g,'')"
+								onafterpaste="this.value=this.value.replace(/\D/g,'')">
+					</div>
+				</div>
+				<button class="btn btn-success button-width" ng-click='addCombo()'>确认添加</button>
 			</div>
 			<div>
 					<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"
@@ -66,14 +81,14 @@
 										<tr>
 											<th></th>
 											<th>项目名称</th>
-											<th>参照标准</th>
+											<th>单项价格</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr ng-repeat='examinationProject in examinationProjects'>
 											<td><input type="checkbox" ng-click='selectOneProject(examinationProject)'></td>
 											<td>{{examinationProject.project_name}}</td>
-											<td><textarea class="form-control " rows="2" data-items="50" ng-model ="examinationProject.reference_standard"' ng-disabled="true"></textarea></td>
+											<td>{{examinationProject.price}}</td>
 										</tr>
 									</tbody>
 								</table>

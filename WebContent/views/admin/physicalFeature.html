@@ -75,10 +75,10 @@
 										<tr>
 											<td class="col-xs-1"><b>操作符:</b></td>
 											<td class="col-xs-4">
-											<input type="radio" name='operator' value='>=' ng-model='modify_operator' ng-checked='modify_operator ==">="'/> >= 
-											<input type="radio" name='operator' value='>' ng-model='modify_operator' ng-checked='modify_operator ==">"'/> >
-											<input type="radio" name='operator' value='<=' ng-model='modify_operator' ng-checked='modify_operator =="<="'/> <= 
-											<input type="radio" name='operator' value='<' ng-model='modify_operator'ng-checked='modify_operator =="<"'/> < 
+											<span ng-click='modify_operator = ">="'><input type="radio" name='operator' ng-checked='modify_operator ==">="'/> &gt;= </span>
+											<span ng-click='modify_operator = ">"'><input type="radio" name='operator' ng-checked='modify_operator ==">"'/> &gt; </span>
+											<span ng-click='modify_operator = "<="'><input type="radio" name='operator' ng-checked='modify_operator =="<="'/>&lt;= </span>
+											<span ng-click='modify_operator = "<"'><input type="radio" name='operator' ng-checked='modify_operator =="<"'/> &lt; </span>
 											</td>
 										</tr>
 										<tr>

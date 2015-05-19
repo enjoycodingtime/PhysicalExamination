@@ -35,10 +35,8 @@ angular.module('peApp').controller('comboSideBarCtrl',
 		});
 angular.module('peApp').controller('addComboCtrl',
 		function($scope, $http,fGateway, $location) {
-			$http({
-				method : 'GET',
-				url : 'getOffice.com'
-			}).success(function(data) {
+			var gateway = new fGateway();
+			gateway.call('getOffice.com').then(function(data){
 				if (data == "error") {
 					swal({
 						title : "Error!",
@@ -49,13 +47,7 @@ angular.module('peApp').controller('addComboCtrl',
 				} else {
 					$scope.offices = data;
 				}
-
-				// 加载成功之后做一些事
-			}).error(function(data, status, headers, config) {
-				// 处理错误
-
-				console.log('sorry');
-			});
+			})
 			$scope.projectArray =[];
 			$scope.selectOneProject = function(examinationProjectItem){
 				if(_.indexOf($scope.projectArray, examinationProjectItem) != -1) {
@@ -68,7 +60,15 @@ angular.module('peApp').controller('addComboCtrl',
 			$scope.delete_project_action = function (project) {
 				var index = _.indexOf($scope.projectArray, project);
 				$scope.projectArray.splice(index, 1);
-			}
+			};
+			
+			$scope.calculateTotalAmount = function() {
+				var totalAmount =0;
+				for(var i=0;i<$scope.projectArray.length;i++) {
+					totalAmount += parseInt($scope.projectArray[i].price);
+				}
+				return totalAmount;
+			};
 			
 			$scope.addCombo = function(){
 				if(! $scope.combo_name) {
@@ -80,7 +80,7 @@ angular.module('peApp').controller('addComboCtrl',
 					})
 					return null;
 				}
-				if($scope.projectArray.length == 0) {
+				else if($scope.projectArray.length == 0) {
 					swal({
 						title : "Error!",
 						text : " 至少选择一个项目！",
@@ -88,16 +88,23 @@ angular.module('peApp').controller('addComboCtrl',
 						timer : 3000
 					})
 					return null;
-				}else{
+				}
+				else if(! $scope.combo_price) {
+					swal({
+						title : "Error!",
+						text : " 请输入套餐价格！",
+						type : "warning",
+						timer : 3000
+					})
+					return null;
+				}
+				else{
 				var stringCombo = JSON.stringify($scope.projectArray);
-				$http({
-					method : 'POST',
-					url : 'addCombo.com',
-					data : {
-						combo_name : $scope.combo_name,
-						combo_items : stringCombo
-					}
-				}).success(function(data) {
+				gateway.call('addCombo.com',{
+					combo_name : $scope.combo_name,
+					combo_price:$scope.combo_price,
+					combo_items : stringCombo
+				}).then(function(data){
 					if (data == "error") {
 						swal({
 							title : "Error!",
@@ -114,25 +121,13 @@ angular.module('peApp').controller('addComboCtrl',
 						});
 						$location.path('addCombo');
 					}
-
-					// 加载成功之后做一些事
-				}).error(function(data, status, headers, config) {
-					// 处理错误
-
-					console.log('sorry');
-				});
+				})
 				}
 			}
 			
-			$scope.searchByOfficeAction = function(office_name){
-				$scope.office_name = office_name;
-				$http({
-					method : 'POST',
-					url : 'getExaminationProjectByOfficeName.com',
-					data : {
-						office_name : office_name
-					}
-				}).success(function(data) {
+			$scope.searchByOfficeAction = function(office){
+				$scope.office_id = office.id;
+				gateway.call('getExaminationProjectByOfficeId.com',{office_id:$scope.office_id}).then(function(data){
 					if (data == "error") {
 						swal({
 							title : "Error!",
@@ -143,17 +138,7 @@ angular.module('peApp').controller('addComboCtrl',
 					} else {
 						$scope.examinationProjects = data;
 					}
-
-					// 加载成功之后做一些事
-				}).error(function(data, status, headers, config) {
-					swal({
-						title : "Error!",
-						text : "系统错误2，请联系管理员",
-						type : "warning",
-						timer : 3000
-					})
-				});
-				
+				})
 			};
 			
 		});
@@ -675,6 +660,7 @@ angular.module('peApp').controller('modifyComboCtrl',
 				} else {
 					$scope.combos = JSON.parse(data[0].combo_items);
 					$scope.combo_name = data[0].combo_name;
+					$scope.combo_price = data[0].combo_price;
 					$scope.projectArray = $scope.combos ||[];
 				}
 
@@ -688,15 +674,9 @@ angular.module('peApp').controller('modifyComboCtrl',
 				})
 			});		
 			
-			$scope.searchByOfficeAction = function(office_name){
-				$scope.office_name = office_name;
-				$http({
-					method : 'POST',
-					url : 'getExaminationProjectByOfficeName.com',
-					data : {
-						office_name : office_name
-					}
-				}).success(function(data) {
+			$scope.searchByOfficeAction = function(office){
+				$scope.office_id = office.id;
+				gateway.call('getExaminationProjectByOfficeId.com',{office_id:$scope.office_id}).then(function(data){
 					if (data == "error") {
 						swal({
 							title : "Error!",
@@ -707,17 +687,7 @@ angular.module('peApp').controller('modifyComboCtrl',
 					} else {
 						$scope.examinationProjects = data;
 					}
-
-					// 加载成功之后做一些事
-				}).error(function(data, status, headers, config) {
-					swal({
-						title : "Error!",
-						text : "系统错误2，请联系管理员",
-						type : "warning",
-						timer : 3000
-					})
-				});
-				
+				})
 			};
 			
 			$scope.selectOneProject = function(examinationProjectItem){
@@ -743,7 +713,16 @@ angular.module('peApp').controller('modifyComboCtrl',
 					})
 					return null;
 				}
-				if($scope.projectArray.length == 0) {
+				else if($scope.projectArray.length == 0) {
+					swal({
+						title : "Error!",
+						text : " 至少选择一个项目！",
+						type : "warning",
+						timer : 3000
+					})
+					return null;
+				}
+				else if(!$scope.combo_price) {
 					swal({
 						title : "Error!",
 						text : " 至少选择一个项目！",
@@ -759,6 +738,7 @@ angular.module('peApp').controller('modifyComboCtrl',
 					data : {
 						id:$scope.id,
 						combo_name : $scope.combo_name,
+						combo_price : $scope.combo_price,
 						combo_items : stringCombo
 					}
 				}).success(function(data) {

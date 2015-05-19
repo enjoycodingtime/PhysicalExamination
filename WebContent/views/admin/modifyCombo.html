@@ -32,7 +32,7 @@
 				 <tr>
 				 	<th>所属科室</th>
 				 	<th>项目名称</th>
-				 	<th>参照标准</th>
+				 	<th>单项价格</th>
 				 	<th>操作</th>
 				 </tr>
 				</thead>
@@ -40,12 +40,23 @@
 				<tr ng-repeat = 'project in projectArray'>
 					<td>{{project.office_name}}</td>
 					<td>{{project.project_name}}</td>
-					<td>{{project.reference_standard}}</td>
+					<td>{{project.price}}</td>
 					<td><button type="button" ng-click='delete_project_action(project)' class="btn btn-danger button-width">删除</button></td>
 				</tr>
 				</tbody>
 				</table>
-				<button ng-click='modifyCombo()'>确认修改</button>
+				<div class='row'>
+					<div class='col-xs-1 text-right'>
+							<span>套餐价格:</span>
+					</div>
+					<div class='col-xs-2'>
+							<input type="text" class="form-control" id=""
+								name="name" placeholder="输入套餐价格" ng-model='combo_price' 
+								onkeyup="this.value=this.value.replace(/\D/g,'')"
+								onafterpaste="this.value=this.value.replace(/\D/g,'')">
+					</div>
+				</div>
+				<button class="btn btn-success button-width" ng-click='modifyCombo()'>确认修改</button>
 			</div>
 			<div>
 					<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"

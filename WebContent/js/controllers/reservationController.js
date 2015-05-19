@@ -57,10 +57,10 @@ angular
 						$scope.projectArray.splice(index, 1);
 					}
 
-					$scope.searchByOfficeAction = function(office_name) {
-						$scope.office_name = office_name;
-						gateway.call('getExaminationProjectByOfficeName.com', {
-							office_name : office_name
+					$scope.searchByOfficeAction = function(office) {
+						$scope.office_id = office.id;
+						gateway.call('getExaminationProjectByOfficeId.com', {
+							office_id : $scope.office_id
 						}).then(function(d) {
 							if (d == 'error') {
 								swal("Sorry!", "系统错误", "error");

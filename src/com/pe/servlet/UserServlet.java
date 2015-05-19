@@ -258,8 +258,9 @@ public class UserServlet extends HttpServlet {
 		if (action.equals("addCombo")) {
 			try {
 				String combo_name = request.getParameter("combo_name");
+				String combo_price = request.getParameter("combo_price");
 				String combo_items = request.getParameter("combo_items");
-				ComboDao.addCombo(combo_name, combo_items);
+				ComboDao.addCombo(combo_name,combo_price, combo_items);
 			} catch (Exception e) {
 				out.print("error");
 			}
@@ -398,8 +399,9 @@ public class UserServlet extends HttpServlet {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));
 				String combo_name = request.getParameter("combo_name");
+				String combo_price = request.getParameter("combo_price");
 				String combo_items = request.getParameter("combo_items");
-				ComboDao.modifyCombo(id, combo_name, combo_items);
+				ComboDao.modifyCombo(id, combo_name,combo_price, combo_items);
 			} catch (Exception e) {
 				out.print("error");
 			}

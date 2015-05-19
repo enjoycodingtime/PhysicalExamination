@@ -84,7 +84,7 @@
 						<div  class="col-lg-6">
 						<button type="button" data-toggle="modal"
 							data-target="#searchByOffice"
-							ng-click='searchByOfficeAction(office.office_name)'
+							ng-click='searchByOfficeAction(office)'
 							class="btn btn-success button-width">选择项目</button>
 					</div>
 					</div>
@@ -106,7 +106,8 @@
 								<tr>
 									<th>所属科室</th>
 									<th>项目名称</th>
-									<th>参照标准</th>
+									<th>单项价格</th>
+									<th>套餐价格</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -114,7 +115,8 @@
 								<tr ng-repeat='project in projectArray'>
 									<td>{{project.office_name}}</td>
 									<td>{{project.project_name}}</td>
-									<td>{{project.reference_standard}}</td>
+									<td>{{project.price}}</td>
+									<td>{{project.combo_price}}</td>
 									<td><button type="button"
 											ng-click='delete_project_action(project)'
 											class="btn btn-danger button-width">删除</button></td>
@@ -156,7 +158,7 @@
 							<tr>
 								<th></th>
 								<th>项目名称</th>
-								<th>参照标准</th>
+				 				<th>单项价格</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -164,10 +166,7 @@
 								<td><input type="checkbox"
 									ng-click='selectOneProject(examinationProject)'></td>
 								<td>{{examinationProject.project_name}}</td>
-								<td><textarea class="form-control " rows="2"
-										data-items="50"
-										ng-model="examinationProject.reference_standard"
-										' ng-disabled="true"></textarea></td>
+								<td>{{examinationProject.price}}</td>
 							</tr>
 						</tbody>
 					</table>

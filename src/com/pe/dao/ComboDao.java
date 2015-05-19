@@ -16,12 +16,15 @@ public class ComboDao {
 	private static PreparedStatement ps = null;
 	private static ResultSet rs = null;
 	
-	public static void addCombo(String combo_name,String combo_items){
+	public static void addCombo(String combo_name,String combo_price, String combo_items){
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "insert into combo(combo_name,combo_items) values('"+combo_name+"','"+combo_items+"')";
-			Statement stmt=conn.createStatement();
-			stmt.executeUpdate(sql);		
+			String sql = "insert into combo(combo_name,combo_price,combo_items) values(?,?,?)";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, combo_name);
+			ps.setString(2, combo_price);
+			ps.setString(3, combo_items);
+			ps.executeUpdate();		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -37,9 +40,10 @@ public class ComboDao {
 		while (rs.next()) {
 			int id = rs.getInt("id");
 			String combo_name = rs.getString("combo_name");
+			String combo_price = rs.getString("combo_price");
 			String combo_items = rs.getString("combo_items");
 
-			Combo combo = new Combo(id,combo_name, combo_items);
+			Combo combo = new Combo(id,combo_name, combo_price,combo_items);
 			list.add(combo);
 		}
 		return list;
@@ -55,8 +59,9 @@ public class ComboDao {
 		while (rs.next()) {
 			int id = rs.getInt("id");
 			String combo_name = rs.getString("combo_name");
+			String combo_price = rs.getString("combo_price");
 			String combo_items = rs.getString("combo_items");
-			Combo combo = new Combo(id,combo_name, combo_items);
+			Combo combo = new Combo(id,combo_name,combo_price,combo_items);
 			list.add(combo);
 		}
 		return list;
@@ -75,14 +80,15 @@ public class ComboDao {
 		}
 	}
 	
-	public static void modifyCombo(int id,String combo_name,String combo_items){
+	public static void modifyCombo(int id,String combo_name,String combo_price,String combo_items){
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "update combo set combo_name=?,combo_items=? where id=?";
+			String sql = "update combo set combo_name=?,combo_items=?,combo_price=? where id=?";
 			ps = conn.prepareStatement(sql);
-			ps.setInt(3, id);
 			ps.setString(1, combo_name);
 			ps.setString(2, combo_items);
+			ps.setString(3, combo_price);
+			ps.setInt(4, id);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
