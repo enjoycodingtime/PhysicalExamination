@@ -119,6 +119,4 @@ angular.module('peApp').controller(
 			$scope.allReservation = function () {
 				$route.reload();
 			}
-			
-
 		});

@@ -18,10 +18,10 @@ public class ReservationDao {
 	private static PreparedStatement ps =null;
 	private static ResultSet rs =null;
 	public static void insertReservation (String name,String sex, String birthday, String address,String phone_number,String idCard,String marriage,String nationa,
-			String date,String reservation_date,String physical_examination, String combo) throws Exception{
+			String date,String reservation_date,String physical_examination, String combo, String totalAmount) throws Exception{
 		conn = DBUtil.getConnection();
 		String sql = "insert into reservation(name, sex, birthday, address,phone_number,idCard,marriage,nationa,"
-				+ "date, reservation_date,physical_examination,combo,status) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "date, reservation_date,physical_examination,combo,status,totalAmount) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		ps =conn.prepareStatement(sql);
 		ps.setString(1, name);
 		ps.setString(2, sex);
@@ -36,6 +36,7 @@ public class ReservationDao {
 		ps.setString(11, physical_examination);
 		ps.setString(12, combo);
 		ps.setInt(13, 0);
+		ps.setString(14, totalAmount);
 		ps.executeUpdate();
 	}
 	
@@ -82,12 +83,13 @@ public class ReservationDao {
 			String reservation_date = rs.getString("reservation_date");
 			String physical_examination = rs.getString("physical_examination");
 			String combo = rs.getString("combo");
+			String totalAmount = rs.getString("totalAmount");
 			int status = rs.getInt("status");
 			
 			Reservation reservation =new Reservation(id, name, sex, birthday,
 					 idCard, address, marriage,  nationa,
 					 reservation_date,  phone_number,  date,
-					 physical_examination,  combo, status);
+					 physical_examination,  combo,totalAmount, status);
 			list.add(reservation);
 		}
 		return list;
@@ -127,12 +129,13 @@ public class ReservationDao {
 			String reservation_date = rs.getString("reservation_date");
 			String physical_examination = rs.getString("physical_examination");
 			String combo = rs.getString("combo");
+			String totalAmount = rs.getString("totalAmount");
 			int status = rs.getInt("status");
 			
 			Reservation reservation =new Reservation(id, name, sex, birthday,
 					 idCard, address, marriage,  nationa,
 					 reservation_date,  phone_number,  date,
-					 physical_examination,  combo, status);
+					 physical_examination,  combo,totalAmount, status);
 			list.add(reservation);
 		}
 		return list;
@@ -159,12 +162,13 @@ public class ReservationDao {
 			String reservation_date = rs.getString("reservation_date");
 			String physical_examination = rs.getString("physical_examination");
 			String combo = rs.getString("combo");
+			String totalAmount = rs.getString("totalAmount");
 			int status = rs.getInt("status");
 			
 			Reservation reservation =new Reservation(id1, name, sex, birthday,
 					 idCard, address, marriage,  nationa,
 					 reservation_date,  phone_number,  date,
-					 physical_examination,  combo, status);
+					 physical_examination,  combo,totalAmount, status);
 			list.add(reservation);
 		}
 		return list;
@@ -187,12 +191,12 @@ public class ReservationDao {
 	public static void updateReservation(int id, String name, String sex,
 			String birthday, String address, String phone_number,
 			String idCard, String marriage, String nationa, String date,
-			String reservation_date, String physical_examination, String combo) throws Exception{
+			String reservation_date, String physical_examination, String combo, String totalAmount) throws Exception{
 		// TODO Auto-generated method stub
 		
 		conn = DBUtil.getConnection();
 		String sql = "update reservation set name=?, sex=?, birthday=?, address=?,phone_number=?,idCard=?,marriage=?,nationa=?,"
-				+ "date=?, reservation_date=?,physical_examination=?,combo=?,status=? where id=?";
+				+ "date=?, reservation_date=?,physical_examination=?,combo=?,status=?,totalAmount=? where id=?";
 		ps =conn.prepareStatement(sql);
 		ps.setString(1, name);
 		ps.setString(2, sex);
@@ -207,8 +211,22 @@ public class ReservationDao {
 		ps.setString(11, physical_examination);
 		ps.setString(12, combo);
 		ps.setInt(13, 0);
-		ps.setInt(14, id);
+		ps.setString(14, totalAmount);
+		ps.setInt(15, id);
 		ps.executeUpdate();
 		
+	}
+
+	public static void deleteReservation(int id) {
+		// TODO Auto-generated method stub
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "delete from reservation where id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

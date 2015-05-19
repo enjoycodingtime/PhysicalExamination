@@ -230,4 +230,37 @@ angular.module('peApp').controller(
 			$scope.cancel = function () {
 				$route.reload()
 			}
+			$scope.deleteReservation = function () {
+				swal({
+					title : "Alert",
+					text : "确认删除吗？",
+					type : "warning",
+					showCancelButton: true,
+	                confirmButtonColor: "#5CB85C",
+	                confirmButtonText: "yes",
+	                closeOnConfirm: true },
+	                function(isConfirm){
+	                	if(isConfirm){
+	                		gateway.call('delectReservation.com',{id:id}).then(function(data){
+	        					if (data == "error") {
+	        						swal({
+	        							title : "Error!",
+	        							text : "删除失败",
+	        							type : "warning",
+	        							timer : 3000
+	        						})
+	        					} else {
+	        						swal({
+	        							title : "sucess!",
+	        							text : "删除成功",
+	        							type : "success",
+	        							timer : 2000
+	        						});
+	        						$location.path('reservationBox');
+	        					}
+	        				})
+	                	}
+				})
+				
+			}
 		});

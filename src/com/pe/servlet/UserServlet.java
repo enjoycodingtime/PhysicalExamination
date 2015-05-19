@@ -130,8 +130,9 @@ public class UserServlet extends HttpServlet {
 				String national = request.getParameter("national");
 				String physical_examination = request
 						.getParameter("physical_examination");
+				String totalAmount = request.getParameter("totalAmount");
 				ReservationDao.insertReservation(name, sex, birthday, address,phone_number,idCard,marriage,national,
-						date, reservation_date,physical_examination, combo);
+						date, reservation_date,physical_examination, combo,totalAmount);
 
 				out.print("ok");
 
@@ -153,11 +154,12 @@ public class UserServlet extends HttpServlet {
 				String idCard = request.getParameter("idCard");
 				String marriage = request.getParameter("marriage");
 				String combo = request.getParameter("combo");
+				String totalAmount = request.getParameter("totalAmount");
 				String national = request.getParameter("nationa");
 				String physical_examination = request
 						.getParameter("physical_examination");
 				ReservationDao.updateReservation(id,name, sex, birthday, address,phone_number,idCard,marriage,national,
-						date, reservation_date,physical_examination, combo);
+						date, reservation_date,physical_examination, combo,totalAmount);
 
 				out.print("ok");
 
@@ -190,6 +192,14 @@ public class UserServlet extends HttpServlet {
 			}
 		}
 		
+		if (action.equals("delectReservation")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				ReservationDao.deleteReservation(id);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 		if (action.equals("getRegistrateByDate")) {
 			try {
 				String date = request.getParameter("date");

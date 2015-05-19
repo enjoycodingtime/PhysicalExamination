@@ -40,6 +40,7 @@
 				 	<th>体检日期</th>
 				 	<th>套餐</th>				 	
 				 	<th>状态</th>				 	
+				 	<th>总价</th>				 	
 				 	<th>项目</th>				 	
 				 </tr>
 				</thead>
@@ -56,6 +57,7 @@
 					<td>{{reservationItem.combo || '自选'}}</td>
 					<td ng-if="reservationItem.status == '0'">未登记检查</td>
 					<td ng-if="reservationItem.status == '1'">已登记检查</td>
+					<td>{{reservationItem.totalAmount}}</td>
 					<td><button type="button" data-toggle="modal" data-target="#reservation_physical_examination" ng-click='show_physical_examination(reservationItem.physical_examination)' ng class="btn btn-success button-width">查看项目</button></td>
 				</tr>
 				</tbody>
@@ -85,14 +87,12 @@
 										<tr>
 											<th>科室名称</th>
 											<th>项目名称</th>
-											<th>参照标准</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr ng-repeat='examinationProject in selected_physical_examination'>
 											<td>{{examinationProject.office_name}}</td>
 											<td>{{examinationProject.project_name}}</td>
-											<td><textarea class="form-control " rows="2" data-items="50" ng-model ="examinationProject.reference_standard"' ng-disabled="true"></textarea></td>
 										</tr>
 									</tbody>
 								</table>

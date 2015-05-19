@@ -81,9 +81,18 @@ angular
 									} else {
 										$scope.projectArray = JSON
 												.parse(d[0].combo_items);
+										$scope.reservationInformation.totalAmount = d[0].combo_price;
 									}
 								});
 					}
+					$scope.calculateTotalAmount = function() {
+						var totalAmount =0;
+						for(var i=0;i<$scope.projectArray.length;i++) {
+							totalAmount += parseInt($scope.projectArray[i].price);
+						}
+						$scope.reservationInformation.totalAmount = totalAmount;
+						return totalAmount;
+					};
 
 					$scope.submit = function() {
 						$scope.reservationInformation.reservation_date = new Date().toLocaleDateString();

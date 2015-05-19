@@ -14,6 +14,7 @@ public class Reservation {
 	private String date;
 	private String physical_examination;
 	private String combo;
+	private String totalAmount;
 	private int status;
 	public int getId() {
 		return id;
@@ -99,10 +100,17 @@ public class Reservation {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
+	}
 	public Reservation(int id, String name, String sex, String birthday,
 			String idCard, String address, String marriage, String nationa,
 			String reservation_date, String phone_number, String date,
-			String physical_examination, String combo, int status) {
+			String physical_examination, String combo,String totalAmount, int status) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -117,6 +125,7 @@ public class Reservation {
 		this.date = date;
 		this.physical_examination = physical_examination;
 		this.combo = combo;
+		this.totalAmount = totalAmount;
 		this.status = status;
 	}
 
