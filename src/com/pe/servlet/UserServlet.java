@@ -211,6 +211,17 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		if (action.equals("getRegistrateById")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				RegistrationDao registrationDao = new RegistrationDao();
+				List<Registration> list = registrationDao.getRegistrateById(id);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 
 		// 查询预约信息
 		if (action.equals("isReservation")) {
@@ -534,6 +545,17 @@ public class UserServlet extends HttpServlet {
 			try {
 				PhysicalFeatureDao physicalFeature = new PhysicalFeatureDao();
 				List<PhysicalFeature> list = physicalFeature.getphysicalFeature();
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());	
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		if (action.equals("getphysicalFeatureById")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				PhysicalFeatureDao physicalFeature = new PhysicalFeatureDao();
+				List<PhysicalFeature> list = physicalFeature.getphysicalFeatureById(id);
 				JSONArray jarray = JSONArray.fromObject(list);
 				out.println(jarray.toString());	
 			} catch (Exception e) {

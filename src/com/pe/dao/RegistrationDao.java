@@ -110,4 +110,37 @@ public class RegistrationDao {
 		}
 		return list;
 	}
+
+	public List<Registration> getRegistrateById(int id1) throws Exception {
+		// TODO Auto-generated method stub
+		List<Registration> list = new ArrayList<Registration>();
+		conn=DBUtil.getConnection();
+		String sql ="select * from registration where id=?";
+		ps =conn.prepareStatement(sql);
+		ps.setInt(1, id1);
+		rs= ps.executeQuery();
+		while (rs.next()) {
+			int id = rs.getInt("id");
+			String name = rs.getString("name");
+			String birthday = rs.getString("birthday");
+			String sex = rs.getString("sex");
+			String address = rs.getString("address");
+			String idCard = rs.getString("idCard");
+			String marriage = rs.getString("marriage");
+			String nationa = rs.getString("nationa");
+			String phone_number = rs.getString("phone_number");
+			String date = rs.getString("date");
+			String reservation_date = rs.getString("reservation_date");
+			String physical_examination = rs.getString("physical_examination");
+			String combo = rs.getString("combo");
+			String comments = rs.getString("comments");
+
+			Registration registration = new Registration(id, name, sex, birthday,
+					 idCard, address, marriage,  nationa,
+					 reservation_date,  phone_number,  date,
+					 physical_examination,  combo, comments);
+			list.add(registration);
+		}
+		return list;
+	}
 }

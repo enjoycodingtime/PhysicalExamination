@@ -81,5 +81,25 @@ public class PhysicalFeatureDao {
 			e.printStackTrace();
 		}
 	}
+	public List<PhysicalFeature> getphysicalFeatureById(int id1) throws Exception {
+		// TODO Auto-generated method stub
+		List<PhysicalFeature> list = new ArrayList<PhysicalFeature>();
+		conn=DBUtil.getConnection();
+		String sql ="select * from physical_feature where id=?";
+		ps =conn.prepareStatement(sql);
+		ps.setInt(1, id1);
+		rs = ps.executeQuery();
+		while(rs.next()){
+			int id = rs.getInt("id");
+			String name = rs.getString("name");
+			String result = rs.getString("result");
+			String operator = rs.getString("operator");
+			String compare_man = rs.getString("compare_man");
+			String compare_woman = rs.getString("compare_woman");
+			PhysicalFeature physicalFeature =new PhysicalFeature(id,name,result,operator,compare_man,compare_woman);
+			list.add(physicalFeature);
+		}
+		return list;
+	}
 
 }

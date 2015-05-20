@@ -1,0 +1,172 @@
+<div ng-include="'views/doctor/doctorHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/doctor/doctorSidebar.html'"></div>
+		</div>
+		<!--/span-->
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="span9">
+				<h1>分检 </h1>
+				<h2>基础信息</h2>
+				<table class="table table-word-wrap clear-float-left">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>姓名</th>
+							<th>性别</th>
+							<th>出生日期</th>
+							<th>电话</th>
+							<th>日期</th>
+							<th>套餐</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{registrationList.id}}</td>
+							<td>{{registrationList.name}}</td>
+							<td ng-if='registrationList.sex=="man"'>男</td>
+							<td ng-if='registrationList.sex=="woman"'>女</td>
+							<td>{{registrationList.birthday}}</td>
+							<td>{{registrationList.phone_number}}</td>
+							<td>{{registrationList.date}}</td>
+							<td>{{registrationList.combo || '自选'}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<h2>体检项目</h2>
+				<table class="table table-word-wrap clear-float-left">
+								<thead>
+									<tr>
+										<th>科室名称</th>
+										<th>项目名称</th>
+										<th>体征词</th>
+										<th>分检结果</th>
+										<th>分检结论</th>
+										<th  ng-if='!isShowPage'>提交单项</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										ng-repeat='examinationProject in selected_physical_examination'>
+										<td>{{examinationProject.office_name}}</td>
+										<td>{{examinationProject.project_name}}</td>
+										<td><button type="button" data-toggle="modal"
+									data-target="#physicalFeature"
+									ng-click='showPhysicalFeature(examinationProject)'
+									ng class="btn btn-success button-width">体征词</button></td>
+										<td><textarea class="form-control " rows="2"
+												data-items="50" ng-disabled="examinationProject.office_name != office_name" ng-model = 'examinationProject.result' placeholder='未检'></textarea></td>
+										<td><textarea class="form-control textarea" rows="2"
+												data-items="50" ng-disabled="examinationProject.office_name != office_name" ng-model = 'examinationProject.conclusion' placeholder='未检'></textarea>
+											<button ng-click="setCurrentEdit(examinationProject)" type="button" class="btn btn-success charge-to-button" data-backdrop="false" data-toggle="modal" data-target="#selectConclusion">选择</button>
+										</td>
+										<td> 										
+								<button ng-if='!isShowPage' type="button" class="btn btn-success"
+								ng-click='addComments($index,examinationProject)' ng-disabled="examinationProject.office_name != office_name">确定</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+				<div class='row' ng-if='!isShowPage'>
+					<div class='col-xs-4'></div>
+					<div class='col-xs-4'>
+					<a class="btn btn-success btn-large" ng-click='submit()'>提交</a> 
+					<a class="btn btn-success btn-large" ng-click='cancel()'>取消</a>
+					</div>					
+					<div class='col-xs-4'></div>
+				</div>
+			</div>
+</div>
+<div>
+			<div class="modal fade" id="physicalFeature"
+				tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">体征词</h4>
+						</div>
+						<div class="modal-body">
+							<table class="table table-word-wrap clear-float-left">
+								<thead>
+									<tr>
+										<th>名称</th>
+										<th>结论词</th>
+										<th>操作符</th>
+										<th>比较值（男）</th>
+										<th>比较值（女）</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat='physicalFeature in physicalFeatures'>
+										<td>{{physicalFeature.name}}</td>
+										<td>{{physicalFeature.result}}</td>
+										<td>{{physicalFeature.operator}}</td>
+										<td>{{physicalFeature.compare_man}}</td>
+										<td>{{physicalFeature.compare_woman}}</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">关闭</button>
+								
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="selectConclusion"
+				tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">结论词</h4>
+						</div>
+						<div class="modal-body">
+							<table class="table table-word-wrap clear-float-left">
+								<thead>
+									<tr>
+										<th>选择</th>
+										<th>名称</th>
+										<th>结论词</th>
+										<th>疾病解释</th>
+										<th>总结建议</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat='conclusion in conclusions' ng-click='getConclusion(conclusion)'>
+										<td><input type='radio' name='conclusion'></td>
+										<td>{{conclusion.name}}</td>
+										<td>{{conclusion.conclusion}}</td>
+										<td>{{conclusion.explain_disease}}</td>
+										<td>{{conclusion.suggestion}}</td>
+									</tr>
+								</tbody>
+							</table>
+							<div ng-if='conclusions.length'>
+								<tm-pagination conf="paginationConf"></tm-pagination>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">关闭</button>
+								
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		

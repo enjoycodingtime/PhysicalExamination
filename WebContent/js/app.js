@@ -104,6 +104,10 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/doctor/fenjian.html',
 		controller : 'fenjianCtrl',
         resolve: {auth: auth}
+	}).when('/completeTodayFenjian', {
+		templateUrl : 'views/doctor/completedToday.html',
+		controller : 'completedTodayCtrl',
+        resolve: {auth: auth}
 	}).when('/zongjian', {
 		templateUrl : 'views/doctor/zongjian.html',
 		controller : 'zongjianCtrl',
@@ -143,6 +147,14 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/physicalFeature', {
 		templateUrl : 'views/admin/physicalFeature.html',
 		controller : 'physicalFeatureCtrl',
+        resolve: {auth: auth}
+	}).when('/fenjianResult', {
+		templateUrl : 'views/doctor/fenjian_add_result.html',
+		controller : 'fenjianResultCtrl',
+        resolve: {auth: auth}
+	}).when('/zongjianResult', {
+		templateUrl : 'views/doctor/zongjian_add_result.html',
+		controller : 'zongjianResultCtrl',
         resolve: {auth: auth}
 	}).otherwise({
 		redirectTo : '/'
