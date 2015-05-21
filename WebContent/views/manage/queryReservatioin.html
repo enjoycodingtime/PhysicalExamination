@@ -84,14 +84,14 @@
 										<tr>
 											<th>科室名称</th>
 											<th>项目名称</th>
-											<th>参照标准</th>
+											<th>单项价格</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr ng-repeat='examinationProject in selected_physical_examination'>
 											<td>{{examinationProject.office_name}}</td>
 											<td>{{examinationProject.project_name}}</td>
-											<td><textarea class="form-control " rows="2" data-items="50" ng-model ="examinationProject.reference_standard"' ng-disabled="true"></textarea></td>
+											<td>{{examinationProject.price}}</td>
 										</tr>
 									</tbody>
 								</table>

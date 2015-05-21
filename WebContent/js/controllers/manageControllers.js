@@ -112,9 +112,10 @@ angular.module('peApp').controller('officeStatisticsCtrl',
 						}
 					});		
 			}
-			$scope.manage_examination_project = function (office_name) {
+			$scope.manage_examination_project = function (office) {
 				$location.path('manageExaminationProject1');
-				$location.search('office_name',office_name);
+				$location.search('office_name',office.office_name);
+				$location.search('office_id',office.id);
 			}
 			$scope.getOffices();
 		});

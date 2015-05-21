@@ -8,6 +8,20 @@
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<div class="span9">
 				<h1>套餐：{{combo_name}}</h1> 
+				<div class='row'>
+					<div class='col-xs-3'>
+						<p class='input-group'>
+							<input type="text" class="form-control"
+								 placeholder="search"
+								ng-model='query'><span class="input-group-btn">
+								<button type="button" class="btn btn-default"
+									>
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</p>
+					</div>
+				</div>	
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
 				 <tr>
@@ -17,7 +31,7 @@
 				 </tr>
 				</thead>
 				<tbody>
-				<tr ng-repeat = 'combo in combos'>
+				<tr ng-repeat = 'combo in combos | filter:query'>
 					<td>{{combo.office_name}}</td>
 					<td>{{combo.project_name}}</td>
 					<td>{{combo.price}}</td>

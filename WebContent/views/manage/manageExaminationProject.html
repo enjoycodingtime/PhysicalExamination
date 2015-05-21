@@ -12,16 +12,67 @@
 				<thead>
 				 <tr>
 				 	<th>项目名称</th>
-				 	<th>参照标准</th>
+				 	<th>体征词编码</th>
+				 	<th>单项价格</th>
+				 	<th>套餐价格</th>
+				 </tr>
 				 </tr>
 				</thead>
 				<tbody>
 				<tr ng-repeat = 'examinationProject in examinationProjects'>
 					<td>{{examinationProject.project_name}}</td>
-					<td>{{examinationProject.reference_standard}}</td>
+					<td>{{formatePhysicalFeature(examinationProject.physical_feature_id)}}
+					<button type="button" data-toggle="modal"
+									data-target="#physicalFeature"
+									ng-click='showPhysicalFeature(examinationProject)'
+									ng class="btn btn-success button-width" ng-if='examinationProject.physical_feature_id'>体征词</button>
+					</td>
+					<td>{{examinationProject.price}}</td>
+					<td>{{examinationProject.combo_price}}</td>
 				</tr>
 				</tbody>
 				</table>
 	</div>
 </div>
+<div class="modal fade" id="physicalFeature" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">体征词</h4>
+					</div>
+					<div class="modal-body">
+						<table class="table table-word-wrap clear-float-left">
+							<thead>
+								<tr>
+									<th>名称</th>
+									<th>结论词</th>
+									<th>操作符</th>
+									<th>比较值（男）</th>
+									<th>比较值（女）</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat='physicalFeature in physicalFeatures'>
+									<td>{{physicalFeature.name}}</td>
+									<td>{{physicalFeature.result}}</td>
+									<td>{{physicalFeature.operator}}</td>
+									<td>{{physicalFeature.compare_man}}</td>
+									<td>{{physicalFeature.compare_woman}}</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
 

@@ -10,6 +10,20 @@
 				<h1>用户管理</h1>
 				<button type="button" data-toggle="modal" data-target="#addEmployee1"
 					class="btn btn-success button-width">添加用户</button>
+				<div class='row'>
+					<div class='col-xs-3'>
+						<p class='input-group'>
+							<input type="text" class="form-control"
+								 placeholder="search"
+								ng-model='query'><span class="input-group-btn">
+								<button type="button" class="btn btn-default"
+									>
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</p>
+					</div>
+				</div>	
 				<table class="table table-word-wrap clear-float-left">
 					<thead>
 						<tr>
@@ -22,7 +36,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat='employee in employees'>
+						<tr ng-repeat='employee in employees | filter:query'>
 							<td>{{employee.id}}</td>
 							<td>{{employee.name}}</td>
 							<td>{{employee.office}}</td>

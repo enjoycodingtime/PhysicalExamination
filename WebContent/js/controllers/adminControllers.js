@@ -347,6 +347,15 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 				}
 			})
 			$scope.projectArray = [];
+			$scope.showPhysicalFeature = function (examinationProject) {
+				var physical_feature_id = JSON.parse(examinationProject.physical_feature_id || '[]');
+				$scope.physicalFeatures =[];
+				for(var i=0;i<physical_feature_id.length;i++) {
+					gateway.call('getphysicalFeatureById.com',{id:physical_feature_id[i]}).then(function(data){
+						$scope.physicalFeatures.push(data[0]);
+					})
+				}
+			}
 			$scope.selectphysicalFeature = function(physicalFeature) {
 						if (_.indexOf($scope.projectArray,
 								physicalFeature.id) != -1) {
@@ -446,6 +455,10 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 				$scope.projectArray = JSON.parse($scope.physical_feature_id || '[]') ;
 				$scope.physical_feature_code = $scope.projectArray.join();
 			}
+			$scope.formatePhysicalFeature = function(physical_feature_id) {
+				var result = JSON.parse(physical_feature_id || '[]').join()
+				return result;
+			}			
 			$scope.modify_project_action = function (){
 				$scope.physical_feature_id = JSON
 				.stringify($scope.projectArray);
