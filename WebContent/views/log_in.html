@@ -1,4 +1,4 @@
-<div class="container" ng-controller='logInCtrl'>
+<div class="container">
 	<form>
 		<section class="loginBox row-fluid">
 			<section class="span7 left">
@@ -11,12 +11,21 @@
 				<p>
 					<input type="password" name="password" ng-model='password'
 						placeholder="Password" btn-Login='log_in()' />
+				</p>
+				<p>
+					<input type="text" name="yanzhangma" ng-model='yanzhangma'
+						placeholder="输入下方验证码" id="code1" btn-Login='log_in()'  />
+					<div id="vCode1" style="width:100px; height: 30px; border: 1px solid #ccc; display: inline-block;"></div>
+				</p>
+				<p>
 					<section class="span1">
 						<input type="button" value=" 登录 " ng-click='log_in()'
 							class="btn btn-primary">
 					</section>
+				</p>
 			</section>
 		</section>
 	</form>	
 	<!-- /.modal -->
 </div>
+

@@ -2,7 +2,22 @@
 
 angular.module('peApp').controller('logInCtrl',
 		function($scope, $http, $location,$window,LoginService) {
-			$scope.log_in = function() {				
+			var onload = function () {
+	            var container1 = document.getElementById("vCode1");
+	            var code1 = new vCode(container1);
+	            $scope.code1 = code1;
+	        };
+	        onload();
+			$scope.log_in = function() {
+	            if(!$scope.code1.verify($scope.yanzhangma)){
+	            	swal({
+						title : "Error!",
+						text : "验证码错误，请重新输入",
+						type : "warning",
+						timer : 3000
+					})
+					return null;
+	            }
 				$http({
 					method : 'POST',
 					url : 'home.com',
