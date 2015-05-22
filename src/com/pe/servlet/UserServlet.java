@@ -250,7 +250,7 @@ public class UserServlet extends HttpServlet {
 				String idCard = request.getParameter("idCard");
 				String marriage = request.getParameter("marriage");
 				String combo = request.getParameter("combo");
-				String national = request.getParameter("national");
+				String national = request.getParameter("nationa");
 				String physical_examination = request
 						.getParameter("physical_examination");
 				ReservationDao.insertRegistrate(name, sex, birthday, address,phone_number,idCard,marriage,national,
