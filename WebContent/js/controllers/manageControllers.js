@@ -81,7 +81,7 @@ angular.module('peApp').controller('queryDayReportCtrl',
 				
 			}
 			var date = new Date();
-			$scope.date = $scope.date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+			$scope.date = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 			$scope.getDayReport($scope.date);
 		});
 
