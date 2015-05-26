@@ -64,7 +64,7 @@
 					套餐价不能大于总价！
 					</div>
 				</div>
-				<button class="btn btn-success button-width" ng-click='addCombo()' ng-disabled='combo_price>calculateTotalAmount()'>确认添加</button>
+				<button class="btn btn-success button-width" ng-click='addCombo()' ng-disabled='combo_price>calculateTotalAmount() || !combo_price'>确认添加</button>
 			</div>
 			<div>
 					<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"

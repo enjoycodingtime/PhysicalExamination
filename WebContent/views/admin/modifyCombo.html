@@ -24,7 +24,7 @@
                            </select>
 					</div>
 					<div class='col-xs-1'>
-                           <button type="button" data-toggle="modal" data-target="#searchByOffice" ng-click='searchByOfficeAction(office.office_name)' class="btn btn-success button-width">选择项目</button>
+                           <button type="button" data-toggle="modal" data-target="#searchByOffice" ng-click='searchByOfficeAction(office)' class="btn btn-success button-width">选择项目</button>
 					</div>
 				</div>
 				<table class="table table-word-wrap clear-float-left">
@@ -43,6 +43,10 @@
 					<td>{{project.price}}</td>
 					<td><button type="button" ng-click='delete_project_action(project)' class="btn btn-danger button-width">删除</button></td>
 				</tr>
+				<tr>
+					<td colspan="2" class='text-right'>价格总计：</td>
+					<td>{{calculateTotalAmount()}}</td>
+				</tr>
 				</tbody>
 				</table>
 				<div class='row'>
@@ -55,8 +59,11 @@
 								onkeyup="this.value=this.value.replace(/\D/g,'')"
 								onafterpaste="this.value=this.value.replace(/\D/g,'')">
 					</div>
+					<div ng-if='combo_price>calculateTotalAmount()' class='col-xs-1 text-danger'>
+					套餐价不能大于总价！
+					</div>
 				</div>
-				<button class="btn btn-success button-width" ng-click='modifyCombo()'>确认修改</button>
+				<button class="btn btn-success button-width" ng-click='modifyCombo()' ng-disabled='combo_price>calculateTotalAmount() || !combo_price'>确认修改</button>
 			</div>
 			<div>
 					<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"

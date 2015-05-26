@@ -640,6 +640,7 @@ angular.module('peApp').controller('manageComboExaminationProjectCtrl',
 
 angular.module('peApp').controller('modifyComboCtrl',
 		function($scope, $http, $location,fGateway,$route) {
+			var gateway = new fGateway();
 			$scope.id = $location.search()['id'];
 			$http({
 				method : 'GET',
@@ -721,6 +722,14 @@ angular.module('peApp').controller('modifyComboCtrl',
 				var index = _.indexOf($scope.projectArray, project);
 				$scope.projectArray.splice(index, 1);
 			}
+			
+			$scope.calculateTotalAmount = function() {
+				var totalAmount =0;
+				for(var i=0;i<$scope.projectArray.length;i++) {
+					totalAmount += parseInt($scope.projectArray[i].price);
+				}
+				return totalAmount;
+			};
 			
 			$scope.modifyCombo = function(){
 				if(! $scope.combo_name) {
