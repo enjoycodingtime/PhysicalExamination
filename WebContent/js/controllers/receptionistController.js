@@ -36,7 +36,8 @@ angular.module('peApp').controller(
 		        	$scope.todayReservation = function () {
 		        		$scope.allReservationButton = false;
 						$scope.todayReservationButton = true;
-						var today = new Date().toLocaleDateString();
+						var date = new Date();
+						var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 						$scope.registrationLists = _.where(data,{'date':today});
 						$scope.paginationConf = {
 								currentPage : 1,
@@ -159,7 +160,9 @@ angular.module('peApp').controller(
 					}
 					
 					$scope.submit = function() {
-						$scope.reservationInformation.reservation_date = new Date().toLocaleDateString();
+						var date = new Date();
+						date = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+						$scope.reservationInformation.reservation_date = date;
 						$scope.reservationInformation.date = $(
 								'#reservation_date').val();
 						$scope.reservationInformation.physical_examination = JSON

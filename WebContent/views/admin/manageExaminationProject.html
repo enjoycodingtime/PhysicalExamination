@@ -30,6 +30,7 @@
 						<tr>
 							<th>项目名称</th>
 							<th>体征词编码</th>
+							<th>体征词</th>
 							<th>单项价格</th>
 							<th>套餐价格</th>
 							<th>项目操作</th>
@@ -38,11 +39,14 @@
 					<tbody>
 						<tr ng-repeat='examinationProject in examinationProjects | filter:query'>
 							<td>{{examinationProject.project_name}}</td>
-							<td>{{formatePhysicalFeature(examinationProject.physical_feature_id)}}
+							<td>{{formatePhysicalFeature(examinationProject.physical_feature_id)||'无'}}
+							</td>
+							<td>
 								<button type="button" data-toggle="modal"
 									data-target="#physicalFeature"
 									ng-click='showPhysicalFeature(examinationProject)' ng
 									class="btn btn-success button-width" ng-if='examinationProject.physical_feature_id'>体征词</button>
+								<span ng-if='!havaPhysicalFeature(examinationProject)'>无</span>
 							</td>
 							<td>{{examinationProject.price}}</td>
 							<td>{{examinationProject.combo_price}}</td>

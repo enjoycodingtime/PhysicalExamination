@@ -49,7 +49,8 @@ angular.module('peApp').controller(
 				$scope.allReservationButton = false;
 				$scope.todayReservationButton = true;
 				$scope.todayExapinationButton = false;
-				var today = new Date().toLocaleDateString();
+				var date = new Date();
+				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 				gateway.call('getReservationByDate.com',{rule:'reservation_date',date:today}).then(function(data) {
 					if (data == "error") {
 						swal({
@@ -85,7 +86,8 @@ angular.module('peApp').controller(
 				$scope.allReservationButton = false;
 				$scope.todayReservationButton = false;
 				$scope.todayExapinationButton = true;
-				var today = new Date().toLocaleDateString();
+				var date = new Date();
+				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 				gateway.call('getReservationByDate.com',{rule:'date',date:today}).then(function(data) {
 					if (data == "error") {
 						swal({

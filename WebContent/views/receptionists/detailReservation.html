@@ -104,7 +104,6 @@
 								<tr>
 									<th>所属科室</th>
 									<th>项目名称</th>
-									<th>参照标准</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -112,7 +111,6 @@
 								<tr ng-repeat='project in projectArray'>
 									<td>{{project.office_name}}</td>
 									<td>{{project.project_name}}</td>
-									<td>{{project.reference_standard}}</td>
 									<td><button type="button"
 											ng-click='delete_project_action(project)'
 											class="btn btn-danger button-width" ng-disabled = 'modify' >删除</button></td>

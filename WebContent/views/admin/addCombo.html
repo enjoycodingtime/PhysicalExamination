@@ -52,15 +52,19 @@
 				<div class='row'>
 					<div class='col-xs-1 text-right'>
 							<span>套餐价格:</span>
-					</div>
+					
+					</div>					
 					<div class='col-xs-2'>
 							<input type="text" class="form-control" id=""
 								name="name" placeholder="输入套餐价格" ng-model='combo_price' 
 								onkeyup="this.value=this.value.replace(/\D/g,'')"
 								onafterpaste="this.value=this.value.replace(/\D/g,'')">
 					</div>
+					<div ng-if='combo_price>calculateTotalAmount()' class='col-xs-1 text-danger'>
+					套餐价不能大于总价！
+					</div>
 				</div>
-				<button class="btn btn-success button-width" ng-click='addCombo()'>确认添加</button>
+				<button class="btn btn-success button-width" ng-click='addCombo()' ng-disabled='combo_price>calculateTotalAmount()'>确认添加</button>
 			</div>
 			<div>
 					<div class="modal fade" id="searchByOffice" tabindex="-1" role="dialog"

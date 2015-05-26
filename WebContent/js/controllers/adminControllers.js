@@ -496,6 +496,12 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 					console.log('sorry');
 				});				
 			}
+			$scope.havaPhysicalFeature = function (obj) {
+				if (obj.physical_feature_id == '[]') {
+					return false;
+				}
+				return true;
+			}
 		});
 
 

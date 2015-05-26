@@ -27,12 +27,14 @@
 				<thead>
 				 <tr>
 				 	<th>套餐名称</th>
+				 	<th>套餐价格</th>
 				 	<th></th>
 				 </tr>
 				</thead>
 				<tbody>
 				<tr ng-repeat = 'combo in combos  | filter:query'>
 					<td>{{combo.combo_name}}</td>
+					<td>{{combo.combo_price}}</td>
 					 <td>
 					<button type="button" ng-click='manage_combo_examination_project(combo.id)' class="btn btn-success button-width">查看</button> 
 					 </td>					

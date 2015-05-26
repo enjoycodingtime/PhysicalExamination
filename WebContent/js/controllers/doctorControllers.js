@@ -40,7 +40,8 @@ angular.module('peApp').controller('fenjianCtrl',
 			});
 			$scope.id = '';
 			$scope.selected_physical_examination = [];
-			$scope.date = new Date().toLocaleDateString();
+			$scope.date = new Date();
+			$scope.date = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 			$scope.getPhysicalExaminationsByOffice = function(office) {
 				$scope.physicalExaminationOfThisOffice = [];
 				gateway.call('getRegistrateByDate.com',{date:$scope.date}).then(function(d) {
@@ -88,7 +89,8 @@ angular.module('peApp').controller('fenjianCtrl',
 angular.module('peApp').controller('zongjianCtrl',
 		function($scope, $http, $location, fGateway,$route) {
 			var gateway = new fGateway();
-			$scope.date = new Date().toLocaleDateString();
+			$scope.date = new Date();
+			$scope.date = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 			$scope.id = '';
 			$scope.getRegistrationLists = function() {
 				$scope.registrationLists = [];
@@ -130,7 +132,8 @@ angular.module('peApp').controller('completedTodayCtrl',
 			var gateway = new fGateway();
 			$scope.id = '';
 			$scope.selected_physical_examination = [];
-			$scope.date = new Date().toLocaleDateString();
+			$scope.date = new Date();
+			$scope.date = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 			$scope.getPhysicalExaminationsByOffice = function(office) {
 				$scope.physicalExaminationOfThisOffice = [];
 				gateway.call('getRegistrateByDate.com',{date:$scope.date}).then(function(d) {

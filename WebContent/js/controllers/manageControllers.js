@@ -36,7 +36,12 @@ angular.module('peApp').controller('queryDayReportCtrl',
 			});
 			var gateway = new fGateway();
 			$scope.getDayReport = function() {
-				$scope.date = $('#reservation_date').val();
+				var numargs = arguments.length;
+				if(numargs ==0){
+					$scope.date = $('#reservation_date').val();
+				}else{
+					$scope.date = arguments[0];
+				}
 				if($scope.date ) {
 					gateway.call('getRegistrateByDate.com',{date:$scope.date}).then(function(data) {
 						if (data == "error") {
@@ -75,6 +80,9 @@ angular.module('peApp').controller('queryDayReportCtrl',
 				}
 				
 			}
+			$scope.date = new Date();
+			$scope.date = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+			$scope.getDayReport($scope.date);
 		});
 
 
@@ -212,7 +220,8 @@ angular.module('peApp').controller(
 				$scope.allReservationButton = false;
 				$scope.todayReservationButton = true;
 				$scope.todayExapinationButton = false;
-				var today = new Date().toLocaleDateString();
+				var date = new Date();
+				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 				gateway.call('getReservationByDate.com',{rule:'reservation_date',date:today}).then(function(data) {
 					if (data == "error") {
 						swal({
@@ -248,7 +257,8 @@ angular.module('peApp').controller(
 				$scope.allReservationButton = false;
 				$scope.todayReservationButton = false;
 				$scope.todayExapinationButton = true;
-				var today = new Date().toLocaleDateString();
+				var date = new Date();
+				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 				gateway.call('getReservationByDate.com',{rule:'date',date:today}).then(function(data) {
 					if (data == "error") {
 						swal({
@@ -318,7 +328,8 @@ angular.module('peApp').controller(
 		        	$scope.todayReservation = function () {
 		        		$scope.allReservationButton = false;
 						$scope.todayReservationButton = true;
-						var today = new Date().toLocaleDateString();
+						var date = new Date();
+						var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 						$scope.registrationLists = _.where(data,{'date':today});
 						$scope.paginationConf = {
 								currentPage : 1,
@@ -442,7 +453,9 @@ angular.module('peApp').controller(
 					}
 					
 					$scope.submit = function() {
-						$scope.reservationInformation.reservation_date = new Date().toLocaleDateString();
+						var date = new Date();
+						date = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+						$scope.reservationInformation.reservation_date = date;
 						$scope.reservationInformation.date = $(
 								'#reservation_date').val();
 						$scope.reservationInformation.physical_examination = JSON

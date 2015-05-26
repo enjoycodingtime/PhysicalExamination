@@ -95,7 +95,9 @@ angular
 					};
 
 					$scope.submit = function() {
-						$scope.reservationInformation.reservation_date = new Date().toLocaleDateString();
+						var date = new Date();
+						var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+						$scope.reservationInformation.reservation_date = today;
 						$scope.reservationInformation.date = $(
 								'#reservation_date').val();
 						$scope.reservationInformation.physical_examination = JSON
@@ -120,7 +122,14 @@ angular
 								type : "warning",
 								timer : 2000
 							})
-						} else {
+						} else if(!verifyPhoneNumber($scope.reservationInformation.phone_number)){
+							swal({
+								title : "Alert",
+								text : "电话号码格式不正确，请重新输入",
+								type : "warning",
+								timer : 2000
+							})
+						}else {
 							gateway.call('reservation.com',
 									$scope.reservationInformation).then(
 									function(d) {
@@ -156,5 +165,15 @@ angular
 						}
 						reservationInformation.birthday = idCard.substring(6, 10) + "-" + idCard.substring(10, 12) + "-" + idCard.substring(12, 14); 
 						return reservationInformation;
+					}
+					var verifyPhoneNumber = function(value) {
+						var isPhone = /^([0-9]{3,4})?[0-9]{7,8}$/;
+						var isMob=/^((\+?86)|(\(\+86\)))?(13[0123456789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+						if(isMob.test(value)||isPhone.test(value)){
+							return true;
+						}
+						else{
+							return false;
+						}
 					}
 				});
