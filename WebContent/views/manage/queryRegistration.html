@@ -22,8 +22,26 @@
 							</span>
 						</p>
 					</div>
-					<div class='col-xs-2'><button type="button" ng-click='allReservation()' ng class="btn btn-success button-width" ng-disabled="allReservationButton">所有体检登记</button></div>
-					<div class='col-xs-2'><button type="button" ng-click='todayReservation()' ng class="btn btn-success button-width"ng-disabled="todayReservationButton">今日体检登记</button></div>
+					<div class='col-xs-2'><button type="button" ng-click='todayReservation()' class="btn btn-success button-width"ng-disabled="todayReservationButton">今日体检登记</button></div>
+					<div class='col-xs-2'><button type="button" ng-click='allRegistratioin()' class="btn btn-success button-width" ng-disabled="allReservationButton">所有体检登记</button></div>
+					
+					<div class='col-xs-1' ng-if='!showDetailSearch'>
+                        <button type="button" class="btn btn-success button-width" ng-click='detailSearch()'>详细查询</button>
+					</div>
+					
+				</div>
+				<div class = 'row' ng-if='showDetailSearch'>
+					<div class='col-xs-2'>
+						<select ng-model="rule" class="form-control"   ng-options="rule.name for rule in rules" ng-change="selectChange()">
+                        </select>
+					</div>
+					<div class='col-xs-2'>
+						<input type="text" class="form-control" 
+								name="value" placeholder="输入查询的值" ng-model='searchValue'>
+					</div>
+					<div class='col-xs-1'>
+                        <button type="button" class="btn btn-success button-width" ng-click='searchAction(rule,searchValue)'>查询</button>
+					</div>
 				</div>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>

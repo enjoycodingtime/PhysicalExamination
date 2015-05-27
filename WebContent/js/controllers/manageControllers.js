@@ -61,13 +61,52 @@ angular.module('peApp').controller('queryDayReportCtrl',
 						}else {
 							$scope.allRegistrateNumber = data.length;
 							$scope.registratedNumber = 0;
-							
+							$scope.registrated = [];
+							$scope.noRegistrated = [];
 							for (var index = 0; index < data.length; index ++) {
 								if(data[index].comment) {
-									$scope.registratedNumber ++
+									$scope.registratedNumber ++;
+									$scope.registrated.push(data[index]);
+								}else{
+									$scope.noRegistrated.push(data[index]);
 								}
+								
 							}
 							$scope.notRegistratedNumber = $scope.allRegistrateNumber - $scope.registratedNumber;
+							$scope.paginationConf1 = {
+									currentPage : 1,
+									totalItems : $scope.registrated.length,
+									itemsPerPage : 15,
+									pagesLength : 15,
+									perPageOptions : [ 10, 20, 30, 40, 50 ],
+									rememberPerPage : 'perPageItems',
+									onChange : function() {
+										var items = [];
+										for (var int = 0; int < data.length; int++) {
+											if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+												items.push(data[int]);
+											}
+										}
+										$scope.registrated = items;
+									}
+								};
+							$scope.paginationConf2 = {
+									currentPage : 1,
+									totalItems : $scope.noRegistrated.length,
+									itemsPerPage : 15,
+									pagesLength : 15,
+									perPageOptions : [ 10, 20, 30, 40, 50 ],
+									rememberPerPage : 'perPageItems',
+									onChange : function() {
+										var items = [];
+										for (var int = 0; int < data.length; int++) {
+											if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+												items.push(data[int]);
+											}
+										}
+										$scope.noRegistrated = items;
+									}
+								};
 							}
 					});		
 				}else{
@@ -173,9 +212,12 @@ angular.module('peApp').controller('comboStatisticsCtrl',
 
 angular.module('peApp').controller(
 		'queryReservatioinCtrl',
-		function($scope, $http, $location,$route,fGateway) {
+		function($scope, $http, $location,$route,fGateway,registrationService) {
+			$scope.rules = registrationService.searchRules;
 			var gateway = new fGateway();
-			gateway.call('getReservation.com').then(function(data) {
+			var date = new Date();
+			var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+			gateway.call('getReservationByDate.com',{rule:'reservation_date',date:today}).then(function(data) {
 				if (data == "error") {
 					swal({
 						title : "Error!",
@@ -185,8 +227,8 @@ angular.module('peApp').controller(
 					})
 				} else {
 					$scope.reservationItems = data;
-					$scope.allReservationButton = true;
-					$scope.todayReservationButton = false;
+					$scope.allReservationButton = false;
+					$scope.todayReservationButton = true;
 					$scope.todayExapinationButton = false;
 					$scope.paginationConf = {
 							currentPage : 1,
@@ -217,40 +259,7 @@ angular.module('peApp').controller(
 				$location.search('id',id);				
 			}
 			$scope.todayReservation = function () {
-				$scope.allReservationButton = false;
-				$scope.todayReservationButton = true;
-				$scope.todayExapinationButton = false;
-				var date = new Date();
-				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
-				gateway.call('getReservationByDate.com',{rule:'reservation_date',date:today}).then(function(data) {
-					if (data == "error") {
-						swal({
-							title : "Error!",
-							text : "系统错误，请联系管理员",
-							type : "warning",
-							timer : 3000
-						})
-					} else {
-						$scope.reservationItems = data;
-						$scope.paginationConf = {
-								currentPage : 1,
-								totalItems : data.length,
-								itemsPerPage : 15,
-								pagesLength : 15,
-								perPageOptions : [ 10, 20, 30, 40, 50 ],
-								rememberPerPage : 'perPageItems',
-								onChange : function() {
-									var items = [];
-									for (var int = 0; int < data.length; int++) {
-										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-											items.push(data[int]);
-										}
-									}
-									$scope.reservationItems = items;
-								}
-							};
-						}
-				});			
+				$route.reload();
 			}
 			
 			$scope.todayExapination = function () {
@@ -290,7 +299,69 @@ angular.module('peApp').controller(
 				});			
 			}
 			$scope.allReservation = function () {
-				$route.reload();
+				$scope.allReservationButton = true;
+				$scope.todayReservationButton = false;
+				$scope.todayExapinationButton = false;
+				
+				gateway.call('getReservation.com').then(function(data) {
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "系统错误，请联系管理员",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						$scope.reservationItems = data;
+						$scope.paginationConf = {
+								currentPage : 1,
+								totalItems : data.length,
+								itemsPerPage : 15,
+								pagesLength : 15,
+								perPageOptions : [ 10, 20, 30, 40, 50 ],
+								rememberPerPage : 'perPageItems',
+								onChange : function() {
+									var items = [];
+									for (var int = 0; int < data.length; int++) {
+										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+											items.push(data[int]);
+										}
+									}
+									$scope.reservationItems = items;
+								}
+							};
+						}
+				});			
+				
+			}
+			$scope.detailSearch = function() {
+				$scope.showDetailSearch = true;
+			}
+			$scope.searchAction = function(rule,searchValue) {
+				gateway.call('getReservationByRule.com',{rule:rule.value,value:searchValue}).then(function(data){
+					if (data == 'error') {
+						swal("Sorry!", "系统错误", "error");
+					} else {
+						$scope.reservationItems = data;
+						$scope.paginationConf = {
+								currentPage : 1,
+								totalItems : $scope.reservationItems.length,
+								itemsPerPage : 15,
+								pagesLength : 15,
+								perPageOptions : [ 10, 20, 30, 40, 50 ],
+								rememberPerPage : 'perPageItems',
+								onChange : function() {
+									var items = [];
+									for (var int = 0; int < $scope.reservationItems.length; int++) {
+										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+											items.push($scope.reservationItems[int]);
+										}
+									}
+									$scope.reservationItems = items;
+								}
+						};
+					}
+				})
 			}
 			
 
@@ -298,39 +369,49 @@ angular.module('peApp').controller(
 
 angular.module('peApp').controller(
 		'queryRegistrationCtrl',
-		function($scope, $http, $location,fGateway,$route) {
+		function($scope, $http, $location,fGateway,$route,registrationService) {
 			var gateway = new fGateway();
-			gateway.call('getRegistrationList.com').then(function(data){
-		        if(data=='error'){
-		        	swal("Sorry!", "系统错误", "error");
-		        }
-		        else {
-		        	$scope.registrationLists = data;
-		        	$scope.allReservationButton = true;
-					$scope.todayReservationButton = false;
-		        	$scope.paginationConf = {
-							currentPage : 1,
-							totalItems : data.length,
-							itemsPerPage : 15,
-							pagesLength : 15,
-							perPageOptions : [ 10, 20, 30, 40, 50 ],
-							rememberPerPage : 'perPageItems',
-							onChange : function() {
-								var items = [];
-								for (var int = 0; int < data.length; int++) {
-									if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-										items.push(data[int]);
+			$scope.rules = registrationService.searchRules;
+			$scope.allRegistratioin = function (){				
+				gateway.call('getRegistrationList.com').then(function(data){
+					if(data=='error'){
+						swal("Sorry!", "系统错误", "error");
+					}
+					else {
+						$scope.registrationLists = data;
+						$scope.allReservationButton = true;
+						$scope.todayReservationButton = false;
+						$scope.paginationConf = {
+								currentPage : 1,
+								totalItems : data.length,
+								itemsPerPage : 15,
+								pagesLength : 15,
+								perPageOptions : [ 10, 20, 30, 40, 50 ],
+								rememberPerPage : 'perPageItems',
+								onChange : function() {
+									var items = [];
+									for (var int = 0; int < data.length; int++) {
+										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+											items.push(data[int]);
+										}
 									}
+									$scope.registrationLists = items;
 								}
-								$scope.registrationLists = items;
-							}
 						};
-		        	$scope.todayReservation = function () {
-		        		$scope.allReservationButton = false;
+					}
+				});
+			}
+			$scope.todayRegistration = function () {
+				var date = new Date();
+				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+				gateway.call('getRegistrateByDate.com',{date:today}).then(function(data){
+					if(data=='error'){
+						swal("Sorry!", "系统错误", "error");
+					}
+					else {
+						$scope.allReservationButton = false;
 						$scope.todayReservationButton = true;
-						var date = new Date();
-						var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
-						$scope.registrationLists = _.where(data,{'date':today});
+						$scope.registrationLists = data;
 						$scope.paginationConf = {
 								currentPage : 1,
 								totalItems : $scope.registrationLists.length,
@@ -347,18 +428,48 @@ angular.module('peApp').controller(
 									}
 									$scope.registrationLists = items;
 								}
-							};
-					}
-		        	$scope.allReservation = function () {
-						$route.reload();
-					}
-		        }
-		    });
-
+						};
+						}
+					});
+				
+			}
+			$scope.todayRegistration();
+			$scope.todayReservation = function () {
+				$route.reload();
+			}
 			$scope.show_physical_examination = function(physical_examination,comments) {
 				$scope.selected_physical_examination = JSON
 						.parse(physical_examination);
 				$scope.comments = comments;
+			}
+			$scope.detailSearch = function() {
+				$scope.showDetailSearch = true;
+			}
+			$scope.searchAction = function(rule,searchValue) {
+				gateway.call('getRegistrateByRule.com',{rule:rule.value,value:searchValue}).then(function(data){
+					if (data == 'error') {
+						swal("Sorry!", "系统错误", "error");
+					} else {
+						$scope.registrationLists = data;
+						$scope.paginationConf = {
+								currentPage : 1,
+								totalItems : $scope.registrationLists.length,
+								itemsPerPage : 15,
+								pagesLength : 15,
+								perPageOptions : [ 10, 20, 30, 40, 50 ],
+								rememberPerPage : 'perPageItems',
+								onChange : function() {
+									var items = [];
+									for (var int = 0; int < $scope.registrationLists.length; int++) {
+										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+											items.push($scope.registrationLists[int]);
+										}
+									}
+									$scope.registrationLists = items;
+								}
+						};
+					}
+				})
 			}
 		});
 

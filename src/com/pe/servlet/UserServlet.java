@@ -192,6 +192,19 @@ public class UserServlet extends HttpServlet {
 			}
 		}
 		
+		if (action.equals("getReservationByRule")) {
+			try {
+				String rule = request.getParameter("rule");
+				String value = request.getParameter("value");
+				ReservationDao reservationDao = new ReservationDao();
+				List<Reservation> list = reservationDao.getReservationByRule(rule,value);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
 		if (action.equals("delectReservation")) {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));
@@ -216,6 +229,19 @@ public class UserServlet extends HttpServlet {
 				int id = Integer.parseInt(request.getParameter("id"));
 				RegistrationDao registrationDao = new RegistrationDao();
 				List<Registration> list = registrationDao.getRegistrateById(id);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
+		if (action.equals("getRegistrateByRule")) {
+			try {
+				String rule = request.getParameter("rule");
+				String value = request.getParameter("value");
+				RegistrationDao registrationDao = new RegistrationDao();
+				List<Registration> list = registrationDao.getRegistrateByRule(rule,value);
 				JSONArray jarray = JSONArray.fromObject(list);
 				out.println(jarray.toString());
 			} catch (Exception e) {
@@ -470,6 +496,7 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		
 		//添加分检结果
 		if (action.equals("tijiaofenjianjieguo")) {
 			try {

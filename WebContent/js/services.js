@@ -81,5 +81,40 @@
 		}
 		return new EmployeeService();
 	});
+	app.factory('registrationService',function(){
+		function registrationService (){
+			this.searchRules = [
+			                    {
+			                    	name:'序号',
+			                    	value:'id'
+			                    	},
+			                    {
+			                    	name:'姓名',
+			                    	value:'name'
+			                    	},
+			                    {
+			                    	name:'性别',
+			                    	value:'sex'
+			                    	},
+			                    {
+			                    	name:'出生日期',
+			                    	value:'birthday'
+			                    	},
+			                    {
+			                    	name:'电话',
+			                    	value:'phone_number'
+			                    	},
+			                    {
+			                    	name:'体检日期',
+			                    	value:'day'
+			                    	},
+		                    	{
+			                    	name:'套餐',
+			                    	value:'combo'
+			                    	}
+			                    ]
+		}
+		return new registrationService();
+	});
 	
 })(angular.module('peApp'));
