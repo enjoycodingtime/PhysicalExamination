@@ -232,20 +232,21 @@ public class ReservationDao {
 		}
 	}
 
-	public List<Reservation> getReservationByRule(String rule, String value) throws Exception {
+	public List<Reservation> getReservationByRule(String rule, String value, String orderBy) throws Exception {
 		// TODO Auto-generated method stub
 		List<Reservation> list = new ArrayList<Reservation>();
 		conn=DBUtil.getConnection();
+		String order = "ORDER BY "+orderBy;
 		switch(rule) {
 		case "id":
-			String sql ="select * from reservation where id=?";
+			String sql ="select * from reservation where id=? "+order;
 			ps =conn.prepareStatement(sql);
 			int id = Integer.parseInt(value);
 			ps.setInt(1, id);
 			rs= ps.executeQuery();
 			break; 
 		case "name":
-			String sql1 ="select * from reservation where name=?";
+			String sql1 ="select * from reservation where name=? "+order;
 			ps =conn.prepareStatement(sql1);			
 			ps.setString(1, value);
 			rs= ps.executeQuery();
@@ -257,36 +258,47 @@ public class ReservationDao {
 			}else if(value.equals("女")) {
 				sex = "woman";
 			}
-			String sql2 ="select * from reservation where sex=?";
+			String sql2 ="select * from reservation where sex=? "+order;
 			ps =conn.prepareStatement(sql2);			
 			ps.setString(1, sex);
 			rs= ps.executeQuery();
 			break;
 		case "birthday":
-			String sql3 ="select * from reservation where birthday=?";
+			String sql3 ="select * from reservation where birthday=? "+order;
 			ps =conn.prepareStatement(sql3);			
 			ps.setString(1, value);
 			rs= ps.executeQuery();
 			break;
 		case "phone_number":
-			String sql4 ="select * from reservation where phone_number=?";
+			String sql4 ="select * from reservation where phone_number=? "+order;
 			ps =conn.prepareStatement(sql4);			
 			ps.setString(1, value);
 			rs= ps.executeQuery();
 			break;
 		case "day":
-			String sql5 ="select * from reservation where date=?";
+			String sql5 ="select * from reservation where date=? "+order;
 			ps =conn.prepareStatement(sql5);			
 			ps.setString(1, value);
 			rs= ps.executeQuery();
 			break;
 		case "combo":
-			String sql6 ="select * from reservation where combo=?";
+			String sql6 ="select * from reservation where combo=? "+order;
 			ps =conn.prepareStatement(sql6);			
 			ps.setString(1, value);
 			rs= ps.executeQuery();
 			break;		
+		case "reservation_date":
+			String sql7 ="select * from reservation where reservation_date=? "+order;
+			ps =conn.prepareStatement(sql7);			
+			ps.setString(1, value);
+			rs= ps.executeQuery();
+			break;
+		default:
+			String sql8 ="select * from reservation "+order;
+			ps =conn.prepareStatement(sql8);			
+			rs= ps.executeQuery();
 		}
+		
 		while(rs.next()){
 			int id = rs.getInt("id");
 			String name = rs.getString("name");

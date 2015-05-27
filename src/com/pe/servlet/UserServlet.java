@@ -196,8 +196,14 @@ public class UserServlet extends HttpServlet {
 			try {
 				String rule = request.getParameter("rule");
 				String value = request.getParameter("value");
+				String orderBy;
+				try{
+					orderBy = request.getParameter("orderBy");					
+				}catch(Exception e){
+					orderBy = "id";
+				}
 				ReservationDao reservationDao = new ReservationDao();
-				List<Reservation> list = reservationDao.getReservationByRule(rule,value);
+				List<Reservation> list = reservationDao.getReservationByRule(rule,value,orderBy);
 				JSONArray jarray = JSONArray.fromObject(list);
 				out.println(jarray.toString());
 			} catch (Exception e) {

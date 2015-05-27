@@ -12,7 +12,7 @@ angular.module('peApp').controller('manageHearderCtrl',
 					timer : 3000
 				})
 				$location.path('/');
-			}
+			}  
 			$scope.logout = function () {
 				LoginService.logout();
 				$location.path('/');
@@ -215,41 +215,47 @@ angular.module('peApp').controller(
 		function($scope, $http, $location,$route,fGateway,registrationService) {
 			$scope.rules = registrationService.searchRules;
 			var gateway = new fGateway();
-			var date = new Date();
-			var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
-			gateway.call('getReservationByDate.com',{rule:'reservation_date',date:today}).then(function(data) {
-				if (data == "error") {
-					swal({
-						title : "Error!",
-						text : "系统错误，请联系管理员",
-						type : "warning",
-						timer : 3000
-					})
-				} else {
-					$scope.reservationItems = data;
-					$scope.allReservationButton = false;
-					$scope.todayReservationButton = true;
-					$scope.todayExapinationButton = false;
-					$scope.paginationConf = {
-							currentPage : 1,
-							totalItems : data.length,
-							itemsPerPage : 15,
-							pagesLength : 15,
-							perPageOptions : [ 10, 20, 30, 40, 50 ],
-							rememberPerPage : 'perPageItems',
-							onChange : function() {
-								var items = [];
-								for (var int = 0; int < data.length; int++) {
-									if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-										items.push(data[int]);
+			var baseSearch = function (rule,value,orderBy) {
+				gateway.call('getReservationByRule.com',{rule:rule,value:value,orderBy:orderBy}).then(function(data) {
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "系统错误，请联系管理员",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						$scope.reservationItems = data;
+						$scope.paginationConf = {
+								currentPage : 1,
+								totalItems : data.length,
+								itemsPerPage : 15,
+								pagesLength : 15,
+								perPageOptions : [ 10, 20, 30, 40, 50 ],
+								rememberPerPage : 'perPageItems',
+								onChange : function() {
+									var items = [];
+									for (var int = 0; int < data.length; int++) {
+										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+											items.push(data[int]);
+										}
 									}
+									$scope.reservationItems = items;
 								}
-								$scope.reservationItems = items;
-							}
-						};
-					}
-			});
-			
+							};
+						}
+				});
+			}
+			$scope.todayReservations = function (){
+				var date = new Date();
+				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+				$scope.allReservationButton = false;
+				$scope.todayReservationButton = true;
+				$scope.todayExapinationButton = false;
+				$scope.searchrule = 'reservation_date';
+				$scope.searchValue = today;
+				baseSearch('reservation_date',today,'id');
+			}
 			$scope.show_physical_examination = function(physical_examination) {
 				$scope.selected_physical_examination = JSON
 						.parse(physical_examination);
@@ -268,102 +274,31 @@ angular.module('peApp').controller(
 				$scope.todayExapinationButton = true;
 				var date = new Date();
 				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
-				gateway.call('getReservationByDate.com',{rule:'date',date:today}).then(function(data) {
-					if (data == "error") {
-						swal({
-							title : "Error!",
-							text : "系统错误，请联系管理员",
-							type : "warning",
-							timer : 3000
-						})
-					} else {
-						$scope.reservationItems = data;
-						$scope.paginationConf = {
-								currentPage : 1,
-								totalItems : data.length,
-								itemsPerPage : 15,
-								pagesLength : 15,
-								perPageOptions : [ 10, 20, 30, 40, 50 ],
-								rememberPerPage : 'perPageItems',
-								onChange : function() {
-									var items = [];
-									for (var int = 0; int < data.length; int++) {
-										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-											items.push(data[int]);
-										}
-									}
-									$scope.reservationItems = items;
-								}
-							};
-						}
-				});			
+				$scope.searchrule = 'day';
+				$scope.searchValue = today;
+				baseSearch($scope.searchrule,$scope.searchValue,'id');
 			}
 			$scope.allReservation = function () {
 				$scope.allReservationButton = true;
 				$scope.todayReservationButton = false;
 				$scope.todayExapinationButton = false;
-				
-				gateway.call('getReservation.com').then(function(data) {
-					if (data == "error") {
-						swal({
-							title : "Error!",
-							text : "系统错误，请联系管理员",
-							type : "warning",
-							timer : 3000
-						})
-					} else {
-						$scope.reservationItems = data;
-						$scope.paginationConf = {
-								currentPage : 1,
-								totalItems : data.length,
-								itemsPerPage : 15,
-								pagesLength : 15,
-								perPageOptions : [ 10, 20, 30, 40, 50 ],
-								rememberPerPage : 'perPageItems',
-								onChange : function() {
-									var items = [];
-									for (var int = 0; int < data.length; int++) {
-										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-											items.push(data[int]);
-										}
-									}
-									$scope.reservationItems = items;
-								}
-							};
-						}
-				});			
+				$scope.searchrule = '';
+				$scope.searchValue = '';
+				baseSearch($scope.searchrule,$scope.searchValue,'id');
 				
 			}
 			$scope.detailSearch = function() {
 				$scope.showDetailSearch = true;
 			}
 			$scope.searchAction = function(rule,searchValue) {
-				gateway.call('getReservationByRule.com',{rule:rule.value,value:searchValue}).then(function(data){
-					if (data == 'error') {
-						swal("Sorry!", "系统错误", "error");
-					} else {
-						$scope.reservationItems = data;
-						$scope.paginationConf = {
-								currentPage : 1,
-								totalItems : $scope.reservationItems.length,
-								itemsPerPage : 15,
-								pagesLength : 15,
-								perPageOptions : [ 10, 20, 30, 40, 50 ],
-								rememberPerPage : 'perPageItems',
-								onChange : function() {
-									var items = [];
-									for (var int = 0; int < $scope.reservationItems.length; int++) {
-										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-											items.push($scope.reservationItems[int]);
-										}
-									}
-									$scope.reservationItems = items;
-								}
-						};
-					}
-				})
+				$scope.searchrule = rule.value;
+				$scope.searchValue = searchValue;
+				baseSearch($scope.searchrule,$scope.searchValue,'id');
 			}
-			
+			$scope.orderByAction = function(rule) {
+				baseSearch($scope.searchrule,$scope.searchValue,rule);
+			}
+			$scope.todayReservations();
 
 		});
 
