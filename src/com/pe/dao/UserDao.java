@@ -35,21 +35,7 @@ public class UserDao {
 	}
 
 	public static Users findById(String id1) throws Exception {
-//		if (!DBUtil.isHaveTable("combo")) {
-//			DBUtil.initComboDb();
-//		}
-//		if (!DBUtil.isHaveTable("examination_project")) {
-//			DBUtil.initExaminationProject();
-//		}
-//		if (!DBUtil.isHaveTable("office")) {
-//			DBUtil.initOffice();
-//		}
-//		if (!DBUtil.isHaveTable("reservation")) {
-//			DBUtil.initReservation();
-//		}
-//		if (!DBUtil.isHaveTable("registration")) {
-//			DBUtil.initRegistration();
-//		}
+
 		Users users = null;
 		conn = DBUtil.getConnection();
 		String sql = "select Users.id,Users.name,Users.password,Users.position,Office.office_name from Users INNER JOIN Office ON Users.office_id=Office.id  where Users.id=?";
@@ -92,7 +78,7 @@ public class UserDao {
 		Calendar cal = Calendar.getInstance();
 		String year = String.valueOf(cal.get(Calendar.YEAR));//获取年份
 		year = year.substring(2);
-		String month=String.valueOf(cal.get(Calendar.MONTH));//获取月份
+		String month=String.valueOf(cal.get(Calendar.MONTH)+1);//获取月份
 		String positionCode = null;
 		String count = null;
 		switch (position) {
@@ -130,10 +116,19 @@ public class UserDao {
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
 			count = String.valueOf(rs.getInt(1)+1);
+			if(count.length()==1){
+				count="00"+count;					
+				}
+			else if(count.length()==2) {
+				count="0"+count;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
 		}
+		if(month.length()==1){
+			month="0"+month;					
+			}
 		return positionCode + year + month + count;
 	// TODO Auto-generated method stub
 	

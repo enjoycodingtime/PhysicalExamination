@@ -32,7 +32,6 @@
 							<th>体征词编码</th>
 							<th>体征词</th>
 							<th>单项价格</th>
-							<th>套餐价格</th>
 							<th>项目操作</th>
 						</tr>
 					</thead>
@@ -49,7 +48,6 @@
 								<span ng-if='!havaPhysicalFeature(examinationProject)'>无</span>
 							</td>
 							<td>{{examinationProject.price}}</td>
-							<td>{{examinationProject.combo_price}}</td>
 							<td>
 								<button type="button" data-toggle="modal"
 									data-target="#modifyExaminationProject"
@@ -101,11 +99,7 @@
 												<td class="col-xs-4"><input class='form-control'
 													type="text" ng-model='price' placeholder="..." /></td>
 											</tr>
-											<tr>
-												<td class="col-xs-1"><b>套餐价格:</b></td>
-												<td class="col-xs-4"><input class='form-control'
-													type="text" ng-model='combo_price' placeholder="..." /></td>
-											</tr>
+											
 										</table>
 									</div>
 									<div class="modal-footer">
@@ -152,11 +146,7 @@
 												<td class="col-xs-4"><input class='form-control'
 													type="text" ng-model='price' placeholder="..." /></td>
 											</tr>
-											<tr>
-												<td class="col-xs-1"><b>套餐价格:</b></td>
-												<td class="col-xs-4"><input class='form-control'
-													type="text" ng-model='combo_price' placeholder="..." /></td>
-											</tr>
+											
 										</table>
 
 									</div>
