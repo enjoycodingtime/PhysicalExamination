@@ -44,6 +44,14 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/receptionists/reservation.html',
 		controller : 'reservationCtrl',
         resolve: {auth: auth}
+	}).when('/groupReservation', {
+		templateUrl : 'views/receptionists/groupReservation.html',
+		controller : 'groupReservationCtrl',
+        resolve: {auth: auth}
+	}).when('/groupReservationBox', {
+		templateUrl : 'views/receptionists/groupReservationBox.html',
+		controller : 'groupReservationBoxCtrl',
+        resolve: {auth: auth}
 	}).when('/addCombo', {
 		templateUrl : 'views/admin/addCombo.html',
 		controller : 'addComboCtrl',
@@ -123,6 +131,10 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/queryDayReport', {
 		templateUrl : 'views/manage/queryDayReport.html',
 		controller : 'queryDayReportCtrl',
+        resolve: {auth: auth}
+	}).when('/queryMonthReport', {
+		templateUrl : 'views/manage/queryMonthReport.html',
+		controller : 'queryMonthReportCtrl',
         resolve: {auth: auth}
 	}).when('/queryReservatioin', {
 		templateUrl : 'views/manage/queryReservatioin.html',

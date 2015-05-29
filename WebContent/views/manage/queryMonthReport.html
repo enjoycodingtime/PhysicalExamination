@@ -1,0 +1,124 @@
+<div ng-include="'views/manage/manageHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/manage/manageSidebar.html'"></div>
+		</div>
+		<!--/span-->
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="span9">
+				<h1>体检月报</h1>
+				<div class='row'>
+					<div class='col-xs-1 text-right'>
+						<b>月份</b>
+					</div>
+					<div class='col-xs-2'>
+						<div class='input-group date' id='dateTimePicker'>
+							<input type='text' id='reservation_date'
+								ng-model='reservationInformation.date' class="form-control"
+								data-date-format="yyyy-mm" placeholder="选择体检月份"
+								readonly='true' /> <span
+								class="input-group-addon cursor-to-hand"> <span
+								class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<div class='col-xs-1'>
+						<button class='btn btn-success' ng-click='getDayReport()'>确定</button>
+					</div>
+				</div>
+				<p />
+				<div class='row'>
+					<div class='col-xs-4'>
+						<table class="table table-word-wrap clear-float-left">
+							<thead>
+								<tr>
+									<th class="col-xs-2">月份</th>
+									<th class="col-xs-2">已体检数量</th>
+									<th class="col-xs-2">未体检数量</th>
+									<th class="col-xs-2">登记数量</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>{{date}}</td>
+									<td>{{registratedNumber}}</td>
+									<td>{{notRegistratedNumber}}</td>
+									<td>{{allRegistrateNumber}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class='row'></div>
+				<div ng-if='registrated.length'>
+					<table>
+						<tr>
+							<td colspan="8"><h3>已体检列表</h3></td>
+						</tr>
+					</table>
+					<table class="table table-word-wrap clear-float-left">
+					<thead>
+						
+						<tr>
+							<th>序号</th>
+							<th>姓名</th>
+							<th>性别</th>
+							<th>出生日期</th>
+							<th>电话</th>
+							<th>日期</th>
+							<th>套餐</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							ng-repeat='registrationList in registrated | filter:query'>
+							<td>{{registrationList.id}}</td>
+							<td>{{registrationList.name}}</td>
+							<td ng-if='registrationList.sex=="man"'>男</td>
+							<td ng-if='registrationList.sex=="woman"'>女</td>
+							<td>{{registrationList.birthday}}</td>
+							<td>{{registrationList.phone_number}}</td>
+							<td>{{registrationList.date}}</td>
+							<td>{{registrationList.combo || '自选'}}</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<div ng-if='registrated.length'>
+				<tm-pagination conf="paginationConf1"></tm-pagination>
+				</div>
+				<div ng-if='noRegistrated.length'>
+				<table class="table table-word-wrap clear-float-left">
+					<thead>
+					<h3>未体检列表</h3>
+						<tr>
+							<th>序号</th>
+							<th>姓名</th>
+							<th>性别</th>
+							<th>出生日期</th>
+							<th>电话</th>
+							<th>日期</th>
+							<th>套餐</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							ng-repeat='registrationList in noRegistrated | filter:query'>
+							<td>{{registrationList.id}}</td>
+							<td>{{registrationList.name}}</td>
+							<td ng-if='registrationList.sex=="man"'>男</td>
+							<td ng-if='registrationList.sex=="woman"'>女</td>
+							<td>{{registrationList.birthday}}</td>
+							<td>{{registrationList.phone_number}}</td>
+							<td>{{registrationList.date}}</td>
+							<td>{{registrationList.combo || '自选'}}</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<div ng-if='noRegistrated.length'>
+				<tm-pagination conf="paginationConf2"></tm-pagination>
+				</div>
+			</div>
+		</div>

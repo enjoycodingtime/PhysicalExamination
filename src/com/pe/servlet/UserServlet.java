@@ -2,6 +2,9 @@ package com.pe.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,6 +18,7 @@ import net.sf.json.JSONArray;
 import com.pe.dao.ComboDao;
 import com.pe.dao.ConclusionDao;
 import com.pe.dao.ExaminationProjectDao;
+import com.pe.dao.GroupReservationDao;
 import com.pe.dao.OfficeDao;
 import com.pe.dao.PhysicalFeatureDao;
 import com.pe.dao.RegistrationDao;
@@ -23,6 +27,7 @@ import com.pe.dao.UserDao;
 import com.pe.entity.Combo;
 import com.pe.entity.Conclusion;
 import com.pe.entity.ExaminationProject;
+import com.pe.entity.GroupReservation;
 import com.pe.entity.Office;
 import com.pe.entity.PhysicalFeature;
 import com.pe.entity.Registration;
@@ -140,6 +145,35 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		//添加团体预约信息
+		if (action.equals("groupRreservation")) {
+			try {
+				String groupName = request.getParameter("groupName");
+				String address = request.getParameter("address");
+				String allCount = request.getParameter("allCount");
+				int comboDiscount = Integer.parseInt(request.getParameter("comboDiscount"));
+				int combo_id = Integer.parseInt(request.getParameter("combo_id"));
+				int group_number = Integer.parseInt(request.getParameter("group_number"));
+				String leaderName = request.getParameter("leaderName");
+				String leaderPhoneNumber = request.getParameter("leaderPhoneNumber");
+				String reservation_date = request.getParameter("reservation_date");
+				String physical_examination = request
+						.getParameter("physical_examination");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+				try {
+					Date date = sdf.parse(reservation_date); 
+					GroupReservationDao.insertReservation(groupName, address, allCount, comboDiscount,combo_id,group_number,leaderName,physical_examination,date,leaderPhoneNumber);
+				}catch (ParseException e){
+					System.out.println("时间出错");
+					e.printStackTrace();
+				}
+				
+				out.print("ok");
+				
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 		//修改预约信息
 		if (action.equals("updateReservation")) {
 			try {
@@ -211,6 +245,27 @@ public class UserServlet extends HttpServlet {
 			}
 		}
 		
+		if (action.equals("getGroupReservation")) {
+			
+			try {
+				String rule = request.getParameter("rule");
+				
+				String value = request.getParameter("value");
+				String orderBy;
+				try{
+					orderBy = request.getParameter("orderBy");					
+				}catch(Exception e){
+					orderBy = "id";
+				}
+				GroupReservationDao reservationDao = new GroupReservationDao();
+				List<GroupReservation> list = reservationDao.getReservationByRule(rule,value,orderBy);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		
 		if (action.equals("delectReservation")) {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));
@@ -224,6 +279,17 @@ public class UserServlet extends HttpServlet {
 				String date = request.getParameter("date");
 				RegistrationDao registrationDao = new RegistrationDao();
 				List<Registration> list = registrationDao.getRegistrateByDate(date);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		if (action.equals("getRegistrateByMonth")) {
+			try {
+				String date = request.getParameter("date");
+				RegistrationDao registrationDao = new RegistrationDao();
+				List<Registration> list = registrationDao.getRegistrateByMonth(date);
 				JSONArray jarray = JSONArray.fromObject(list);
 				out.println(jarray.toString());
 			} catch (Exception e) {
@@ -246,8 +312,14 @@ public class UserServlet extends HttpServlet {
 			try {
 				String rule = request.getParameter("rule");
 				String value = request.getParameter("value");
+				String orderBy;
+				try{
+					orderBy = request.getParameter("orderBy");					
+				}catch(Exception e){
+					orderBy = "id";
+				}
 				RegistrationDao registrationDao = new RegistrationDao();
-				List<Registration> list = registrationDao.getRegistrateByRule(rule,value);
+				List<Registration> list = registrationDao.getRegistrateByRule(rule,value,orderBy);
 				JSONArray jarray = JSONArray.fromObject(list);
 				out.println(jarray.toString());
 			} catch (Exception e) {

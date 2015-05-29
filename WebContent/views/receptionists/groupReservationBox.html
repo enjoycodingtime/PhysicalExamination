@@ -1,0 +1,109 @@
+<div >
+<div ng-include="'views/receptionists/receptionistsHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/receptionists/receptionistSidebar.html'"></div>
+			<!--/.well -->
+		</div>
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="span9">
+			<div class="leaderboard">
+				<h1>团体预约表</h1>				
+				<div class='row'>
+					<div class='col-xs-3'>
+						<p class='input-group'>
+							<input type="text" class="form-control"
+								 placeholder="search"
+								ng-model='query'><span class="input-group-btn">
+								<button type="button" class="btn btn-default"
+									>
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</p>
+					</div>
+					
+					<div class='col-xs-2'><button type="button" ng-click='allReservation()' ng class="btn btn-success button-width" ng-disabled="allReservationButton">所有预约</button></div>
+					<div class='col-xs-2'><button type="button" ng-click='todayReservation()' ng class="btn btn-success button-width" ng-disabled="todayReservationButton">今日预约</button></div>
+					<div class='col-xs-2'><button type="button" ng-click='todayExapination()' ng class="btn btn-success button-width" ng-disabled="todayExapinationButton">今日体检</button></div>
+				</div>
+				<table class="table table-word-wrap clear-float-left">
+				<thead>
+				 <tr>
+				 	<th>序号</th>
+				 	<th>团体名称</th>
+				 	<th>团体负责人</th>
+				 	<th>负责人电话</th>
+				 	<th>团体人数</th>
+				 	<th>体检日期</th>
+				 	<th>体检套餐</th>
+				 	<th>套餐折扣</th>
+				 	<th>金额总计</th>				 	
+				 	<th>状态</th>				 	
+				 	<th>项目</th>				 	
+				 </tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat = 'reservationItem in reservationItems | filter:query  track by $index'>
+					<td ><a ng-click='detailReservation(reservationItem.id)'>{{reservationItem.id}}</a></td>
+					<td>{{reservationItem.groupName}}</td>
+					<td>{{reservationItem.leaderName}}</td>
+					<td>{{reservationItem.leaderPhoneNumber}}</td>
+					<td>{{reservationItem.group_number}}</td>
+					<td>{{reservationItem.reservation_date}}</td>
+					<td>{{reservationItem.combo_id}}</td>
+					<td>{{reservationItem.combo_discount}}</td>
+					<td>{{reservationItem.allCount}}</td>
+					<td ng-if="reservationItem.status == '0'">未登记检查</td>
+					<td ng-if="reservationItem.status == '1'">已登记检查</td>
+					<td>{{reservationItem.totalAmount}}</td>
+					<td><button type="button" data-toggle="modal" data-target="#reservation_physical_examination" ng-click='show_physical_examination(reservationItem.physical_examination)' ng class="btn btn-success button-width">查看项目</button></td>
+				</tr>
+				</tbody>
+				</table>
+				<div ng-if='reservationItems.length'>
+				<tm-pagination conf="paginationConf"></tm-pagination>
+				</div>
+			</div>
+			</div>
+        </div>
+        
+        <div>
+					<div class="modal fade" id="reservation_physical_examination" tabindex="-1" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<h4 class="modal-title" id="myModalLabel">预约的检查项目</h4>
+								</div>
+								<div class="modal-body">
+								<table class="table table-word-wrap clear-float-left">
+									<thead>
+										<tr>
+											<th>科室名称</th>
+											<th>项目名称</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat='examinationProject in selected_physical_examination'>
+											<td>{{examinationProject.office_name}}</td>
+											<td>{{examinationProject.project_name}}</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">ok</button>
+							</div>
+						</div>
+						</div>
+					</div>
+					</div>
+		

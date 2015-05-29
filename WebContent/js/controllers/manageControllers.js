@@ -153,7 +153,7 @@ angular.module('peApp').controller('officeStatisticsCtrl',
 												items.push(data[int]);
 											}
 										}
-										$scope.combos = items;
+										$scope.offices = items;
 									}
 								};
 						}
@@ -215,7 +215,12 @@ angular.module('peApp').controller(
 		function($scope, $http, $location,$route,fGateway,registrationService) {
 			$scope.rules = registrationService.searchRules;
 			var gateway = new fGateway();
-			var baseSearch = function (rule,value,orderBy) {
+			var baseSearch = function (rule,value,order,order1) {
+				var orderBy = order + ' ' +order1;
+				localStorage['orderBy'] = order;
+				localStorage['order1'] = order1;
+				$scope.orderBy1 = order;
+				$scope.orderBy2 = order1;
 				gateway.call('getReservationByRule.com',{rule:rule,value:value,orderBy:orderBy}).then(function(data) {
 					if (data == "error") {
 						swal({
@@ -254,7 +259,9 @@ angular.module('peApp').controller(
 				$scope.todayExapinationButton = false;
 				$scope.searchrule = 'reservation_date';
 				$scope.searchValue = today;
-				baseSearch('reservation_date',today,'id');
+				var orderBy = localStorage['orderBy'] || 'id';
+				var order1 = localStorage['order1'] || 'asc';
+				baseSearch('reservation_date',today,orderBy,order1);
 			}
 			$scope.show_physical_examination = function(physical_examination) {
 				$scope.selected_physical_examination = JSON
@@ -276,7 +283,9 @@ angular.module('peApp').controller(
 				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 				$scope.searchrule = 'day';
 				$scope.searchValue = today;
-				baseSearch($scope.searchrule,$scope.searchValue,'id');
+				var orderBy = localStorage['orderBy'] || 'id';
+				var order1 = localStorage['order1'] || 'asc';
+				baseSearch($scope.searchrule,$scope.searchValue,orderBy,order1);
 			}
 			$scope.allReservation = function () {
 				$scope.allReservationButton = true;
@@ -284,7 +293,9 @@ angular.module('peApp').controller(
 				$scope.todayExapinationButton = false;
 				$scope.searchrule = '';
 				$scope.searchValue = '';
-				baseSearch($scope.searchrule,$scope.searchValue,'id');
+				var orderBy = localStorage['orderBy'] || 'id';
+				var order1 = localStorage['order1'] || 'asc';
+				baseSearch($scope.searchrule,$scope.searchValue,orderBy,order1);
 				
 			}
 			$scope.detailSearch = function() {
@@ -293,12 +304,27 @@ angular.module('peApp').controller(
 			$scope.searchAction = function(rule,searchValue) {
 				$scope.searchrule = rule.value;
 				$scope.searchValue = searchValue;
-				baseSearch($scope.searchrule,$scope.searchValue,'id');
+				var orderBy = localStorage['orderBy'] || 'id';
+				var order1 = localStorage['order1'] || 'asc';
+				baseSearch($scope.searchrule,$scope.searchValue,orderBy,order1);
 			}
 			$scope.orderByAction = function(rule) {
-				baseSearch($scope.searchrule,$scope.searchValue,rule);
+				if(localStorage['orderBy'] == rule) {
+					if(localStorage['order1'] == 'asc'){
+						localStorage['order1'] = 'desc';
+					}else {
+						localStorage['order1'] = 'asc';
+					}
+				}else {
+					localStorage['orderBy'] = rule;
+				}
+				var orderBy = localStorage['orderBy'] || 'id';
+				var order1 = localStorage['order1'] || 'asc';
+				$scope.rule = rule;
+				baseSearch($scope.searchrule,$scope.searchValue,orderBy,order1);
 			}
 			$scope.todayReservations();
+			
 
 		});
 
@@ -307,83 +333,20 @@ angular.module('peApp').controller(
 		function($scope, $http, $location,fGateway,$route,registrationService) {
 			var gateway = new fGateway();
 			$scope.rules = registrationService.searchRules;
-			$scope.allRegistratioin = function (){				
-				gateway.call('getRegistrationList.com').then(function(data){
-					if(data=='error'){
-						swal("Sorry!", "系统错误", "error");
-					}
-					else {
-						$scope.registrationLists = data;
-						$scope.allReservationButton = true;
-						$scope.todayReservationButton = false;
-						$scope.paginationConf = {
-								currentPage : 1,
-								totalItems : data.length,
-								itemsPerPage : 15,
-								pagesLength : 15,
-								perPageOptions : [ 10, 20, 30, 40, 50 ],
-								rememberPerPage : 'perPageItems',
-								onChange : function() {
-									var items = [];
-									for (var int = 0; int < data.length; int++) {
-										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-											items.push(data[int]);
-										}
-									}
-									$scope.registrationLists = items;
-								}
-						};
-					}
-				});
-			}
-			$scope.todayRegistration = function () {
-				var date = new Date();
-				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
-				gateway.call('getRegistrateByDate.com',{date:today}).then(function(data){
-					if(data=='error'){
-						swal("Sorry!", "系统错误", "error");
-					}
-					else {
-						$scope.allReservationButton = false;
-						$scope.todayReservationButton = true;
-						$scope.registrationLists = data;
-						$scope.paginationConf = {
-								currentPage : 1,
-								totalItems : $scope.registrationLists.length,
-								itemsPerPage : 15,
-								pagesLength : 15,
-								perPageOptions : [ 10, 20, 30, 40, 50 ],
-								rememberPerPage : 'perPageItems',
-								onChange : function() {
-									var items = [];
-									for (var int = 0; int < $scope.registrationLists.length; int++) {
-										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-											items.push($scope.registrationLists[int]);
-										}
-									}
-									$scope.registrationLists = items;
-								}
-						};
-						}
-					});
-				
-			}
-			$scope.todayRegistration();
-			$scope.todayReservation = function () {
-				$route.reload();
-			}
-			$scope.show_physical_examination = function(physical_examination,comments) {
-				$scope.selected_physical_examination = JSON
-						.parse(physical_examination);
-				$scope.comments = comments;
-			}
-			$scope.detailSearch = function() {
-				$scope.showDetailSearch = true;
-			}
-			$scope.searchAction = function(rule,searchValue) {
-				gateway.call('getRegistrateByRule.com',{rule:rule.value,value:searchValue}).then(function(data){
-					if (data == 'error') {
-						swal("Sorry!", "系统错误", "error");
+			var baseSearch = function (rule,value,order,order1) {
+				var orderBy = order + ' ' +order1;
+				localStorage['orderBy'] = order;
+				localStorage['order1'] = order1;
+				$scope.orderBy1 = order;
+				$scope.orderBy2 = order1;
+				gateway.call('getRegistrateByRule.com',{rule:rule,value:value,orderBy:orderBy}).then(function(data) {
+					if (data == "error") {
+						swal({
+							title : "Error!",
+							text : "系统错误，请联系管理员",
+							type : "warning",
+							timer : 3000
+						})
 					} else {
 						$scope.registrationLists = data;
 						$scope.paginationConf = {
@@ -403,8 +366,62 @@ angular.module('peApp').controller(
 									$scope.registrationLists = items;
 								}
 						};
+						}
+				});
+			}
+			$scope.allRegistratioin = function (){
+				$scope.allReservationButton = true;
+				$scope.todayReservationButton = false;
+				$scope.searchrule = '';
+				$scope.searchValue = '';
+				var orderBy = localStorage['orderBy'] || 'id';
+				var order1 = localStorage['order1'] || 'asc';
+				baseSearch($scope.searchrule,$scope.searchValue,orderBy,order1);
+			}
+			$scope.todayRegistration = function () {
+				$scope.allReservationButton = false;
+				$scope.todayReservationButton = true;
+				var date = new Date();
+				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+				$scope.searchrule = 'day';
+				$scope.searchValue = today;
+				var orderBy = localStorage['orderBy'] || 'id';
+				var order1 = localStorage['order1'] || 'asc';
+				baseSearch($scope.searchrule,$scope.searchValue,orderBy,order1);
+			}
+			$scope.todayRegistration();
+			$scope.todayReservation = function () {
+				$route.reload();
+			}
+			$scope.show_physical_examination = function(physical_examination,comments) {
+				$scope.selected_physical_examination = JSON
+						.parse(physical_examination);
+				$scope.comments = comments;
+			}
+			$scope.detailSearch = function() {
+				$scope.showDetailSearch = true;
+			}
+			$scope.searchAction = function(rule,searchValue) {
+				$scope.searchrule = rule.value;
+				$scope.searchValue = searchValue;
+				var orderBy = localStorage['orderBy'] || 'id';
+				var order1 = localStorage['order1'] || 'asc';
+				baseSearch($scope.searchrule,$scope.searchValue,orderBy,order1);
+			}
+			$scope.orderByAction = function(rule) {
+				if(localStorage['orderBy'] == rule) {
+					if(localStorage['order1'] == 'asc'){
+						localStorage['order1'] = 'desc';
+					}else {
+						localStorage['order1'] = 'asc';
 					}
-				})
+				}else {
+					localStorage['orderBy'] = rule;
+				}
+				var orderBy = localStorage['orderBy'] || 'id';
+				var order1 = localStorage['order1'] || 'asc';
+				$scope.rule = rule;
+				baseSearch($scope.searchrule,$scope.searchValue,orderBy,order1);
 			}
 		});
 
@@ -572,4 +589,100 @@ angular.module('peApp').controller(
 			$scope.cancel = function () {
 				$route.reload()
 			}
+		});
+
+angular.module('peApp').controller('queryMonthReportCtrl',
+		function($scope, $http, $location,fGateway) {
+			$(function() {
+				$('#dateTimePicker').datetimepicker({
+					minView : "month",
+					format : "yyyy/m",
+					todayBtn : true,
+					startView:3,
+					minView:3,
+					todayHighlight : true,
+					autoclose : true
+				});
+			});
+			var gateway = new fGateway();
+			$scope.getDayReport = function() {
+				var numargs = arguments.length;
+				if(numargs ==0){
+					$scope.date = $('#reservation_date').val();
+				}else{
+					$scope.date = arguments[0];
+				}
+				if($scope.date ) {
+					gateway.call('getRegistrateByMonth.com',{date:$scope.date}).then(function(data) {
+						if (data == "error") {
+							swal({
+								title : "Error!",
+								text : "系统错误，请联系管理员",
+								type : "warning",
+								timer : 3000
+							})
+						} else {
+							$scope.allRegistrateNumber = data.length;
+							$scope.registratedNumber = 0;
+							$scope.registrated = [];
+							$scope.noRegistrated = [];
+							for (var index = 0; index < data.length; index ++) {
+								if(data[index].comment) {
+									$scope.registratedNumber ++;
+									$scope.registrated.push(data[index]);
+								}else{
+									$scope.noRegistrated.push(data[index]);
+								}
+								
+							}
+							$scope.notRegistratedNumber = $scope.allRegistrateNumber - $scope.registratedNumber;
+							$scope.paginationConf1 = {
+									currentPage : 1,
+									totalItems : $scope.registrated.length,
+									itemsPerPage : 15,
+									pagesLength : 15,
+									perPageOptions : [ 10, 20, 30, 40, 50 ],
+									rememberPerPage : 'perPageItems',
+									onChange : function() {
+										var items = [];
+										for (var int = 0; int < data.length; int++) {
+											if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+												items.push(data[int]);
+											}
+										}
+										$scope.registrated = items;
+									}
+								};
+							$scope.paginationConf2 = {
+									currentPage : 1,
+									totalItems : $scope.noRegistrated.length,
+									itemsPerPage : 15,
+									pagesLength : 15,
+									perPageOptions : [ 10, 20, 30, 40, 50 ],
+									rememberPerPage : 'perPageItems',
+									onChange : function() {
+										var items = [];
+										for (var int = 0; int < data.length; int++) {
+											if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+												items.push(data[int]);
+											}
+										}
+										$scope.noRegistrated = items;
+									}
+								};
+							}
+					});		
+				}else{
+					swal({
+						title : "Alert!",
+						text : "请选择日期",
+						type : "warning",
+						timer : 3000
+					})
+				}
+				
+			}
+			var date = new Date();
+			$scope.date = date.getFullYear()+'/'+(date.getMonth()+1);
+			$scope.getDayReport($scope.date);
 		});
