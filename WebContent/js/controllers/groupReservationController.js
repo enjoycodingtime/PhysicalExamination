@@ -134,9 +134,6 @@ angular
 				});
 
 
-
-'use strict';
-
 angular.module('peApp').controller(
 		'groupReservationBoxCtrl',
 		function($scope, $http, $location,$route,fGateway) {
@@ -187,11 +184,14 @@ angular.module('peApp').controller(
 				$scope.allReservationButton = false;
 				$scope.todayReservationButton = true;
 				$scope.todayExapinationButton = false;
-				$scope.searchrule = 'reservation_date';
+				$scope.searchrule = 'time';
 				$scope.searchValue = today;
 				var orderBy = localStorage['groupOrderBy'] || 'id';
 				var order1 = localStorage['groupOrder1'] || 'asc';
 				baseSearch('time',today,orderBy,order1);
+			}
+			$scope.todayReservation = function () {
+				$route.reload();
 			}
 			$scope.todayReservations();
 			$scope.show_physical_examination = function(physical_examination) {
@@ -208,38 +208,132 @@ angular.module('peApp').controller(
 				$scope.todayReservationButton = false;
 				$scope.todayExapinationButton = true;
 				var date = new Date();
-				var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
-				gateway.call('getReservationByDate.com',{rule:'date',date:today}).then(function(data) {
-					if (data == "error") {
-						swal({
-							title : "Error!",
-							text : "系统错误，请联系管理员",
-							type : "warning",
-							timer : 3000
-						})
-					} else {
-						$scope.reservationItems = data;
-						$scope.paginationConf = {
-								currentPage : 1,
-								totalItems : data.length,
-								itemsPerPage : 15,
-								pagesLength : 15,
-								perPageOptions : [ 10, 20, 30, 40, 50 ],
-								rememberPerPage : 'perPageItems',
-								onChange : function() {
-									var items = [];
-									for (var int = 0; int < data.length; int++) {
-										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
-											items.push(data[int]);
-										}
-									}
-									$scope.reservationItems = items;
-								}
-							};
-						}
-				});			
+				if((date.getMonth()+1) <10) {
+					var today = date.getFullYear()+'-0'+(date.getMonth()+1)+'-'+date.getDate();
+				}else {
+					var today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+				}
+				$scope.searchrule = 'reservation_date';
+				$scope.searchValue = today;
+				var orderBy = localStorage['groupOrderBy'] || 'id';
+				var order1 = localStorage['groupOrder1'] || 'asc';
+				baseSearch('reservation_date',today,orderBy,order1);
 			}
 			$scope.allReservation = function () {
-				$route.reload();
+				$scope.allReservationButton = true;
+				$scope.todayReservationButton = false;
+				$scope.todayExapinationButton = false;
+				$scope.searchrule = '';
+				$scope.searchValue = '';
+				var orderBy = localStorage['groupOrderBy'] || 'id';
+				var order1 = localStorage['groupOrder1'] || 'asc';
+				baseSearch($scope.searchrule,$scope.searchValue,orderBy,order1);
 			}
 		});
+
+angular.module('peApp').controller(
+		'importGroupReservationCtrl',
+		function($scope, $http, $location,$route,fGateway) {
+			var gateway = new fGateway();
+			
+			$scope.disable = false;
+			var OsObject = ""; 
+			var isIE = !-[1,];
+			$scope.isIE = function() { //ie?  
+			    if (!!window.ActiveXObject || "ActiveXObject" in window)  
+			        return true;  
+			    else  
+			        return false;  
+			} 
+			 if(!$scope.isIE()) { 
+				 swal({
+						title : "Error!",
+						text : "该功能页面需在IE下使用",
+						type : "warning",
+						timer : 3000
+					})
+				$scope.disable = true;
+			   } 
+			$scope.readThis = function(){ 
+						var tempStr = "";
+						var peopleInfor  = [];
+						var filePath = document.all.upfile.value;
+						var oXL = new ActiveXObject("Excel.application");
+						var oWB = oXL.Workbooks.open(filePath);
+						oWB.worksheets(1).select();
+						var oSheet = oWB.ActiveSheet;
+						if(oSheet.Cells(1, 1).value.toString() != '团体id' || oSheet.Cells(2, 1).value.toString() != '名字'||oSheet.Cells(2, 2).value.toString() != '身份证号码'||oSheet.Cells(2, 3).value.toString() != '电话号码'||oSheet.Cells(2, 4).value.toString() != '名族') {
+							swal({
+								title : "Error!",
+								text : "Excel文件内容格式不合格，请检查！",
+								type : "warning",
+								timer : 3000
+							})
+							return 
+						}
+						var group_id = oSheet.Cells(1, 2).value.toString();
+						gateway.call('getGroupReservation.com',{rule:'id',value:group_id,orderBy:'id'}).then(function(data){
+							if (data == "error") {
+								swal({
+									title : "Error!",
+									text : "系统错误，请联系管理员",
+									type : "warning",
+									timer : 3000
+								})
+							} else {
+								$scope.groupInfo = data[0];
+							try {
+								for (var i = 3; i < $scope.groupInfo.group_number+3; i++) {
+									var obj ={};
+									if (oSheet.Cells(i, 2).value == "null"
+										|| oSheet.Cells(i, 3).value == "null")
+										break;
+									var a = oSheet.Cells(i, 2).value.toString() == "undefined" ? ""
+											: oSheet.Cells(i, 2).value;
+									obj.name = oSheet.Cells(i, 1).value;
+									obj.idCard = oSheet.Cells(i, 2).value;
+									obj.phone_number = oSheet.Cells(i, 3).value;
+									obj.nationa = oSheet.Cells(i, 4).value;
+									obj.address = oSheet.Cells(i, 5).value;
+									obj.marriage = oSheet.Cells(i, 6).value;
+									obj.groupName =  $scope.groupInfo.groupName;
+									obj.group_id =  group_id;
+									obj.combo =  $scope.groupInfo.combo_id;
+									obj.date =  $scope.groupInfo.reservation_date;
+									obj.reservation_date =  $scope.groupInfo.reservation_date;
+									obj.physical_examination = $scope.groupInfo.physical_examination;
+									obj = resolved(obj);
+									peopleInfor.push(obj);
+								}
+							} catch (e) {
+								console.log('导入错误',e)
+							}
+							oXL.Quit();
+							CollectGarbage();
+							$scope.peopleInfors= peopleInfor;
+							}
+						})
+					} 
+			var resolved = function(obj) {
+				var idCard = obj.idCard;
+				if (parseInt(idCard.substr(16, 1)) % 2 == 1) {
+					obj.sex = 'man';
+				} else {
+					obj.sex = 'woman';
+				}
+				obj.birthday = idCard.substring(6, 10) + "-" + idCard.substring(10, 12) + "-" + idCard.substring(12, 14); 
+				return obj;
+			}
+			$scope.submit = function () {
+				$scope.peopleInfors.forEach(function(value) {
+					console.log(value);
+					gateway.call('groupRegistrate.com',value).then(function(d){
+				        if(d=='error'|| d.length ==0){
+				        	swal("Sorry!", "登记失败，请联系管理员", "error");
+				        	return
+				        }
+				    });
+					swal("Success!", "登记成功", "success");
+				})
+			}
+		})

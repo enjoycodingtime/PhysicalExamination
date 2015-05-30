@@ -595,7 +595,6 @@ angular.module('peApp').controller('queryMonthReportCtrl',
 		function($scope, $http, $location,fGateway) {
 			$(function() {
 				$('#dateTimePicker').datetimepicker({
-					minView : "month",
 					format : "yyyy/m",
 					todayBtn : true,
 					startView:3,

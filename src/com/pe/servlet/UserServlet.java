@@ -246,7 +246,6 @@ public class UserServlet extends HttpServlet {
 		}
 		
 		if (action.equals("getGroupReservation")) {
-			
 			try {
 				String rule = request.getParameter("rule");
 				
@@ -344,6 +343,12 @@ public class UserServlet extends HttpServlet {
 		if (action.equals("registrate")) {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));
+				int group_id ;
+				try{
+					group_id = Integer.parseInt(request.getParameter("group_id"));					
+				}catch(Exception e){
+					group_id =-1;
+				}
 				String name = request.getParameter("name");
 				String sex = request.getParameter("sex");
 				String date = request.getParameter("date");
@@ -358,8 +363,37 @@ public class UserServlet extends HttpServlet {
 				String physical_examination = request
 						.getParameter("physical_examination");
 				ReservationDao.insertRegistrate(name, sex, birthday, address,phone_number,idCard,marriage,national,
-						date, reservation_date,physical_examination, combo);
+						date, reservation_date,physical_examination, combo,group_id);
 				ReservationDao.changeStatusOfReservation(id);
+
+				out.print("ok");
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		if (action.equals("groupRegistrate")) {
+			try {
+				int group_id ;
+				try{
+					group_id = Integer.parseInt(request.getParameter("group_id"));					
+				}catch(Exception e){
+					group_id =-1;
+				}
+				String name = request.getParameter("name");
+				String sex = request.getParameter("sex");
+				String date = request.getParameter("date");
+				String reservation_date = request.getParameter("reservation_date");
+				String phone_number = request.getParameter("phone_number");
+				String address = request.getParameter("address");
+				String birthday = request.getParameter("birthday");
+				String idCard = request.getParameter("idCard");
+				String marriage = request.getParameter("marriage");
+				String combo = request.getParameter("combo");
+				String national = request.getParameter("nationa");
+				String physical_examination = request
+						.getParameter("physical_examination");
+				ReservationDao.insertRegistrate(name, sex, birthday, address,phone_number,idCard,marriage,national,
+						date, reservation_date,physical_examination, combo,group_id);
 
 				out.print("ok");
 			} catch (Exception e) {

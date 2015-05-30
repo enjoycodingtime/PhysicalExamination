@@ -1,0 +1,49 @@
+<div ng-include="'views/receptionists/receptionistsHeader.html'"></div>
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span3">
+			<div ng-include="'views/receptionists/receptionistSidebar.html'"></div>
+		</div>
+		<!--/span-->
+		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="span9" ng-if='!disable'>
+				<h1>导入团体名单 </h1>
+				<div class='row'>
+					<div class='col-xs-4'><input type="file" id="upfile" id="upfile" class="form-control"/></div>
+					<div class='col-xs-1'><input type="button" class="btn btn-success button-width" ng-click="readThis()" value="读取"></div>
+				</div>
+				<table class="table table-word-wrap clear-float-left">
+				<thead>
+				 <tr>
+				 	<th>团体名</th>
+				 	<th>姓名</th>
+				 	<th>性别</th>
+				 	<th>出生日期</th>
+				 	<th>电话</th>
+				 	<th>体检日期</th>
+				 	<th>套餐</th>				 	
+				 </tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat = 'reservationItem in peopleInfors | filter:query  track by $index'>
+					<td>{{reservationItem.groupName}}</td>
+					<td>{{reservationItem.name}}</td>
+					<td ng-if="reservationItem.sex == 'man'">男</td>
+					<td ng-if="reservationItem.sex == 'woman'">女</td>
+					<td>{{reservationItem.birthday}}</td>
+					<td>{{reservationItem.phone_number}}</td>
+					<td>{{reservationItem.reservation_date}}</td>
+					<td>{{reservationItem.combo}}</td>
+				</tr>
+				</tbody>
+				</table>
+				<div ng-if='peopleInfors'>
+					<input type="button" class="btn btn-success button-width" ng-click="submit()" value="登记">
+				</div>
+			</div>
+			<div class="span9" ng-if='disable'>
+				<h1>导入名单</h1>
+				<h2>请到IE下使用该功能</h2>
+			</div>
+</div>
+

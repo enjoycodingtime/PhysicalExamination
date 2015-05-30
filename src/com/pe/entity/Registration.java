@@ -2,6 +2,7 @@ package com.pe.entity;
 
 public class Registration {
 	private int id;
+	private int group_id;
 	private String name;
 	private String sex;
 	private String birthday;
@@ -20,6 +21,12 @@ public class Registration {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getGroup_id() {
+		return group_id;
+	}
+	public void setGroup_id(int group_id) {
+		this.group_id = group_id;
 	}
 	public String getName() {
 		return name;
@@ -99,12 +106,14 @@ public class Registration {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-	public Registration(int id, String name, String sex, String birthday,
-			String idCard, String address, String marriage, String nationa,
-			String reservation_date, String phone_number, String date,
-			String physical_examination, String combo, String comments) {
+	public Registration(int id, int group_id, String name, String sex,
+			String birthday, String idCard, String address, String marriage,
+			String nationa, String reservation_date, String phone_number,
+			String date, String physical_examination, String combo,
+			String comments) {
 		super();
 		this.id = id;
+		this.group_id = group_id;
 		this.name = name;
 		this.sex = sex;
 		this.birthday = birthday;

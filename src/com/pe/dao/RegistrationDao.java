@@ -24,6 +24,7 @@ public class RegistrationDao {
 		rs = ps.executeQuery();
 		while (rs.next()) {
 			int id = rs.getInt("id");
+			int group_id = rs.getInt("group_id");
 			String name = rs.getString("name");
 			String birthday = rs.getString("birthday");
 			String sex = rs.getString("sex");
@@ -38,7 +39,7 @@ public class RegistrationDao {
 			String combo = rs.getString("combo");
 			String comments = rs.getString("comments");
 
-			Registration registration = new Registration(id, name, sex, birthday,
+			Registration registration = new Registration(id, group_id, name, sex, birthday,
 					 idCard, address, marriage,  nationa,
 					 reservation_date,  phone_number,  date,
 					 physical_examination,  combo, comments);
@@ -88,6 +89,7 @@ public class RegistrationDao {
 		rs= ps.executeQuery();
 		while (rs.next()) {
 			int id = rs.getInt("id");
+			int group_id = rs.getInt("group_id");
 			String name = rs.getString("name");
 			String birthday = rs.getString("birthday");
 			String sex = rs.getString("sex");
@@ -102,7 +104,7 @@ public class RegistrationDao {
 			String combo = rs.getString("combo");
 			String comments = rs.getString("comments");
 
-			Registration registration = new Registration(id, name, sex, birthday,
+			Registration registration = new Registration(id, group_id, name, sex, birthday,
 					 idCard, address, marriage,  nationa,
 					 reservation_date,  phone_number,  date,
 					 physical_examination,  combo, comments);
@@ -121,6 +123,7 @@ public class RegistrationDao {
 		rs= ps.executeQuery();
 		while (rs.next()) {
 			int id = rs.getInt("id");
+			int group_id = rs.getInt("group_id");
 			String name = rs.getString("name");
 			String birthday = rs.getString("birthday");
 			String sex = rs.getString("sex");
@@ -135,7 +138,7 @@ public class RegistrationDao {
 			String combo = rs.getString("combo");
 			String comments = rs.getString("comments");
 
-			Registration registration = new Registration(id, name, sex, birthday,
+			Registration registration = new Registration(id, group_id, name, sex, birthday,
 					 idCard, address, marriage,  nationa,
 					 reservation_date,  phone_number,  date,
 					 physical_examination,  combo, comments);
@@ -214,6 +217,7 @@ public class RegistrationDao {
 	
 		while(rs.next()){
 			int id = rs.getInt("id");
+			int group_id = rs.getInt("group_id");
 			String name = rs.getString("name");
 			String birthday = rs.getString("birthday");
 			String sex = rs.getString("sex");
@@ -228,7 +232,7 @@ public class RegistrationDao {
 			String combo = rs.getString("combo");
 			String comments = rs.getString("comments");
 
-			Registration registration = new Registration(id, name, sex, birthday,
+			Registration registration = new Registration(id, group_id, name, sex, birthday,
 					 idCard, address, marriage,  nationa,
 					 reservation_date,  phone_number,  date,
 					 physical_examination,  combo, comments);
@@ -246,6 +250,7 @@ public class RegistrationDao {
 		rs= ps.executeQuery();
 		while (rs.next()) {
 			int id = rs.getInt("id");
+			int group_id = rs.getInt("group_id");
 			String name = rs.getString("name");
 			String birthday = rs.getString("birthday");
 			String sex = rs.getString("sex");
@@ -260,7 +265,7 @@ public class RegistrationDao {
 			String combo = rs.getString("combo");
 			String comments = rs.getString("comments");
 
-			Registration registration = new Registration(id, name, sex, birthday,
+			Registration registration = new Registration(id, group_id, name, sex, birthday,
 					 idCard, address, marriage,  nationa,
 					 reservation_date,  phone_number,  date,
 					 physical_examination,  combo, comments);

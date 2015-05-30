@@ -43,10 +43,10 @@ public class ReservationDao {
 	}
 	
 	public static void insertRegistrate (String name,String sex, String birthday, String address,String phone_number,String idCard,String marriage,String nationa,
-			String date,String reservation_date,String physical_examination, String combo) throws Exception{
+			String date,String reservation_date,String physical_examination, String combo, int group_id) throws Exception{
 		conn = DBUtil.getConnection();
 		String sql = "insert into registration(name, sex, birthday, address,phone_number,idCard,marriage,nationa,"
-				+ "date, reservation_date,physical_examination,combo) values(?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "date, reservation_date,physical_examination,combo,group_id) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		ps =conn.prepareStatement(sql);
 		ps.setString(1, name);
 		ps.setString(2, sex);
@@ -60,6 +60,7 @@ public class ReservationDao {
 		ps.setString(10, reservation_date);
 		ps.setString(11, physical_examination);
 		ps.setString(12, combo);
+		ps.setInt(13, group_id);
 		ps.executeUpdate();
 	}
 	

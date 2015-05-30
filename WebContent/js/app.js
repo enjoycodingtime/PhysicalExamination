@@ -44,6 +44,10 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/receptionists/reservation.html',
 		controller : 'reservationCtrl',
         resolve: {auth: auth}
+	}).when('/importGroupReservation', {
+		templateUrl : 'views/receptionists/importGroupReservation.html',
+		controller : 'importGroupReservationCtrl',
+        resolve: {auth: auth}
 	}).when('/groupReservation', {
 		templateUrl : 'views/receptionists/groupReservation.html',
 		controller : 'groupReservationCtrl',

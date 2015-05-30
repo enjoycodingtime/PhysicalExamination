@@ -37,7 +37,6 @@ public class GroupReservationDao {
 			java.sql.Date sqlDate=new java.sql.Date(date.getTime());
 			ps.setDate(10, sqlDate);
 			ps.executeUpdate();
-			System.out.println(sqlDate);
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
@@ -70,7 +69,7 @@ public class GroupReservationDao {
 				+ "g.combo_id=c.id  ";
 		switch(rule) {
 		case "id":
-			String sql =basesql+"where id=? "+order;
+			String sql =basesql+"where g.id=? "+order;
 			ps =conn.prepareStatement(sql);
 			int id = Integer.parseInt(value);
 			ps.setInt(1, id);
@@ -109,7 +108,6 @@ public class GroupReservationDao {
 		case "time":
 			String sql19 =basesql+"where time between '? 00:00:00' and '? 23:59:59'"+order;
 			String sql12 = sql19.replace("?",value);
-			System.out.println(sql12);
 			ps =conn.prepareStatement(sql12);			
 			rs= ps.executeQuery();
 			break;
