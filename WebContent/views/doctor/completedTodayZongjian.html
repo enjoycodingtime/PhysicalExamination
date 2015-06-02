@@ -7,10 +7,8 @@
 		<!--/span-->
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 			<div class="span9">
-				<div class='row'>
-					<h1>分检:{{office_name}}</h1>					
-				</div>
-				<h2>今日未检-{{date}}</h2>
+				<h1>总检</h1>
+				<h2>今日已检-{{date}}</h2>
 				<div class='row'>
 					<div class='col-xs-3'>
 						<p class='input-group'>
@@ -23,7 +21,7 @@
 							</span>
 						</p>
 					</div>
-					<div class='col-xs-1 text-right'>
+						<div class='col-xs-1 text-right'>
 						<b>日期</b>
 					</div>
 					<div class='col-xs-2'>
@@ -41,14 +39,13 @@
 						<button class='btn btn-success' ng-click='queryAction()'>查询</button>
 					</div>
 				</div>
-				<div ng-if='physicalExaminationOfThisOffice.length'>
 				<table class="table table-word-wrap clear-float-left">
 					<thead>
 						<tr>
 							<th>序号</th>
 							<th>姓名</th>
 							<th>性别</th>
-							<th>出生日期</th>
+							<th>年龄</th>
 							<th>电话</th>
 							<th>日期</th>
 							<th>套餐</th>
@@ -57,8 +54,8 @@
 					</thead>
 					<tbody>
 						<tr
-							ng-repeat='registrationList in physicalExaminationOfThisOffice | filter:query'>
-							<td>{{registrationList.id}}</td>
+							ng-repeat='registrationList in registrationLists track by $index| filter:query'>
+						<td>{{registrationList.id}}</td>
 							<td>{{registrationList.name}}</td>
 							<td ng-if='registrationList.sex=="man"'>男</td>
 							<td ng-if='registrationList.sex=="woman"'>女</td>
@@ -67,25 +64,19 @@
 							<td>{{registrationList.date}}</td>
 							<td>{{registrationList.combo || '自选'}}</td>
 							<td>
-								<button type="button" data-toggle="modal"
-									data-target="#reservation_physical_examination"
-									ng-click='show_physical_examination(registrationList.id)'
-									ng class="btn btn-success button-width">填写项目结果</button>
+								<button type="button" 
+									ng-click='show_physical_examination(registrationList)'
+									ng class="btn btn-success button-width">填写总检查结果</button>
+								
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				</div>
-				<div ng-if='!physicalExaminationOfThisOffice.length'>今日待体检人数为0</div>
-				<div ng-if='physicalExaminationOfThisOffice.length'>
-				<tm-pagination conf="paginationConf"></tm-pagination>
-				</div>
 			</div>
 		</div>
 
-
-		<div>
-			<div class="modal fade" id="reservation_physical_examination"
+ 	<div>
+			<div class="modal fade" id="zongjianModal"
 				tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog">
@@ -105,7 +96,6 @@
 										<th>项目名称</th>
 										<th>参照标准</th>
 										<th>分检结果</th>
-										<th></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -120,19 +110,19 @@
 										<td><textarea class="form-control " rows="2"
 												data-items="50" ng-disabled="examinationProject.office_name != office.office_name" ng-model = 'examinationProject.result' placeholder='未检'></textarea></td>
 										<td> 										
-								<button type="button" class="btn btn-success"
-								ng-click='addComments($index,examinationProject)' ng-disabled="examinationProject.office_name != office.office_name">确定</button>
 										</td>
 									</tr>
 								</tbody>
 							</table>
-
+						<div>
+						<textarea class="form-control " rows="2" data-items="50"  ng-model = 'comments' placeholder='总检结果'></textarea>
+						</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default"
 								data-dismiss="modal">cancel</button>
 								<button type="button" class="btn btn-default"
-								ng-click='submit()' data-dismiss="modal">提交</button>
+								ng-click='submit(comments)' data-dismiss="modal">提交</button>
 						</div>
 					</div>
 				</div>

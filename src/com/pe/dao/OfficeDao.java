@@ -76,4 +76,42 @@ public class OfficeDao {
 		}
 		
 	}
+	public List<Office> getOfficeByRule(String rule, String value) {
+		List<Office> list = new ArrayList<Office>();
+		try {
+			System.out.println(rule);
+			System.out.println(value);
+			conn=DBUtil.getConnection();
+			if(rule.equals("office_type")) {
+				String sql ="select * from Office where office_type='?'";
+				if(value.equals("非功能科室")) {
+					sql = sql.replace("?","0");
+				}else {
+					sql = sql.replace("?","1");
+				}
+				ps =conn.prepareStatement(sql);
+				rs= ps.executeQuery();
+			}else {
+				String sql ="select * from Office where "+rule+"=?";
+				ps =conn.prepareStatement(sql);
+				ps.setString(1,value);
+				rs= ps.executeQuery();
+				
+			}
+			while(rs.next()){
+				int id = rs.getInt("id");
+				String office_name = rs.getString("office_name");
+				int office_type = rs.getInt("office_type");
+				String office_number = rs.getString("office_number");
+				
+				Office office =new Office(id,office_name,office_type,office_number);
+				list.add(office);
+			}
+			return list;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return list;
+		}
+		
+	}
 }

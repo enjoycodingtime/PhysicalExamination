@@ -31,6 +31,15 @@ angular.module('peApp').controller('fenjianCtrl',
 		function($scope, $http, $location, fGateway,$route,$window) {
 			$scope.office_name = JSON.parse($window.sessionStorage.userInfo).office;
 			var gateway = new fGateway();
+			$(function() {
+				$('#dateTimePicker').datetimepicker({
+					minView : "month",
+					format : "yyyy/m/d",
+					todayBtn : true,
+					todayHighlight : true,
+					autoclose : true
+				});
+			});
 			gateway.call('getOffice.com').then(function(d) {
 				if (d == 'error') {
 					swal("Sorry!", "系统错误", "error");
@@ -79,6 +88,10 @@ angular.module('peApp').controller('fenjianCtrl',
 				})
 			}
 			$scope.getPhysicalExaminationsByOffice($scope.office_name);
+			$scope.queryAction = function () {
+				$scope.date = $('#reservation_date').val();
+				$scope.getPhysicalExaminationsByOffice($scope.office_name);
+				}
 			$scope.show_physical_examination = function(id) {
 				$location.path('fenjianResult');
 				$location.search('id',id);
@@ -89,6 +102,15 @@ angular.module('peApp').controller('fenjianCtrl',
 angular.module('peApp').controller('zongjianCtrl',
 		function($scope, $http, $location, fGateway,$route) {
 			var gateway = new fGateway();
+			$(function() {
+				$('#dateTimePicker').datetimepicker({
+					minView : "month",
+					format : "yyyy/m/d",
+					todayBtn : true,
+					todayHighlight : true,
+					autoclose : true
+				});
+			});
 			var date = new Date();
 			$scope.date = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
 			$scope.id = '';
@@ -117,7 +139,10 @@ angular.module('peApp').controller('zongjianCtrl',
 			}
 			
 			$scope.getRegistrationLists();
-			
+			$scope.queryAction = function () {
+				$scope.date = $('#reservation_date').val();
+				$scope.getRegistrationLists();
+				}
 
 			$scope.show_physical_examination = function(item) {
 				$location.path('zongjianResult');
@@ -130,6 +155,15 @@ angular.module('peApp').controller('completedTodayCtrl',
 		function($scope, $http, $location, fGateway,$route,$window) {
 			$scope.office_name = JSON.parse($window.sessionStorage.userInfo).office;
 			var gateway = new fGateway();
+			$(function() {
+				$('#dateTimePicker').datetimepicker({
+					minView : "month",
+					format : "yyyy/m/d",
+					todayBtn : true,
+					todayHighlight : true,
+					autoclose : true
+				});
+			});
 			$scope.id = '';
 			$scope.selected_physical_examination = [];
 			var date = new Date();
@@ -171,6 +205,10 @@ angular.module('peApp').controller('completedTodayCtrl',
 				})
 			}
 			$scope.getPhysicalExaminationsByOffice($scope.office_name);
+			$scope.queryAction = function () {
+				$scope.date = $('#reservation_date').val();
+				$scope.getPhysicalExaminationsByOffice($scope.office_name);
+				}
 			$scope.show_physical_examination = function(id) {
 				$location.path('fenjianResult');
 				$location.search('id',id);
@@ -178,6 +216,59 @@ angular.module('peApp').controller('completedTodayCtrl',
 				
 			};			
 		});
+
+angular.module('peApp').controller('completedTodayZongjianCtrl',
+		function($scope, $http, $location, fGateway,$route,$window) {
+	var gateway = new fGateway();
+	$(function() {
+		$('#dateTimePicker').datetimepicker({
+			minView : "month",
+			format : "yyyy/m/d",
+			todayBtn : true,
+			todayHighlight : true,
+			autoclose : true
+		});
+	});
+	var date = new Date();
+	$scope.date = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
+	$scope.id = '';
+	$scope.getRegistrationLists = function() {
+		$scope.registrationLists = [];
+		gateway.call('getRegistrateByDate.com',{date:$scope.date}).then(function(d) {
+			if (d == 'error') {
+				swal("Sorry!", "系统错误", "error");
+			} else {
+				var registrationLists = d;
+				registrationLists.forEach(function(value) {
+					var physical_examination = JSON.parse(value.physical_examination);
+					var isAllHaveResult = 1;
+					physical_examination.forEach(function(v) {
+						if(!v.result){
+							isAllHaveResult = 0;
+						}
+					})
+					if(isAllHaveResult && value.comments){
+						$scope.registrationLists.push(value);
+					}
+				})
+			}
+		})
+	}
+	
+	$scope.getRegistrationLists();
+	$scope.queryAction = function () {
+		$scope.date = $('#reservation_date').val();
+		$scope.getRegistrationLists();
+		}
+
+	$scope.show_physical_examination = function(item) {
+		$location.path('zongjianResult');
+		$location.search('id',item.id);
+	};
+	
+	
+});
+
 
 angular.module('peApp').controller('fenjianResultCtrl',
 		function($scope, $http, $location, fGateway,$route,$window) {

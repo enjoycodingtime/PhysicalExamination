@@ -182,6 +182,37 @@ angular.module('peApp').controller('officeCtrlController',
 						};
 				}
 			});			
+			$scope.searchAction = function (rule,searchValue) {
+				gateway.call('getOfficeByRule.com',{rule:rule,value:searchValue}).then(function(data) {
+					if (data == 'error') {
+						swal({
+							title : "Error!",
+							text : "系统错误",
+							type : "warning",
+							timer : 3000
+						})
+					} else {
+						$scope.offices = data;
+						$scope.paginationConf = {
+								currentPage : 1,
+								totalItems : data.length,
+								itemsPerPage : 15,
+								pagesLength : 15,
+								perPageOptions : [ 10, 20, 30, 40, 50 ],
+								rememberPerPage : 'perPageItems',
+								onChange : function() {
+									var items = [];
+									for (var int = 0; int < data.length; int++) {
+										if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+											items.push(data[int]);
+										}
+									}
+									$scope.offices = items;
+								}
+							};
+					}
+				});	
+			}
 			$scope.add_office_action = function(){
 				gateway.call('addOffice.com',{
 					office_name : $scope.office_name,
@@ -521,6 +552,7 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 
 angular.module('peApp').controller('selectComboCtrl',
 		function($scope, $http, $location,fGateway,$route) {
+			var gateway =new fGateway();
 			$http({
 				method : 'GET',
 				url : 'getCombos.com'
@@ -615,7 +647,15 @@ angular.module('peApp').controller('selectComboCtrl',
 				$location.path('manageComboExaminationProject');
 				$location.search('id',id);
 			}
-			
+			$scope.searchAction = function (searchValue) {
+				gateway.call('searchByComboName.com',{combo_name:searchValue}).then(function(d) {
+					if (d == 'error') {
+						swal("Sorry!", "系统错误", "error");
+					} else {
+						$scope.combos = d;
+					}
+				});
+			}
 		});
 
 angular.module('peApp').controller('manageComboExaminationProjectCtrl',

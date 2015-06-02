@@ -23,6 +23,21 @@
 							</span>
 						</p>
 					</div>
+					<div class='col-xs-2'>
+						<select ng-model="rule" class='form-control'>
+							<option value='' >选择一个</option>
+							<option value='office_name'>科室名称</option>
+							<option value='office_type'>科室类型</option>
+							<option value='office_number'>门牌号</option>
+                        </select>
+					</div>
+					<div class='col-xs-2'>
+						<input type="text" class="form-control" 
+								name="value" placeholder="输入查询的值" ng-model='searchValue'>
+					</div>
+					<div class='col-xs-1'>
+                        <button type="button" class="btn btn-success button-width" ng-click='searchAction(rule,searchValue)'>查询</button>
+					</div>
 				</div>	
 				<table class="table table-word-wrap clear-float-left">
 					<thead>

@@ -247,7 +247,6 @@ public class RegistrationDao {
 			conn=DBUtil.getConnection();
 			String sql ="select * from registration where date LIKE '?%'";
 			String sql2 = sql.replace("?",date1);
-			System.out.println(sql2);
 			ps =conn.prepareStatement(sql2);
 			rs= ps.executeQuery();
 			while (rs.next()) {
@@ -282,7 +281,6 @@ public class RegistrationDao {
 
 	public static void giveUp(int id) {
 		try{
-			System.out.println(id);
 			conn=DBUtil.getConnection();
 			String sql ="update registration set status=2 where id=?";
 			ps =conn.prepareStatement(sql);
@@ -323,7 +321,6 @@ public class RegistrationDao {
 			}
 			conn=DBUtil.getConnection();
 			String sql ="select * from registration where "+s_date+" and "+s_status+" and "+s_combo+" and "+s_sex;
-			System.out.println(sql);
 			ps =conn.prepareStatement(sql);
 			rs= ps.executeQuery();
 			while (rs.next()) {

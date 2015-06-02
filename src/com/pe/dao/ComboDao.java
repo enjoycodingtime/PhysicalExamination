@@ -97,4 +97,27 @@ public class ComboDao {
 		}
 		
 	}
+
+	public List<Combo> getComboByName(String combo_name1) {
+		List<Combo> list = new ArrayList<Combo>();
+		try{
+			conn = DBUtil.getConnection();
+			String sql = "select * from combo where combo_name=?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, combo_name1);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String combo_name = rs.getString("combo_name");
+				String combo_price = rs.getString("combo_price");
+				String combo_items = rs.getString("combo_items");
+				Combo combo = new Combo(id,combo_name,combo_price,combo_items);
+				list.add(combo);
+			}
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return list;
+		}
+	}
 }

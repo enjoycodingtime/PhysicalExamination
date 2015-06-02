@@ -128,6 +128,10 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/doctor/completedToday.html',
 		controller : 'completedTodayCtrl',
         resolve: {auth: auth}
+	}).when('/completeTodayZongjian', {
+		templateUrl : 'views/doctor/completedTodayZongjian.html',
+		controller : 'completedTodayZongjianCtrl',
+        resolve: {auth: auth}
 	}).when('/zongjian', {
 		templateUrl : 'views/doctor/zongjian.html',
 		controller : 'zongjianCtrl',

@@ -10,7 +10,7 @@
 				<div class='row'>
 					<h1>分检:{{office_name}}</h1>					
 				</div>
-				<h2>今日已检</h2>
+				<h2>今日已检-{{date}}</h2>
 				<div class='row'>
 					<div class='col-xs-3'>
 						<p class='input-group'>
@@ -23,6 +23,23 @@
 							</span>
 						</p>
 					</div>
+					<div class='col-xs-1 text-right'>
+						<b>日期</b>
+					</div>
+					<div class='col-xs-2'>
+						<div class='input-group date' id='dateTimePicker'>
+							<input type='text' id='reservation_date'
+								ng-model='reservationInformation.date' class="form-control"
+								data-date-format="yyyy-mm-dd" placeholder="选择日期"
+								readonly='true' /> <span
+								class="input-group-addon cursor-to-hand"> <span
+								class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<div class='col-xs-1'>
+						<button class='btn btn-success' ng-click='queryAction()'>查询</button>
+					</div> 
 				</div>
 				<div ng-if='physicalExaminationOfThisOffice.length'>
 				<table class="table table-word-wrap clear-float-left">

@@ -21,7 +21,16 @@
 							</span>
 						</p>
 					</div>
+					
+					<div class='col-xs-2'>
+						<input type="text" class="form-control" 
+								name="value" placeholder="输入套餐名" ng-model='searchValue'>
+					</div>
+					<div class='col-xs-1'>
+                        <button type="button" class="btn btn-success button-width" ng-click='searchAction(searchValue)'>查询</button>
+					</div>
 				</div>
+				
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
 				 <tr>

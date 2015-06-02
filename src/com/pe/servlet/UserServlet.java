@@ -544,6 +544,19 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		//通过规则获取科室信息
+		if(action.equals("getOfficeByRule")){
+			try {
+				String rule = request.getParameter("rule");
+				String value = request.getParameter("value");
+				OfficeDao officeDao = new OfficeDao();
+				List<Office> list = officeDao.getOfficeByRule(rule,value);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());				
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 		
 		//添加科室
 		if(action.equals("addOffice")){
@@ -636,6 +649,18 @@ public class UserServlet extends HttpServlet {
 			try {
 				ComboDao comboDao = new ComboDao();
 				List<Combo> list = comboDao.getCombos();
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());				
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//通过名字查询套餐		
+		if (action.equals("searchByComboName")) {
+			try {
+				String combo_name = request.getParameter("combo_name");
+				ComboDao comboDao = new ComboDao();
+				List<Combo> list = comboDao.getComboByName(combo_name);
 				JSONArray jarray = JSONArray.fromObject(list);
 				out.println(jarray.toString());				
 			} catch (Exception e) {
