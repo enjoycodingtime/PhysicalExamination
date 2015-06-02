@@ -9,7 +9,8 @@
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="span9">
 			<div class="leaderboard">
-				<h1>体检登记表</h1>				
+				<h1>体检提醒</h1>
+				<h2>明日体检-{{tomorrow}}</h2>				
 				<div class='row'>
 					<div class='col-xs-3'>
 						<p class='input-group'>
@@ -17,14 +18,13 @@
 								 placeholder="search"
 								ng-model='query'><span class="input-group-btn">
 								<button type="button" class="btn btn-default"
-									ng-click="search(id)">
+									>
 									<i class="glyphicon glyphicon-search"></i>
 								</button>
 							</span>
 						</p>
 					</div>
-					<div class='col-xs-2'><button type="button" ng-click='allReservation()' ng class="btn btn-success button-width" ng-disabled="allReservationButton">所有体检登记</button></div>
-					<div class='col-xs-2'><button type="button" ng-click='todayReservation()' ng class="btn btn-success button-width"ng-disabled="todayReservationButton">今日体检登记</button></div>
+					
 				</div>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
@@ -34,30 +34,37 @@
 				 	<th>性别</th>
 				 	<th>出生日期</th>
 				 	<th>电话</th>
+				 	<th>预约日期</th>
 				 	<th>体检日期</th>
 				 	<th>套餐</th>				 	
-				 	<th>团体id</th>				 	
-				 	<th>操作</th>				 	
+				 	<th>状态</th>				 	
+				 	<th>总价</th>				 	
 				 	<th>项目</th>				 	
 				 </tr>
 				</thead>
 				<tbody>
-				<tr ng-repeat = 'registrationList in registrationLists | filter:query'>
-					<td>{{registrationList.id}}</td>
-					<td>{{registrationList.name}}</td>
-					<td ng-if="registrationList.sex == 'man'">男</td>
-					<td ng-if="registrationList.sex == 'woman'">女</td>
-					<td>{{registrationList.birthday}}</td>
-					<td>{{registrationList.phone_number}}</td>
-					<td>{{registrationList.date}}</td>
-					<td>{{registrationList.combo || '自选'}}</td>
-					<td>{{registrationList.group_id || '个人'}}</td>
-					<td><button type="button" class="btn btn-success button-width" ng-click='give_up(registrationList)'>弃检</button> </td>
-					<td><button type="button" data-toggle="modal" data-target="#reservation_physical_examination" ng-click='show_physical_examination(registrationList.physical_examination,registrationList.comments)' class="btn btn-success button-width">查看项目</button></td>
+				<tr ng-repeat = 'reservationItem in reservationItems | filter:query  track by $index'>
+					<td ><a ng-click='detailReservation(reservationItem.id)'>{{reservationItem.id}}</a></td>
+					<td>{{reservationItem.name}}</td>
+					<td ng-if="reservationItem.sex == 'man'">男</td>
+					<td ng-if="reservationItem.sex == 'woman'">女</td>
+					<td>{{reservationItem.birthday}}</td>
+					<td>{{reservationItem.phone_number}}</td>
+					<td>{{reservationItem.reservation_date}}</td>
+					<td>{{reservationItem.date}}</td>
+					<td>{{reservationItem.combo || '自选'}}</td>
+					<td ng-if="reservationItem.status == '0'">未登记检查</td>
+					<td ng-if="reservationItem.status == '1'">已登记检查</td>
+					<td>{{reservationItem.totalAmount}}</td>
+					<td><button type="button" data-toggle="modal" data-target="#reservation_physical_examination" ng-click='show_physical_examination(reservationItem.physical_examination)' ng class="btn btn-success button-width">查看项目</button></td>
 				</tr>
 				</tbody>
 				</table>
-				<div ng-if='registrationLists.length'>
+				<div ng-if='deleteItems.length'>
+					<button type="button"  ng-click='deleteSelectedItems()' ng class="btn btn-danger button-width">删除</button>
+				</div>
+				</div>
+				<div ng-if='reservationItems.length'>
 				<tm-pagination conf="paginationConf"></tm-pagination>
 				</div>
 			</div>
@@ -74,7 +81,7 @@
 										aria-label="Close">
 										<span aria-hidden="true">&times;</span>
 									</button>
-									<h4 class="modal-title" id="myModalLabel">登记的检查项目</h4>
+									<h4 class="modal-title" id="myModalLabel">预约的检查项目</h4>
 								</div>
 								<div class="modal-body">
 								<table class="table table-word-wrap clear-float-left">
@@ -82,21 +89,16 @@
 										<tr>
 											<th>科室名称</th>
 											<th>项目名称</th>
-											<th>分检结果</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr ng-repeat='examinationProject in selected_physical_examination'>
 											<td>{{examinationProject.office_name}}</td>
 											<td>{{examinationProject.project_name}}</td>
-											<td><textarea class="form-control " rows="2" data-items="50" ng-disabled="true">{{examinationProject.result || '未检'}}</textarea></td>
 										</tr>
 									</tbody>
 								</table>
-								<div><h5>总检结果：</h5>
-									<textarea class="form-control " rows="2" data-items="50"
-										ng-model='comments' placeholder='总检结果' ng-disabled="true"></textarea>
-								</div>
+
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default"

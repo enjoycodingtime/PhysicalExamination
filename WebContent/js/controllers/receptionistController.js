@@ -62,7 +62,109 @@ angular.module('peApp').controller(
 					}
 		        }
 		    });
-
+			$scope.give_up = function (registrationList) {
+				var id = registrationList.id;
+				var name = registrationList.name;
+				swal({
+					title : "Alert",
+					text : "确认弃检这个人的体检吗？——"+name,
+					type : "warning",
+					showCancelButton: true,
+	                confirmButtonColor: "#5CB85C",
+	                confirmButtonText: "yes",
+	                closeOnConfirm: true },
+	                function(isConfirm){
+	                	if(isConfirm){
+	                			gateway.call('giveUp.com',{id:id}).then(function(data){
+	                				if (data == "error") {
+	                					swal({
+	                						title : "Error!",
+	                						text : "删除失败",
+	                						type : "warning",
+	                						timer : 3000
+	                					});
+	                				} else {
+	                					swal({
+	                						title : "ok",
+	                						text : "成功",
+	                						type : "success",
+	                						timer : 3000
+	                					});
+	                				}
+	                			})
+	                		$route.reload();
+	                	}
+				})
+			}
+			$scope.show_physical_examination = function(physical_examination,comments) {
+				$scope.selected_physical_examination = JSON
+						.parse(physical_examination);
+				$scope.comments = comments;
+			}
+		});
+angular.module('peApp').controller(
+		'detailQueryCtrl',
+		function($scope, $http, $location,fGateway,$route) {
+			var gateway = new fGateway();
+			$(function() {
+				$('#dateTimePicker').datetimepicker({
+					minView : "month",
+					format : "yyyy/m/d",
+					todayBtn : true,
+					todayHighlight : true,
+					autoclose : true
+				});
+			});
+			gateway.call('getCombos.com').then(function(d) {
+				if (d == 'error') {
+					swal("Sorry!", "系统错误", "error");
+				} else {
+					$scope.combos = d;
+				}
+			});
+			$scope.queryAction = function () {
+				var date = $('#reservation_date').val();
+				try {
+					$scope.combo_value1 = $scope.combo_value.combo_name ;
+				} catch (e) {
+					$scope.combo_value1 = 'all'
+				}
+				if(!$scope.status_value) {
+					$scope.status_value = 'all'
+				}
+				if(!date) {
+					date = 'all'
+				}
+				if(!$scope.sex_value) {
+					$scope.sex_value = 'all'
+				}
+				gateway.call('detailQuery.com' ,{
+					date:date,
+					status_value:$scope.status_value,
+					combo_value:$scope.combo_value1,
+					sex_value:$scope.sex_value
+				}).then(function(data) {
+					$scope.registrationLists =data;
+					$scope.paginationConf = {
+							currentPage : 1,
+							totalItems : data.length,
+							itemsPerPage : 15,
+							pagesLength : 15,
+							perPageOptions : [ 10, 20, 30, 40, 50 ],
+							rememberPerPage : 'perPageItems',
+							onChange : function() {
+								var items = [];
+								for (var int = 0; int < data.length; int++) {
+									if(int>=(this.currentPage-1)*this.itemsPerPage && int<(this.currentPage)*this.itemsPerPage) {
+										items.push(data[int]);
+									}
+								}
+								$scope.registrationLists = items;
+							}
+						};
+				})
+				console.log($scope.status_value,$scope.combo_value1,date,$scope.sex_value) 
+			}			
 			$scope.show_physical_examination = function(physical_examination,comments) {
 				$scope.selected_physical_examination = JSON
 						.parse(physical_examination);

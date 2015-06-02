@@ -25,6 +25,10 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/receptionists/receptionist.html',
 		controller : 'receptionistCtrl',
         resolve: {auth: auth}
+	}).when('/detailQuery', {
+		templateUrl : 'views/receptionists/detailQuery.html',
+		controller : 'detailQueryCtrl',
+        resolve: {auth: auth}
 	}).when('/changePassword', {
 		templateUrl : 'views/employee/changePassword.html',
 		controller : 'changePasswordCtrl',
@@ -43,6 +47,10 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 	}).when('/reservation', {
 		templateUrl : 'views/receptionists/reservation.html',
 		controller : 'reservationCtrl',
+        resolve: {auth: auth}
+	}).when('/remind', {
+		templateUrl : 'views/receptionists/remind.html',
+		controller : 'remindCtrl',
         resolve: {auth: auth}
 	}).when('/importGroupReservation', {
 		templateUrl : 'views/receptionists/importGroupReservation.html',

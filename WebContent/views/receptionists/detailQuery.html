@@ -9,22 +9,54 @@
 		<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="span9">
 			<div class="leaderboard">
-				<h1>体检登记表</h1>				
+				<h1>详细查询</h1>				
 				<div class='row'>
-					<div class='col-xs-3'>
-						<p class='input-group'>
-							<input type="text" class="form-control"
-								 placeholder="search"
-								ng-model='query'><span class="input-group-btn">
-								<button type="button" class="btn btn-default"
-									ng-click="search(id)">
-									<i class="glyphicon glyphicon-search"></i>
-								</button>
-							</span>
-						</p>
+					<div class='col-xs-1 text-right'>
+						<b>日期</b>
 					</div>
-					<div class='col-xs-2'><button type="button" ng-click='allReservation()' ng class="btn btn-success button-width" ng-disabled="allReservationButton">所有体检登记</button></div>
-					<div class='col-xs-2'><button type="button" ng-click='todayReservation()' ng class="btn btn-success button-width"ng-disabled="todayReservationButton">今日体检登记</button></div>
+					<div class='col-xs-2'>
+						<div class='input-group date' id='dateTimePicker'>
+							<input type='text' id='reservation_date'
+								ng-model='reservationInformation.date' class="form-control"
+								data-date-format="yyyy-mm-dd" placeholder="选择日期"
+								readonly='true' /> <span
+								class="input-group-addon cursor-to-hand"> <span
+								class="glyphicon glyphicon-calendar"></span>
+							</span>
+						</div>
+					</div>
+					<div class='col-xs-1 text-right'>
+						<b>状态</b>
+					</div>
+					<div class='col-xs-1'>
+						<select ng-model="status_value" class="form-control">
+							<option value='' ng-init='value =1' selected = "selected">全部</option>
+							<option value='1' ng-init='value =1' selected = "selected">已检</option>
+							<option value='0'>未检</option>
+							<option value='2'>弃检</option>
+                        </select>
+					</div>
+					<div class='col-xs-1 text-right'>
+						<b>套餐</b>
+					</div>
+					<div class='col-xs-2'>
+						<select ng-model="combo_value" class="form-control" ng-options="combo.combo_name for combo in combos">
+						<option value=''>全部</option>
+                        </select>
+					</div>
+					<div class='col-xs-1 text-right'>
+						<b>性别</b>
+					</div>
+					<div class='col-xs-1'>
+						<select ng-model="sex_value" class="form-control">
+							<option value=''>全部</option>
+							<option value='man' >男</option>
+							<option value='woman'>女</option>
+                        </select>
+					</div>
+					<div class='col-xs-1'>
+						<button class='btn btn-success' ng-click='queryAction()'>查询</button>
+					</div>
 				</div>
 				<table class="table table-word-wrap clear-float-left">
 				<thead>

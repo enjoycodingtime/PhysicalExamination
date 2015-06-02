@@ -349,6 +349,35 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		
+		//详细查询
+		if (action.equals("detailQuery")) {
+			try {
+				String date = request.getParameter("date");
+				String status_value = request.getParameter("status_value");
+				String combo_value = request.getParameter("combo_value");
+				String sex_value = request.getParameter("sex_value");
+				RegistrationDao registrationDao = new RegistrationDao();
+				List<Registration> list = registrationDao.getRegistrateByRules(date,status_value,combo_value,sex_value);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//弃检
+		if (action.equals("giveUp")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				System.out.println("1231412312");
+				System.out.println(id);
+				RegistrationDao.giveUp(id);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+
+		
 		if (action.equals("getRegistrateById")) {
 			try {
 				int id = Integer.parseInt(request.getParameter("id"));

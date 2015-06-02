@@ -68,7 +68,7 @@ public class RegistrationDao {
 	public static void addAllExamineResult(int id, String comments) {
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "update registration set comments=? where id=?";
+			String sql = "update registration set comments=? status=1 where id=?";
 			ps = conn.prepareStatement(sql);
 			ps.setInt(2, id);
 			ps.setString(1, comments);
@@ -249,6 +249,82 @@ public class RegistrationDao {
 			String sql2 = sql.replace("?",date1);
 			System.out.println(sql2);
 			ps =conn.prepareStatement(sql2);
+			rs= ps.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int group_id = rs.getInt("group_id");
+				String name = rs.getString("name");
+				String birthday = rs.getString("birthday");
+				String sex = rs.getString("sex");
+				String address = rs.getString("address");
+				String idCard = rs.getString("idCard");
+				String marriage = rs.getString("marriage");
+				String nationa = rs.getString("nationa");
+				String phone_number = rs.getString("phone_number");
+				String date = rs.getString("date");
+				String reservation_date = rs.getString("reservation_date");
+				String physical_examination = rs.getString("physical_examination");
+				String combo = rs.getString("combo");
+				String comments = rs.getString("comments");
+				
+				Registration registration = new Registration(id, group_id, name, sex, birthday,
+						idCard, address, marriage,  nationa,
+						reservation_date,  phone_number,  date,
+						physical_examination,  combo, comments);
+				list.add(registration);
+			}
+			return list;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return list;
+		}
+	}
+
+	public static void giveUp(int id) {
+		try{
+			System.out.println(id);
+			conn=DBUtil.getConnection();
+			String sql ="update registration set status=2 where id=?";
+			ps =conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<Registration> getRegistrateByRules(String date1,
+			String status_value, String combo_value, String sex_value) {
+		List<Registration> list = new ArrayList<Registration>();
+		try{
+			String s_date;
+			String s_status;
+			String s_combo;
+			String s_sex;
+			if(date1.equals("all")) {
+				s_date = "1=1";
+			}else {
+				s_date = "date='"+date1+"'";
+			}
+			if(status_value.equals("all")) {
+				s_status = "1=1";
+			}else {
+				s_status = "status='"+status_value+"'";
+			}
+			if(combo_value.equals("all")) {
+				s_combo = "1=1";
+			}else {
+				s_combo = "combo='"+combo_value+"'";
+			}
+			if(sex_value.equals("all")) {
+				s_sex = "1=1";
+			}else {
+				s_sex = "sex='"+sex_value+"'";
+			}
+			conn=DBUtil.getConnection();
+			String sql ="select * from registration where "+s_date+" and "+s_status+" and "+s_combo+" and "+s_sex;
+			System.out.println(sql);
+			ps =conn.prepareStatement(sql);
 			rs= ps.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
