@@ -11,7 +11,7 @@ public class DBUtil {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		} catch (Exception e) {
-			System.out.println("error");
+			System.out.println("数据库连接错误");
 			e.printStackTrace();
 		}
 	}

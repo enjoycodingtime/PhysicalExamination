@@ -93,7 +93,9 @@ angular
 						$scope.reservationInformation.totalAmount = totalAmount;
 						return totalAmount;
 					};
-
+					$scope.numberOfThisDay = function() {
+						console.log('ss')
+					}
 					$scope.submit = function() {
 						var date = new Date();
 						var today = date.getFullYear()+'/'+(date.getMonth()+1)+'/'+date.getDate();
@@ -135,6 +137,13 @@ angular
 									function(d) {
 										if (d == 'error') {
 											swal("Sorry!", "系统错误", "error");
+										}else if (d=='今天预约过了'){
+											swal({
+												title : "Alert",
+												text : "这个改身份证号码在这天已经预约体检，不能重复预约",
+												type : "warning",
+												timer : 2000
+											})
 										} else {
 											swal({
 												title : "sucess!",

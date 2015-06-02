@@ -136,10 +136,13 @@ public class UserServlet extends HttpServlet {
 				String physical_examination = request
 						.getParameter("physical_examination");
 				String totalAmount = request.getParameter("totalAmount");
-				ReservationDao.insertReservation(name, sex, birthday, address,phone_number,idCard,marriage,national,
-						date, reservation_date,physical_examination, combo,totalAmount);
-
-				out.print("ok");
+				if(ReservationDao.haveReservationToday(idCard,date)) {
+					out.print("今天预约过了");
+				}else {
+					ReservationDao.insertReservation(name, sex, birthday, address,phone_number,idCard,marriage,national,
+							date, reservation_date,physical_examination, combo,totalAmount);
+					out.print("ok");
+				}
 
 			} catch (Exception e) {
 				out.print("error");
@@ -197,6 +200,35 @@ public class UserServlet extends HttpServlet {
 
 				out.print("ok");
 
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		//修改团体预约信息
+		if (action.equals("updateGroupReservation")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				String groupName = request.getParameter("groupName");
+				String address = request.getParameter("address");
+				String allCount = request.getParameter("allCount");
+				int comboDiscount = Integer.parseInt(request.getParameter("comboDiscount"));
+				int combo_id = Integer.parseInt(request.getParameter("combo_id"));
+				int group_number = Integer.parseInt(request.getParameter("group_number"));
+				String leaderName = request.getParameter("leaderName");
+				String leaderPhoneNumber = request.getParameter("leaderPhoneNumber");
+				String reservation_date = request.getParameter("reservation_date");
+				String physical_examination = request
+						.getParameter("physical_examination");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+				try {
+					Date date = sdf.parse(reservation_date); 
+					GroupReservationDao.updateReservation(id,groupName, address, allCount, comboDiscount,combo_id,group_number,leaderName,physical_examination,date,leaderPhoneNumber);
+				}catch (ParseException e){
+					System.out.println("时间出错");
+					e.printStackTrace();
+				}
+				out.print("ok");
+				
 			} catch (Exception e) {
 				out.print("error");
 			}
@@ -273,6 +305,14 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		if (action.equals("delectGroupReservation")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				GroupReservationDao.deleteReservation(id);
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 		if (action.equals("getRegistrateByDate")) {
 			try {
 				String date = request.getParameter("date");
@@ -338,6 +378,18 @@ public class UserServlet extends HttpServlet {
 				out.print("error");
 			}
 		}
+		// 查询团体预约信息
+		if (action.equals("isGroupReservation")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				GroupReservationDao reservationDao = new GroupReservationDao();
+				List<GroupReservation> list = reservationDao.getReservationById(id);
+				JSONArray jarray = JSONArray.fromObject(list);
+				out.println(jarray.toString());
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
 		
 		//登记
 		if (action.equals("registrate")) {
@@ -366,6 +418,15 @@ public class UserServlet extends HttpServlet {
 						date, reservation_date,physical_examination, combo,group_id);
 				ReservationDao.changeStatusOfReservation(id);
 
+				out.print("ok");
+			} catch (Exception e) {
+				out.print("error");
+			}
+		}
+		if (action.equals("changeStatusOfGroup")) {
+			try {
+				int id = Integer.parseInt(request.getParameter("id"));
+				GroupReservationDao.changeStatusOfReservation(id);
 				out.print("ok");
 			} catch (Exception e) {
 				out.print("error");
@@ -419,7 +480,11 @@ public class UserServlet extends HttpServlet {
 				String combo_name = request.getParameter("combo_name");
 				String combo_price = request.getParameter("combo_price");
 				String combo_items = request.getParameter("combo_items");
-				ComboDao.addCombo(combo_name,combo_price, combo_items);
+				String result = ComboDao.addCombo(combo_name,combo_price, combo_items);
+				System.out.println(result);
+				if(result =="添加失败") {
+					out.print("添加失败");
+				}
 			} catch (Exception e) {
 				out.print("error");
 			}
@@ -492,7 +557,10 @@ public class UserServlet extends HttpServlet {
 				String price = request.getParameter("price");
 				String combo_price = request.getParameter("combo_price");
 				String physical_feature_id = request.getParameter("physical_feature_id");
-				ExaminationProjectDao.addProject(office_id,project_name,price,combo_price,physical_feature_id);
+				String result = ExaminationProjectDao.addProject(office_id,project_name,price,combo_price,physical_feature_id);
+				if(result =="添加失败") {
+					out.print("添加失败");
+				}
 			} catch (Exception e) {
 				out.print("error");
 			}

@@ -91,7 +91,7 @@ public class ExaminationProjectDao {
 		
 	}
 	
-	public static void addProject(int office_id, String project_name,
+	public static String addProject(int office_id, String project_name,
 			String price, String combo_price, String physical_feature_id) {
 		// TODO Auto-generated method stub
 		try {
@@ -103,9 +103,11 @@ public class ExaminationProjectDao {
 			ps.setString(3, price);
 			ps.setString(4, combo_price);
 			ps.setString(5, physical_feature_id);
-			ps.executeUpdate();			
+			ps.executeUpdate();	
+			return "添加成功";
 		} catch (Exception e) {
-			e.printStackTrace();
+
+			return "添加失败";
 		}
 	}
 

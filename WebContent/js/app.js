@@ -128,6 +128,10 @@ peApp.config([ '$routeProvider', function($routeProvider) {
 		templateUrl : 'views/receptionists/detailReservation.html',
 		controller : 'detailReservationCtrl',
         resolve: {auth: auth}
+	}).when('/detailGroupReservation', {
+		templateUrl : 'views/receptionists/detailGroupReservation.html',
+		controller : 'detailGroupReservationCtrl',
+        resolve: {auth: auth}
 	}).when('/showDetailReservation', {
 		templateUrl : 'views/manage/showDetailReservation.html',
 		controller : 'showDetailReservationCtrl',

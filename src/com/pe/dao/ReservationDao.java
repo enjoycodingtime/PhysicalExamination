@@ -325,4 +325,23 @@ public class ReservationDao {
 		}
 		return list;
 	}
+
+	public static boolean haveReservationToday(String idCard,
+			String date) {
+		List<Reservation> list = new ArrayList<Reservation>();
+		try{
+			conn=DBUtil.getConnection();
+			String sql ="select * from reservation where idCard=? and date=?";
+			ps =conn.prepareStatement(sql);
+			ps.setString(1, idCard);
+			ps.setString(2, date);
+			rs= ps.executeQuery();
+			while(rs.next()){
+				return true;
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

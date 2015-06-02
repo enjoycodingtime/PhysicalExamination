@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import com.pe.entity.GroupReservation;
 import com.pe.entity.Reservation;
@@ -140,4 +141,102 @@ public class GroupReservationDao {
 		}
 		return list;
 	}
+	public static void changeStatusOfReservation(int id) {
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "update groupReservation set status=1 where id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);			
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	public List<GroupReservation> getReservationById(int id1) throws Exception {
+		List<GroupReservation> list = new ArrayList<GroupReservation>();
+		conn=DBUtil.getConnection();
+		String basesql = "select "
+				+ "g.id,"
+				+ "g.groupName,"
+				+ "g.address,"
+				+ "g.leaderName,"
+				+ "g.leaderPhoneNumber,"
+				+ "group_number,"
+				+ "c.combo_name,"
+				+ "g.combo_discount,"
+				+ "g.allCount,"
+				+ "g.reservation_date,"
+				+ "g.time,"
+				+ "physical_examination,"
+				+ "status "
+				+ "from "
+				+ "groupReservation as g "
+				+ "INNER JOIN "
+				+ "combo as c "
+				+ "ON "
+				+ "g.combo_id=c.id  ";
+		String sql =basesql+"where g.id=?";
+		ps =conn.prepareStatement(sql);
+		ps.setInt(1, id1);
+		rs= ps.executeQuery();
+		while(rs.next()){
+			int id = rs.getInt("id");
+			String groupName = rs.getString("groupName");
+			String address = rs.getString("address");
+			String leaderName = rs.getString("leaderName");
+			String leaderPhoneNumber = rs.getString("leaderPhoneNumber");
+			int group_number = rs.getInt("group_number");
+			String combo_name = rs.getString("combo_name");
+			int combo_discount = rs.getInt("combo_discount");
+			String allCount = rs.getString("allCount");
+			String  reservation_date = rs.getString("reservation_date");
+			String time = rs.getString("time");
+			String physical_examination = rs.getString("physical_examination");
+			int status = rs.getInt("status");
+			GroupReservation reservation =new GroupReservation(id, combo_discount,combo_name,
+					group_number,  groupName,  address,
+					 allCount,  leaderName,  leaderPhoneNumber,
+					time,  physical_examination, reservation_date,
+					 status);
+			list.add(reservation);
+		}
+		return list;
+	}
+	public static void deleteReservation(int id) {
+		// TODO Auto-generated method stub
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "delete from groupReservation where id=?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void updateReservation(int id, String groupName,
+			String address, String allCount, int comboDiscount, int combo_id,
+			int group_number, String leaderName, String physical_examination,
+			Date date, String leaderPhoneNumber) throws Exception {
+		conn = DBUtil.getConnection();
+		String sql = "update groupReservation set groupName=?, address=?, allCount=?, combo_discount=?,combo_id=?,group_number=?,leaderName=?,physical_examination=?,"
+				+ "reservation_date=?, leaderPhoneNumber=? where id=?";
+		ps =conn.prepareStatement(sql);
+		java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+		ps.setDate(10, sqlDate);
+		ps.setString(1, groupName);
+		ps.setString(2, address);
+		ps.setString(3, allCount);
+		ps.setInt(4, comboDiscount);
+		ps.setInt(5, combo_id);
+		ps.setInt(6, group_number);
+		ps.setString(7, leaderName);
+		ps.setString(8, physical_examination);
+		ps.setDate(9, sqlDate);
+		ps.setString(10, leaderPhoneNumber);
+		ps.setInt(11, id);
+		ps.executeUpdate();
+	}
+
 }

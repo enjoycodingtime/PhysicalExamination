@@ -1,0 +1,125 @@
+<div>
+	<div ng-include="'views/receptionists/receptionistsHeader.html'"></div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span3">
+				<div ng-include="'views/receptionists/receptionistSidebar.html'"></div>
+				<!--/.well -->
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<h1>团体预约详情</h1>	
+				<div>
+					<table class="table table-bordered" align="center">
+						<tr>
+							<td class="col-xs-1"><b> 团体名称:</b></td>
+							<td class="col-xs-3"><input type="text" ng-disabled = 'modify' class="form-control" id=""
+								name="name" placeholder="输入团体名称"
+								ng-model='reservationInformation.groupName'></td>
+							<td class="col-xs-1"><b>团体地址:</b></td>
+							<td class="col-xs-3"><input type="text" ng-disabled = 'modify' class="form-control"
+								name="address" id="" placeholder="输入地址"
+								ng-model='reservationInformation.address'></td>
+							<td class="col-xs-1"><b>团体负责人:</b></td>
+							<td class="col-xs-3"><input type="text" ng-disabled = 'modify' class="form-control" id=""
+								name="name" placeholder="输入负责人姓名"
+								ng-model='reservationInformation.leaderName'></td>
+						</tr>
+						<tr>
+							<td class="col-xs-1"><b>负责人电话:</b></td>
+							<td class="col-xs-3"><input type="text" ng-disabled = 'modify' class="form-control"
+								name="number" id="" placeholder="输入电话"
+								ng-model='reservationInformation.leaderPhoneNumber'
+								onkeyup="this.value=this.value.replace(/\D/g,'')"
+								onafterpaste="this.value=this.value.replace(/\D/g,'')"></td>
+							<td class="col-xs-1"><b>团体人数:</b></td>
+							<td class="col-xs-3"><input type="text" ng-disabled = 'modify' class="form-control"
+								name="number" id="" placeholder="输入团体人数"
+								ng-model='reservationInformation.group_number'
+								onkeyup="this.value=this.value.replace(/\D/g,'')"
+								onafterpaste="this.value=this.value.replace(/\D/g,'')"
+								ng-change='changePriceAction()'></td>
+							<td class="col-xs-1"><b>体检日期:</b></td>
+							<td class="col-xs-3"><div class='input-group date' id='dateTimePicker'>
+
+									<input type='text' id='reservation_date'
+										ng-model='reservationInformation.reservation_date' class="form-control"
+										data-date-format="yyyy-mm-dd" placeholder="选择体检日期"
+										readonly='true' /> <span
+										class="input-group-addon cursor-to-hand"> <span
+										class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div></td>
+							
+						</tr>
+						<tr>
+							<td class="col-xs-1"><b>选择体检套餐：</b></td>
+							<td class="col-xs-3">
+								<div>
+									<select ng-model="physicalExamination" ng-disabled = 'modify' class="form-control"
+										ng-options="physicalExamination.combo_name for physicalExamination in physicalExaminations"
+										ng-change='findByCombo(physicalExamination.id)'>
+									</select>
+								</div>
+							</td>
+							<td class="col-xs-1"><b>套餐折扣：</b></td>
+							<td class="col-xs-3">
+								<div>
+									<input type="text" ng-disabled = 'modify' class="form-control"
+								name="number" id="" placeholder="输入套餐折扣(百分比)"
+								ng-model='reservationInformation.combo_discount'
+								onkeyup="this.value=this.value.replace(/\D/g,'')"
+								onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-change='changePriceAction();'>
+								</div>
+							</td>
+							<td class="col-xs-1"><b>金额总计：</b></td>
+							<td class="col-xs-3">
+								<div>
+									{{reservationInformation.allCount}}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div></div>
+				<div>
+					<div ng-if='projectArray.length !=0'>
+						<table class="table table-word-wrap clear-float-left">
+							<thead>
+								<tr>
+									<th>所属科室</th>
+									<th>项目名称</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat='project in projectArray'>
+									<td>{{project.office_name}}</td>
+									<td>{{project.project_name}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+				
+				<p>
+					<div class= 'row'>
+						<div class='col-xs-4'></div>
+						<div ></div>
+					<a class="btn btn-success btn-large" ng-click='modify()'
+						ng-if='modify'>修改</a>
+					<a class="btn btn-success btn-large" ng-click='submit()'
+						ng-if='projectArray.length !=0 && !modify'>确认</a>
+					<a class="btn btn-success btn-large" ng-click='cancel()'
+						ng-if='projectArray.length !=0 && !modify'>取消</a>
+					<a class="btn btn-danger btn-large" ng-click='deleteReservation()'
+						ng-if='modify'>删除</a>
+						<div class='col-xs-4'></div>
+					</div>
+					
+				</p>
+			</div>
+
+
+		</div>
+	</div>
+</div>

@@ -31,6 +31,7 @@
 				<table class="table table-word-wrap clear-float-left">
 				<thead>
 				 <tr>
+				 	<th></th>
 				 	<th>序号</th>
 				 	<th>姓名</th>
 				 	<th>性别</th>
@@ -46,6 +47,8 @@
 				</thead>
 				<tbody>
 				<tr ng-repeat = 'reservationItem in reservationItems | filter:query  track by $index'>
+					<td><input type="checkbox"
+									ng-click='selectOneProjectToDelete(reservationItem.id)'></td>
 					<td ><a ng-click='detailReservation(reservationItem.id)'>{{reservationItem.id}}</a></td>
 					<td>{{reservationItem.name}}</td>
 					<td ng-if="reservationItem.sex == 'man'">男</td>
@@ -62,6 +65,10 @@
 				</tr>
 				</tbody>
 				</table>
+				<div ng-if='deleteItems.length'>
+					<button type="button"  ng-click='deleteSelectedItems()' ng class="btn btn-danger button-width">删除</button>
+				</div>
+				</div>
 				<div ng-if='reservationItems.length'>
 				<tm-pagination conf="paginationConf"></tm-pagination>
 				</div>

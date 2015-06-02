@@ -16,7 +16,7 @@ public class ComboDao {
 	private static PreparedStatement ps = null;
 	private static ResultSet rs = null;
 	
-	public static void addCombo(String combo_name,String combo_price, String combo_items){
+	public static String addCombo(String combo_name,String combo_price, String combo_items){
 		try {
 			conn = DBUtil.getConnection();
 			String sql = "insert into combo(combo_name,combo_price,combo_items) values(?,?,?)";
@@ -25,8 +25,10 @@ public class ComboDao {
 			ps.setString(2, combo_price);
 			ps.setString(3, combo_items);
 			ps.executeUpdate();		
+			return "添加成功";
 		} catch (Exception e) {
-			e.printStackTrace();
+			
+			return "添加失败";
 		}
 		
 	}

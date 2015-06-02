@@ -60,7 +60,6 @@ angular
 					};
 
 					$scope.submit = function() {
-						var date = new Date();
 						$scope.reservationInformation.reservation_date = $(
 								'#reservation_date').val();
 						$scope.reservationInformation.physical_examination = JSON
@@ -199,7 +198,7 @@ angular.module('peApp').controller(
 						.parse(physical_examination);
 			}
 			$scope.detailReservation = function(id) {
-				$location.path('detailReservation');
+				$location.path('detailGroupReservation');
 				$location.search('id',id);				
 			}
 			
@@ -262,7 +261,7 @@ angular.module('peApp').controller(
 						var oWB = oXL.Workbooks.open(filePath);
 						oWB.worksheets(1).select();
 						var oSheet = oWB.ActiveSheet;
-						if(oSheet.Cells(1, 1).value.toString() != '团体id' || oSheet.Cells(2, 1).value.toString() != '名字'||oSheet.Cells(2, 2).value.toString() != '身份证号码'||oSheet.Cells(2, 3).value.toString() != '电话号码'||oSheet.Cells(2, 4).value.toString() != '名族') {
+						if(oSheet.Cells(1, 1).value.toString() != '团体id' || oSheet.Cells(2, 1).value.toString() != '名字'||oSheet.Cells(2, 2).value.toString() != '身份证号码'||oSheet.Cells(2, 3).value.toString() != '电话号码'||oSheet.Cells(2, 4).value.toString() != '民族') {
 							swal({
 								title : "Error!",
 								text : "Excel文件内容格式不合格，请检查！",
@@ -272,6 +271,7 @@ angular.module('peApp').controller(
 							return 
 						}
 						var group_id = oSheet.Cells(1, 2).value.toString();
+						$scope.group_id = group_id;
 						gateway.call('getGroupReservation.com',{rule:'id',value:group_id,orderBy:'id'}).then(function(data){
 							if (data == "error") {
 								swal({
@@ -280,7 +280,15 @@ angular.module('peApp').controller(
 									type : "warning",
 									timer : 3000
 								})
-							} else {
+							} else if(data[0].status ==1) {
+								swal({
+									title : "Error!",
+									text : "该团体名单已经导入",
+									type : "warning",
+									timer : 3000
+								})
+								return;
+							}else {
 								$scope.groupInfo = data[0];
 							try {
 								for (var i = 3; i < $scope.groupInfo.group_number+3; i++) {
@@ -326,7 +334,6 @@ angular.module('peApp').controller(
 			}
 			$scope.submit = function () {
 				$scope.peopleInfors.forEach(function(value) {
-					console.log(value);
 					gateway.call('groupRegistrate.com',value).then(function(d){
 				        if(d=='error'|| d.length ==0){
 				        	swal("Sorry!", "登记失败，请联系管理员", "error");
@@ -334,6 +341,182 @@ angular.module('peApp').controller(
 				        }
 				    });
 					swal("Success!", "登记成功", "success");
+					gateway.call('changeStatusOfGroup.com',{id:$scope.group_id}).then(function(data){
+						if(d=='error'){
+				        	swal("Sorry!", "修改团体预约状态失败", "error");
+				        	return
+				        }
+					})
 				})
 			}
 		})
+		
+		
+		
+		angular.module('peApp').controller(
+		'detailGroupReservationCtrl',
+		function($scope, $http, $location,fGateway,$route) {
+			var gateway = new fGateway();
+			var id = $location.search().id;
+			$(function() {
+				$('#dateTimePicker').datetimepicker({
+					startDate : '-0d',
+					minView : "month",
+					format : "yyyy-mm-dd",
+					todayBtn : true,
+					todayHighlight : true,
+					autoclose : true
+				});
+			});
+			gateway.call('getCombos.com').then(function(d) {
+				if (d == 'error') {
+					swal("Sorry!", "系统错误", "error");
+				} else {
+					$scope.physicalExaminations = d;
+				}
+			});
+			gateway.call('isGroupReservation.com',{
+				id : id
+			}).then(function(d){
+		        if(d=='error'|| d.length ==0){
+		        	swal("Sorry!", "没有预约信息", "error");
+		        }
+		        else {
+		        	$scope.reservationInformation = d[0];
+		        	$scope.combo_name = $scope.reservationInformation.combo_id;
+		        	$scope.physicalExamination = _.findWhere($scope.physicalExaminations,{combo_name:$scope.combo_name});
+		        	$scope.projectArray = JSON.parse($scope.reservationInformation.physical_examination);
+		        	$scope.selectOneProject = function(examinationProjectItem) {
+						if (_.indexOf($scope.projectArray,
+								examinationProjectItem) != -1) {
+							$scope
+									.delete_project_action(examinationProjectItem);
+						} else {
+							$scope.projectArray.push(examinationProjectItem);
+						}
+					};
+
+					$scope.delete_project_action = function(project) {
+						var index = _.indexOf($scope.projectArray, project);
+						$scope.projectArray.splice(index, 1);
+					}
+					$scope.findByCombo = function(id) {
+						gateway.call('getComboById.com', {
+							id : id
+						}).then(
+								function(d) {
+									if (d == 'error') {
+										swal("Sorry!", "系统错误", "error");
+									} else {
+										$scope.projectArray = JSON
+												.parse(d[0].combo_items);
+									}
+								});
+					}
+					
+					$scope.submit = function() {
+						$scope.reservationInformation.reservation_date = $(
+								'#reservation_date').val();
+						$scope.reservationInformation.physical_examination = JSON
+								.stringify($scope.projectArray);
+						$scope.reservationInformation = resolved($scope.reservationInformation);
+						$scope.reservationInformation.combo_id = $scope.physicalExamination.id;
+						if (verify($scope.reservationInformation)) {
+							swal({
+								title : "Alert",
+								text : "填写信息不完整或者格式不正确",
+								type : "warning",
+								timer : 2000
+							})
+						} else if (!IdCardValidate($scope.reservationInformation.idCard)) {
+							swal({
+								title : "Alert",
+								text : "身份证信息不完整或者格式不正确",
+								type : "warning",
+								timer : 2000
+							})
+						} else {
+							gateway.call('updateGroupReservation.com',
+									$scope.reservationInformation).then(
+									function(d) {
+										if (d == 'error') {
+											swal("Sorry!", "系统错误", "error");
+										} else {
+											swal({
+												title : "sucess!",
+												text : "修改成功",
+												type : "success",
+												timer : 2000
+											});
+											$route.reload();
+										}
+									});
+						}
+					}
+					var verify = function(obj) {
+						if (obj.groupName &&  obj.leaderPhoneNumber
+								&& obj.group_number && obj.leaderName && obj.address
+								&& obj.reservation_date) {
+							return false;
+						}
+						return true;
+					}
+					$scope.changePriceAction = function() {
+						if($scope.reservationInformation.combo_discount && ($scope.reservationInformation.combo_discount>100 ||$scope.reservationInformation.combo_discount ==0)) {
+							$scope.reservationInformation.combo_discount =100;
+							swal({
+								title : "Alert",
+								text : "套餐折扣值在1-100之间，请重新输入!",
+								type : "warning",
+								timer : 2000
+							})
+						}
+						if($scope.reservationInformation.group_number && $scope.reservationInformation.combo_discount && $scope.reservationInformation.totalAmount) {
+							$scope.reservationInformation.allCount = $scope.reservationInformation.group_number * $scope.reservationInformation.combo_discount * $scope.reservationInformation.totalAmount/100;
+						}
+					}
+					
+		        }
+		    });
+			$scope.modify = true;
+			$scope.modify = function () {
+				$scope.modify = false;
+			}
+			$scope.cancel = function () {
+				$route.reload()
+			}
+			$scope.deleteReservation = function () {
+				swal({
+					title : "Alert",
+					text : "确认删除吗？",
+					type : "warning",
+					showCancelButton: true,
+	                confirmButtonColor: "#5CB85C",
+	                confirmButtonText: "yes",
+	                closeOnConfirm: true },
+	                function(isConfirm){
+	                	if(isConfirm){
+	                		gateway.call('delectGroupReservation.com',{id:id}).then(function(data){
+	        					if (data == "error") {
+	        						swal({
+	        							title : "Error!",
+	        							text : "删除失败",
+	        							type : "warning",
+	        							timer : 3000
+	        						})
+	        					} else {
+	        						swal({
+	        							title : "sucess!",
+	        							text : "删除成功",
+	        							type : "success",
+	        							timer : 2000
+	        						});
+	        						$location.path('reservationBox');
+	        					}
+	        				})
+	                	}
+				})
+				
+			}
+			
+		});

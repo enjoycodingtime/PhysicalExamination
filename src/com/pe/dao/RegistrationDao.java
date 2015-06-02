@@ -241,36 +241,42 @@ public class RegistrationDao {
 		return list;
 	}
 
-	public List<Registration> getRegistrateByMonth(String date1) throws Exception {
+	public List<Registration> getRegistrateByMonth(String date1) {
 		List<Registration> list = new ArrayList<Registration>();
-		conn=DBUtil.getConnection();
-		String sql ="select * from registration where time LIKE '?%'";
-		String sql2 = sql.replace("?",date1);
-		ps =conn.prepareStatement(sql2);
-		rs= ps.executeQuery();
-		while (rs.next()) {
-			int id = rs.getInt("id");
-			int group_id = rs.getInt("group_id");
-			String name = rs.getString("name");
-			String birthday = rs.getString("birthday");
-			String sex = rs.getString("sex");
-			String address = rs.getString("address");
-			String idCard = rs.getString("idCard");
-			String marriage = rs.getString("marriage");
-			String nationa = rs.getString("nationa");
-			String phone_number = rs.getString("phone_number");
-			String date = rs.getString("date");
-			String reservation_date = rs.getString("reservation_date");
-			String physical_examination = rs.getString("physical_examination");
-			String combo = rs.getString("combo");
-			String comments = rs.getString("comments");
-
-			Registration registration = new Registration(id, group_id, name, sex, birthday,
-					 idCard, address, marriage,  nationa,
-					 reservation_date,  phone_number,  date,
-					 physical_examination,  combo, comments);
-			list.add(registration);
+		try{
+			conn=DBUtil.getConnection();
+			String sql ="select * from registration where date LIKE '?%'";
+			String sql2 = sql.replace("?",date1);
+			System.out.println(sql2);
+			ps =conn.prepareStatement(sql2);
+			rs= ps.executeQuery();
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				int group_id = rs.getInt("group_id");
+				String name = rs.getString("name");
+				String birthday = rs.getString("birthday");
+				String sex = rs.getString("sex");
+				String address = rs.getString("address");
+				String idCard = rs.getString("idCard");
+				String marriage = rs.getString("marriage");
+				String nationa = rs.getString("nationa");
+				String phone_number = rs.getString("phone_number");
+				String date = rs.getString("date");
+				String reservation_date = rs.getString("reservation_date");
+				String physical_examination = rs.getString("physical_examination");
+				String combo = rs.getString("combo");
+				String comments = rs.getString("comments");
+				
+				Registration registration = new Registration(id, group_id, name, sex, birthday,
+						idCard, address, marriage,  nationa,
+						reservation_date,  phone_number,  date,
+						physical_examination,  combo, comments);
+				list.add(registration);
+			}
+			return list;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return list;
 		}
-		return list;
 	}
 }

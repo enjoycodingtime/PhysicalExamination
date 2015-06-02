@@ -44,7 +44,7 @@ angular.module('peApp').controller('addComboCtrl',
 						type : "warning",
 						timer : 3000
 					})
-				} else {
+				}else {
 					$scope.offices = data;
 				}
 			})
@@ -109,6 +109,13 @@ angular.module('peApp').controller('addComboCtrl',
 						swal({
 							title : "Error!",
 							text : "保存失败，请重试！",
+							type : "warning",
+							timer : 3000
+						})
+					}  else if (data == "添加失败") {
+						swal({
+							title : "Error!",
+							text : "添加失败,请检查是否信息有有误",
 							type : "warning",
 							timer : 3000
 						})
@@ -388,7 +395,14 @@ angular.module('peApp').controller('manageExaminationProjectCtrl',
 							type : "warning",
 							timer : 3000
 						})
-					} else {
+					}else if (data == "添加失败") {
+						swal({
+							title : "Error!",
+							text : "添加失败,请检查是否信息有有误",
+							type : "warning",
+							timer : 3000
+						})
+					}  else {
 						swal({
 							title : "sucess!",
 							text : "添加成功",

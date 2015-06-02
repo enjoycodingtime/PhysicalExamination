@@ -121,4 +121,45 @@ angular.module('peApp').controller(
 			$scope.allReservation = function () {
 				$route.reload();
 			}
+			$scope.deleteItems = [];
+			$scope.selectOneProjectToDelete = function(id) {
+				if (_.indexOf($scope.deleteItems,
+						id) != -1) {
+					$scope.delete_project_action(id);
+				} else {
+					$scope.deleteItems.push(id);
+				}
+			}
+			$scope.delete_project_action = function(id) {
+				var index = _.indexOf($scope.deleteItems, id);
+				$scope.deleteItems.splice(index, 1);
+			}
+			$scope.deleteSelectedItems = function() {
+				swal({
+					title : "Alert",
+					text : "确认删除这些预约信息吗？",
+					type : "warning",
+					showCancelButton: true,
+	                confirmButtonColor: "#5CB85C",
+	                confirmButtonText: "yes",
+	                closeOnConfirm: true },
+	                function(isConfirm){
+	                	if(isConfirm){
+	                		$scope.deleteItems.forEach(function(value) {
+	                			gateway.call('delectReservation.com',{id:value}).then(function(data){
+	                				if (data == "error") {
+	                					swal({
+	                						title : "Error!",
+	                						text : "删除失败",
+	                						type : "warning",
+	                						timer : 3000
+	                					});
+	                					return;
+	                				} 
+	                			})
+	                		})	                		
+	                		$route.reload();
+	                	}
+				})
+			}
 		});
