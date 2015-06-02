@@ -131,7 +131,7 @@ angular
 								type : "warning",
 								timer : 2000
 							})
-						}else {
+						} else {
 							gateway.call('reservation.com',
 									$scope.reservationInformation).then(
 									function(d) {
@@ -141,6 +141,13 @@ angular
 											swal({
 												title : "Alert",
 												text : "这个改身份证号码在这天已经预约体检，不能重复预约",
+												type : "warning",
+												timer : 2000
+											})
+										}else if (d=='预约名额不足'){
+											swal({
+												title : "Alert",
+												text : "这个体检日期已经没有体检名额，请重新选择日期",
 												type : "warning",
 												timer : 2000
 											})
@@ -155,6 +162,12 @@ angular
 										}
 									});
 						}
+					}
+					var numberOfTheDate = function (date) {
+						gateway.call('getReservationNumberBydate.com',
+								{date:date}).then(function(data){
+									return data
+								})
 					}
 					var verify = function(obj) {
 						if (obj.name && obj.idCard && obj.phone_number

@@ -9,7 +9,7 @@ angular
 						$('#dateTimePicker').datetimepicker({
 							startDate : '-0d',
 							minView : "month",
-							format : "yyyy-mm-dd",
+							format : "yyyy/m/d",
 							todayBtn : true,
 							todayHighlight : true,
 							autoclose : true
@@ -58,7 +58,34 @@ angular
 						$scope.reservationInformation.totalAmount = totalAmount;
 						return totalAmount;
 					};
-
+					$scope.changeDiscount = function () {
+						console.log('1111')
+						$scope.reservationInformation.comboDiscount = getDiscount($scope.reservationInformation.group_number)
+					}
+					
+					//获取折扣比例
+					var getDiscount = function (number) {
+						var result;
+						if(number >=200) {
+							result = 60;
+						}
+						else if(number >=150 && number <200) {
+							result = 70;
+						}
+						else if(number >=100 && number <150) {
+							result = 80;
+						}
+						else if(number >=80 && number <100) {
+							result = 85;
+						}
+						else if(number >=50 && number <80) {
+							result = 90;
+						}
+						else if(number <50) {
+							result = 95;
+						}
+						return result;
+					}
 					$scope.submit = function() {
 						$scope.reservationInformation.reservation_date = $(
 								'#reservation_date').val();
@@ -80,6 +107,7 @@ angular
 								timer : 2000
 							})
 						}else {
+							var date = $scope.reservationInformation.reservation_date;
 							gateway.call('groupRreservation.com',
 									$scope.reservationInformation).then(
 									function(d) {
@@ -117,15 +145,6 @@ angular
 						}
 					}
 					$scope.changePriceAction = function() {
-						if($scope.reservationInformation.comboDiscount && ($scope.reservationInformation.comboDiscount>100 ||$scope.reservationInformation.comboDiscount ==0)) {
-							$scope.reservationInformation.comboDiscount =100;
-							swal({
-								title : "Alert",
-								text : "套餐折扣值在1-100之间，请重新输入!",
-								type : "warning",
-								timer : 2000
-							})
-						}
 						if($scope.reservationInformation.group_number && $scope.reservationInformation.comboDiscount && $scope.reservationInformation.totalAmount) {
 							$scope.reservationInformation.allCount = $scope.reservationInformation.group_number * $scope.reservationInformation.comboDiscount * $scope.reservationInformation.totalAmount/100;
 						}

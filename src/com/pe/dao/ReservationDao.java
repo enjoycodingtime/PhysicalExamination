@@ -344,4 +344,28 @@ public class ReservationDao {
 		}
 		return false;
 	}
+
+	public static String getReservationNumberBydate(String date) {
+		String count = null;
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "select count(*) as cc from reservation where date=?";
+			ps =conn.prepareStatement(sql);
+			ps.setString(1, date);
+			rs= ps.executeQuery();			
+			rs.next();
+			count = String.valueOf(rs.getInt(1)+1);
+			sql = "select count(*) as cc from groupReservation where reservation_date=?";
+			ps =conn.prepareStatement(sql);
+			ps.setString(1, date);
+			rs= ps.executeQuery();			
+			rs.next();
+			count = String.valueOf(Integer.parseInt(count)+rs.getInt(1)+1);
+		} catch (Exception e) {
+			count ="0";
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+		return count;
+	}
 }

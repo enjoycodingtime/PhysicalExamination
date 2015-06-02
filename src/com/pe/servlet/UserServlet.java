@@ -119,6 +119,17 @@ public class UserServlet extends HttpServlet {
 			}
 
 		}
+		//获取预约数量
+		if (action.equals("getReservationNumberBydate")) {
+			try {
+				String date = request.getParameter("date");
+				String number= ReservationDao.getReservationNumberBydate(date);
+				out.print(number);				
+			} catch (Exception e) {
+				out.print("error");
+			}
+			
+		}
 		//添加预约信息
 		if (action.equals("reservation")) {
 			try {
@@ -138,7 +149,10 @@ public class UserServlet extends HttpServlet {
 				String totalAmount = request.getParameter("totalAmount");
 				if(ReservationDao.haveReservationToday(idCard,date)) {
 					out.print("今天预约过了");
-				}else {
+				}else if(Integer.parseInt(ReservationDao.getReservationNumberBydate(date)) >200 ) {
+					out.print("预约名额不足");
+				}
+				else {
 					ReservationDao.insertReservation(name, sex, birthday, address,phone_number,idCard,marriage,national,
 							date, reservation_date,physical_examination, combo,totalAmount);
 					out.print("ok");
